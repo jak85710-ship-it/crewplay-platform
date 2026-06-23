@@ -111,13 +111,17 @@ function Convert-ToJpegFile([string]$sourcePath, [string]$destPath) {
 }
 
 function Invoke-GsutilUpload([string]$localPath, [string]$gcsObject) {
-    $gsutil = Get-Command gsutil -ErrorAction SilentlyContinue
-    if (-not $gsutil) { throw 'gsutil not found' }
+    $gsutilPath = $null
+    $cmd = Get-Command gsutil -ErrorAction SilentlyContinue
+    if ($cmd) { $gsutilPath = $cmd.Source }
+    if (-not $gsutilPath) {
+        $fallback = Join-Path $env:LOCALAPPDATA 'Google\Cloud SDK\google-cloud-sdk\bin\gsutil.cmd'
+        if (Test-Path $fallback) { $gsutilPath = $fallback }
+    }
+    if (-not $gsutilPath) { throw 'gsutil not found' }
     $uri = 'gs://' + $Bucket + '/' + $gcsObject
-    & gsutil -h 'Content-Type:image/jpeg' cp $localPath $uri
+    & $gsutilPath -h 'Content-Type:image/jpeg' cp $localPath $uri
     if ($LASTEXITCODE -ne 0) { throw ('gsutil cp failed: ' + $uri) }
-    & gsutil acl ch -u AllUsers:R $uri
-    if ($LASTEXITCODE -ne 0) { throw ('gsutil acl failed: ' + $uri) }
 }
 
 New-Item -ItemType Directory -Path $JpgDir -Force | Out-Null
@@ -130,6 +134,7 @@ $url = 'https://sheets.googleapis.com/v4/spreadsheets/' + $config.sheet_id + '/v
 $data = Invoke-RestMethod -Uri $url -Headers @{ Authorization = 'Bearer ' + $token } -Method Get
 
 $updates = New-Object System.Collections.Generic.List[object]
+$convertedRows = New-Object System.Collections.Generic.List[int]
 $ok = 0; $fail = 0
 
 for ($i = 0; $i -lt $data.values.Count; $i++) {
@@ -159,11 +164,25 @@ for ($i = 0; $i -lt $data.values.Count; $i++) {
             Invoke-GsutilUpload $dest ('photo/r' + $sheetRow + '.jpg')
         }
         $updates.Add([PSCustomObject]@{ row = $sheetRow; photo = $gcsUrl })
+        $convertedRows.Add($sheetRow) | Out-Null
         $ok++
     } catch {
         Write-Host ('[FAIL] ' + $line + ' | ' + $_.Exception.Message) -ForegroundColor Red
         $fail++
     }
+}
+
+$DefaultPhoto = $BaseUrl + '/photo/a1.jpg'
+$convertedSet = @{}
+foreach ($r in $convertedRows) { $convertedSet[[int]$r] = $true }
+
+for ($i = 0; $i -lt $data.values.Count; $i++) {
+    $sheetRow = $i + 2
+    $row = @($data.values[$i])
+    while ($row.Count -lt 7) { $row += '' }
+    if ([string]::IsNullOrWhiteSpace([string]$row[1])) { continue }
+    if ($convertedSet.ContainsKey($sheetRow)) { continue }
+    $updates.Add([PSCustomObject]@{ row = $sheetRow; photo = $DefaultPhoto })
 }
 
 if (-not $DryRun -and $updates.Count -gt 0) {
@@ -179,6 +198,15 @@ if (-not $DryRun -and $updates.Count -gt 0) {
 
 Write-Host ''
 Write-Host ('Done. converted=' + $ok + ' failed=' + $fail)
+if (-not $DryRun) {
+    $report = @{
+        at            = (Get-Date).ToString('s')
+        convertedRows = @($convertedRows | Sort-Object -Unique)
+        uploadedRows  = if ($Upload) { @($convertedRows | Sort-Object -Unique) } else { @() }
+        failed        = $fail
+    }
+    $report | ConvertTo-Json -Depth 4 | Set-Content (Join-Path $Root 'inbox-publish-report.json') -Encoding UTF8
+}
 if (-not $Upload) {
-    Write-Host 'Next: upload photos-jpg to GCS with gsutil, or re-run with -Upload'
+    Write-Host 'Next: re-run with -Upload or upload photos-jpg to GCS'
 }
