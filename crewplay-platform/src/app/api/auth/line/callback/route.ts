@@ -1,14 +1,21 @@
 import { NextResponse } from "next/server";
 
+import { getLineCallbackUrl, getLineSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
+
 export async function GET(req: Request) {
-  const channelId = process.env.LINE_CHANNEL_ID;
-  const secret = process.env.LINE_CHANNEL_SECRET;
-  const site = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const site = getLineSiteUrl();
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
 
-  if (!code || !channelId || !secret) {
-    return NextResponse.redirect(`${site}/my/bookings?line=not_configured`);
+  if (!isLineLoginConfigured()) {
+    return NextResponse.redirect(`${site}/login?line=not_configured`);
+  }
+
+  const channelId = process.env.LINE_CHANNEL_ID!.trim();
+  const secret = process.env.LINE_CHANNEL_SECRET!.trim();
+
+  if (!code) {
+    return NextResponse.redirect(`${site}/login?line=failed`);
   }
 
   const tokenRes = await fetch("https://api.line.me/oauth2/v2.1/token", {
@@ -17,14 +24,14 @@ export async function GET(req: Request) {
     body: new URLSearchParams({
       grant_type: "authorization_code",
       code,
-      redirect_uri: `${site}/api/auth/line/callback`,
+      redirect_uri: getLineCallbackUrl(site),
       client_id: channelId,
       client_secret: secret,
     }),
   });
 
   if (!tokenRes.ok) {
-    return NextResponse.redirect(`${site}/my/bookings?line=failed`);
+    return NextResponse.redirect(`${site}/login?line=failed`);
   }
 
   const token = await tokenRes.json();
@@ -33,7 +40,16 @@ export async function GET(req: Request) {
   });
   const profile = profileRes.ok ? await profileRes.json() : null;
 
-  const res = NextResponse.redirect(`${site}/my/bookings?line=ok`);
+  const state = searchParams.get("state") ?? "";
+  let target = "/my/bookings?line=ok";
+  if (state.startsWith("crewplay:")) {
+    const path = state.slice("crewplay:".length);
+    if (path.startsWith("/") && !path.startsWith("//")) {
+      target = path.includes("?") ? `${path}&line=ok` : `${path}?line=ok`;
+    }
+  }
+
+  const res = NextResponse.redirect(`${site}${target}`);
   if (profile?.userId) {
     res.cookies.set("line_uid", profile.userId, { httpOnly: true, maxAge: 86400 * 30, path: "/" });
     res.cookies.set("line_name", profile.displayName ?? "", { maxAge: 86400 * 30, path: "/" });

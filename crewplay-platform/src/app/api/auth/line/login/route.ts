@@ -1,17 +1,27 @@
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  const channelId = process.env.LINE_CHANNEL_ID;
-  const site = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  if (!channelId) {
-    return NextResponse.json({ error: "LINE_CHANNEL_ID not set" }, { status: 503 });
+import { getLineCallbackUrl, getLineSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
+
+export async function GET(req: Request) {
+  const site = getLineSiteUrl();
+  if (!isLineLoginConfigured()) {
+    return NextResponse.redirect(`${site}/login?line=not_configured`);
   }
+
+  const { searchParams } = new URL(req.url);
+  const redirect = searchParams.get("redirect");
+  const state =
+    redirect && redirect.startsWith("/") && !redirect.startsWith("//")
+      ? `crewplay:${redirect}`
+      : "crewplay";
+
+  const channelId = process.env.LINE_CHANNEL_ID!.trim();
   const params = new URLSearchParams({
     response_type: "code",
     client_id: channelId,
-    redirect_uri: `${site}/api/auth/line/callback`,
+    redirect_uri: getLineCallbackUrl(site),
     scope: "profile openid",
-    state: "crewplay",
+    state,
   });
   return NextResponse.redirect(`https://access.line.me/oauth2/v2.1/authorize?${params}`);
 }

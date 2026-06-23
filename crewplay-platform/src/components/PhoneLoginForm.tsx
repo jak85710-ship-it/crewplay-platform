@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-type Props = { appleEnabled: boolean };
+type Props = { lineEnabled: boolean };
 
-export function PhoneLoginForm({ appleEnabled }: Props) {
+export function PhoneLoginForm({ lineEnabled }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/my/bookings";
+  const lineStatus = searchParams.get("line");
 
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -17,6 +18,17 @@ export function PhoneLoginForm({ appleEnabled }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [devCode, setDevCode] = useState("");
+  const [lineNotice, setLineNotice] = useState("");
+
+  useEffect(() => {
+    if (lineStatus === "ok") {
+      setLineNotice("LINE 登入成功");
+    } else if (lineStatus === "failed") {
+      setLineNotice("LINE 登入失敗，請再試一次或改用手機登入");
+    } else if (lineStatus === "not_configured") {
+      setLineNotice("LINE 登入尚未設定，請聯絡管理員或改用手機登入");
+    }
+  }, [lineStatus]);
 
   async function sendCode(e?: FormEvent) {
     e?.preventDefault();
@@ -74,6 +86,18 @@ export function PhoneLoginForm({ appleEnabled }: Props) {
 
   return (
     <>
+      {lineNotice && (
+        <p
+          className={`mt-6 rounded-xl px-4 py-3 text-sm ${
+            lineStatus === "ok"
+              ? "border border-green-200 bg-green-50 text-green-800"
+              : "border border-amber-200 bg-amber-50 text-amber-900"
+          }`}
+        >
+          {lineNotice}
+        </p>
+      )}
+
       {step === "phone" ? (
         <form onSubmit={sendCode} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <label className="block text-sm font-medium text-slate-700">
@@ -146,22 +170,19 @@ export function PhoneLoginForm({ appleEnabled }: Props) {
       <div className="mt-8 rounded-2xl border border-slate-100 bg-slate-50 p-5">
         <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">其他登入方式</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Link
-            href="/api/auth/line/login"
-            className="rounded-xl bg-[#06C755] px-4 py-2 text-sm font-semibold text-white"
-          >
-            LINE 登入
-          </Link>
-          <Link
-            href="/api/auth/apple/login"
-            className="rounded-xl bg-black px-4 py-2 text-sm font-semibold text-white"
-          >
-            Apple 登入
-          </Link>
+          {lineEnabled ? (
+            <Link
+              href={`/api/auth/line/login${redirect.startsWith("/") && redirect !== "/my/bookings" ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}
+              className="rounded-xl bg-[#06C755] px-4 py-2 text-sm font-semibold text-white"
+            >
+              LINE 登入
+            </Link>
+          ) : (
+            <span className="rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500">
+              LINE 登入（尚未設定）
+            </span>
+          )}
         </div>
-        {!appleEnabled && (
-          <p className="mt-2 text-xs text-slate-400">Apple 登入需後台設定憑證</p>
-        )}
       </div>
     </>
   );
