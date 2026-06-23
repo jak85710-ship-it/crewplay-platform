@@ -4,30 +4,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Props {
-  searchParams: Promise<{ status?: string; id?: string; tradeNo?: string }>;
+  searchParams: Promise<{ status?: string; id?: string }>;
 }
 
 export default function BookResultPage({ searchParams }: Props) {
-  const [params, setParams] = useState<{ status?: string; tradeNo?: string }>({});
-  const [confirming, setConfirming] = useState(false);
+  const [params, setParams] = useState<{ status?: string; id?: string }>({});
 
   useEffect(() => {
-    searchParams.then((p) => {
-      setParams({ status: p.status, tradeNo: p.tradeNo });
-      if (p.status === "ok" && p.tradeNo) {
-        setConfirming(true);
-        fetch("/api/bookings/confirm-paid", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tradeNo: p.tradeNo }),
-        })
-          .catch(() => undefined)
-          .finally(() => setConfirming(false));
-      }
-    });
+    searchParams.then(setParams);
   }, [searchParams]);
 
-  const ok = params.status === "ok" || params.status === "paid";
+  const ok = params.status === "ok";
 
   return (
     <div className="mx-auto max-w-lg px-4 py-16 text-center">
@@ -38,19 +25,12 @@ export default function BookResultPage({ searchParams }: Props) {
       >
         {ok ? "✓" : "!"}
       </div>
-      <h1 className="mt-6 text-2xl font-bold text-slate-900">
-        {ok ? "預約成功" : "付款未完成"}
-      </h1>
+      <h1 className="mt-6 text-2xl font-bold text-slate-900">{ok ? "預約已送出" : "預約未完成"}</h1>
       <p className="mt-3 text-slate-600">
         {ok
-          ? confirming
-            ? "正在確認付款並寄送通知信…"
-            : "我們已收到您的預約，確認信已寄至您的 Email。"
-          : "若已扣款但未顯示成功，請聯絡 crew.matchplay@gmail.com 並提供訂單編號。"}
+          ? "我們已收到您的報名，確認信已寄至您的 Email。團主將與您聯繫，團費請依揪團說明向團主繳交。"
+          : "請返回揪團頁重新填寫，或聯絡 crew.matchplay@gmail.com。"}
       </p>
-      {params.tradeNo && (
-        <p className="mt-2 font-mono text-xs text-slate-400">訂單：{params.tradeNo}</p>
-      )}
       <div className="mt-8 flex justify-center gap-3">
         <Link href="/my/bookings" className="rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white">
           我的預約

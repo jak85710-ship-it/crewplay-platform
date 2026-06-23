@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CheckboxField,
   FormSection,
@@ -11,12 +11,13 @@ import {
   TextAreaField,
   TextField,
 } from "@/components/forms/FormControls";
+import { submitCheckoutForm } from "@/lib/checkout-client";
 import { HOST_TIME_SLOTS, SKILL_LEVELS, WEEKDAYS } from "@/lib/form-options";
 
 export default function HostJoinPage() {
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
   const [error, setError] = useState("");
+  const [platformFee, setPlatformFee] = useState(500);
   const [form, setForm] = useState({
     sport: "",
     location: "",
@@ -31,6 +32,15 @@ export default function HostJoinPage() {
     email: "",
     agreed: false,
   });
+
+  useEffect(() => {
+    fetch("/api/join/fees")
+      .then((r) => r.json())
+      .then((data) => {
+        if (typeof data.hostFee === "number") setPlatformFee(data.hostFee);
+      })
+      .catch(() => undefined);
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -54,7 +64,13 @@ export default function HostJoinPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "提交失敗");
-      setDone(true);
+
+      if (data.checkout?.action) {
+        submitCheckoutForm(data.checkout);
+        return;
+      }
+
+      throw new Error("無法建立付款，請稍後再試");
     } catch (err) {
       setError(err instanceof Error ? err.message : "提交失敗");
     } finally {
@@ -62,22 +78,12 @@ export default function HostJoinPage() {
     }
   }
 
-  if (done) {
-    return (
-      <div>
-        <JoinFormHero title="提交成功" subtitle="我們已收到您的開團申請，確認信已寄至您的 Email。媒合成功後將再次通知。" />
-        <div className="mx-auto max-w-lg px-4 py-10 text-center">
-          <Link href="/teams" className="btn-primary inline-flex">
-            瀏覽揪團
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
-      <JoinFormHero title="我要開團" />
+      <JoinFormHero
+        title="我要開團"
+        subtitle={`填寫資料後需支付平台開團刊登費 NT$ ${platformFee.toLocaleString()}，完成付款即送審。`}
+      />
       <form onSubmit={onSubmit} className="mx-auto max-w-3xl space-y-5 px-4 py-10">
         <FormSection title="運動資訊" description="告訴我們您想開什麼團">
           <TextField
@@ -121,6 +127,7 @@ export default function HostJoinPage() {
             value={form.fee}
             onChange={(fee) => setForm({ ...form, fee })}
           />
+          <p className="text-xs text-slate-400 sm:col-span-2">此為您向球友收取的團費說明，非平台刊登費</p>
           <SelectField
             label="想找的程度為"
             name="skill_level"
@@ -189,7 +196,7 @@ export default function HostJoinPage() {
         {error && <p className="text-sm text-red-600">{error}</p>}
 
         <button type="submit" disabled={loading} className="btn-primary w-full sm:w-auto">
-          {loading ? "提交中…" : "確認提交"}
+          {loading ? "處理中…" : "確認並前往付款"}
         </button>
       </form>
     </div>

@@ -96,7 +96,6 @@ export async function createBooking(input: {
   guest_email: string;
   slots: number;
   amount: number;
-  merchant_trade_no: string;
   note?: string;
 }): Promise<Booking> {
   const booking: Booking = {
@@ -107,9 +106,9 @@ export async function createBooking(input: {
     guest_email: input.guest_email,
     slots: input.slots,
     amount: input.amount,
-    status: "pending_payment",
-    payment_provider: "ecpay",
-    merchant_trade_no: input.merchant_trade_no,
+    status: "submitted",
+    payment_provider: "none",
+    merchant_trade_no: null,
     note: input.note ?? "",
     created_at: new Date().toISOString(),
   };

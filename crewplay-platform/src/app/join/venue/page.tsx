@@ -1,19 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FormSection,
   JoinFormHero,
   MultiSelectDropdown,
   TextField,
 } from "@/components/forms/FormControls";
+import { submitCheckoutForm } from "@/lib/checkout-client";
 import { VENUE_TIME_SLOTS } from "@/lib/form-options";
 
 export default function VenueJoinPage() {
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
   const [error, setError] = useState("");
+  const [platformFee, setPlatformFee] = useState(500);
   const [form, setForm] = useState({
     venue_name: "",
     address: "",
@@ -24,6 +25,15 @@ export default function VenueJoinPage() {
     court_count: "",
     time_slots: [] as string[],
   });
+
+  useEffect(() => {
+    fetch("/api/join/fees")
+      .then((r) => r.json())
+      .then((data) => {
+        if (typeof data.venueFee === "number") setPlatformFee(data.venueFee);
+      })
+      .catch(() => undefined);
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,7 +53,13 @@ export default function VenueJoinPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "提交失敗");
-      setDone(true);
+
+      if (data.checkout?.action) {
+        submitCheckoutForm(data.checkout);
+        return;
+      }
+
+      throw new Error("無法建立付款，請稍後再試");
     } catch (err) {
       setError(err instanceof Error ? err.message : "提交失敗");
     } finally {
@@ -51,24 +67,11 @@ export default function VenueJoinPage() {
     }
   }
 
-  if (done) {
-    return (
-      <div>
-        <JoinFormHero title="提交成功" subtitle="我們已收到您的場地刊登申請，將依序以電話或 LINE 與您聯繫。" />
-        <div className="mx-auto max-w-lg px-4 py-10 text-center">
-          <Link href="/" className="btn-primary inline-flex">
-            返回首頁
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
       <JoinFormHero
         title="刊登場地，成為場主"
-        subtitle="出租閒置時段的空間，帶來精準客群，利用後台輕鬆管理訂單，增加額外收入！"
+        subtitle={`出租閒置時段的空間，帶來精準客群。完成表單後需支付平台刊登費 NT$ ${platformFee.toLocaleString()}。`}
       />
       <form onSubmit={onSubmit} className="mx-auto max-w-3xl space-y-5 px-4 py-10">
         <FormSection title="場館基本資料">
@@ -92,6 +95,7 @@ export default function VenueJoinPage() {
             required
             value={form.price}
             onChange={(price) => setForm({ ...form, price })}
+            hint="您出租給球友的場租，非平台刊登費"
           />
         </FormSection>
 
@@ -141,7 +145,7 @@ export default function VenueJoinPage() {
         {error && <p className="text-sm text-red-600">{error}</p>}
 
         <button type="submit" disabled={loading} className="btn-primary w-full sm:w-auto">
-          {loading ? "提交中…" : "提交"}
+          {loading ? "處理中…" : "確認並前往付款"}
         </button>
       </form>
     </div>

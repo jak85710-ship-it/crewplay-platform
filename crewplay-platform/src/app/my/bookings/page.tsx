@@ -5,6 +5,23 @@ import { listBookings } from "@/lib/bookings";
 import { getMemberSession } from "@/lib/member-session";
 import { normalizePhone } from "@/lib/phone-auth";
 
+function bookingStatusLabel(status: string): string {
+  switch (status) {
+    case "submitted":
+      return "已送出";
+    case "pending_payment":
+      return "待付款";
+    case "paid":
+      return "已確認";
+    case "cancelled":
+      return "已取消";
+    case "refunded":
+      return "已退款";
+    default:
+      return status;
+  }
+}
+
 export default async function MyBookingsPage() {
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
@@ -79,14 +96,14 @@ export default async function MyBookingsPage() {
                       ? "bg-green-100 text-green-800"
                       : b.status === "pending_payment"
                         ? "bg-amber-100 text-amber-800"
-                        : "bg-slate-100 text-slate-600"
+                        : "bg-brand-100 text-brand-800"
                   }`}
                 >
-                  {b.status}
+                  {bookingStatusLabel(b.status)}
                 </span>
               </div>
               <p className="mt-2 text-sm text-slate-600">
-                {b.slots} 人 · NT$ {b.amount} · {b.merchant_trade_no}
+                {b.slots} 人 · 參考團費 NT$ {b.amount}
               </p>
               <p className="mt-1 text-xs text-slate-400">{b.created_at}</p>
             </li>

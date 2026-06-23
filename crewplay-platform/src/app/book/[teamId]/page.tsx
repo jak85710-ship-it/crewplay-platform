@@ -56,22 +56,6 @@ export default function BookPage({ params }: Props) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "建立預約失敗");
 
-      if (data.checkout?.action) {
-        const f = document.createElement("form");
-        f.method = "POST";
-        f.action = data.checkout.action;
-        Object.entries(data.checkout.fields as Record<string, string>).forEach(([k, v]) => {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = k;
-          input.value = v;
-          f.appendChild(input);
-        });
-        document.body.appendChild(f);
-        f.submit();
-        return;
-      }
-
       router.push(`/book/result?status=ok&id=${data.booking.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "錯誤");
@@ -84,6 +68,9 @@ export default function BookPage({ params }: Props) {
     <div className="mx-auto max-w-lg px-4 py-10">
       <h1 className="text-2xl font-bold text-slate-900">預約報名</h1>
       {teamName && <p className="mt-2 text-slate-600">{teamName}</p>}
+      <p className="mt-2 text-sm text-slate-500">
+        送出後團主將與您聯繫。團費請依揪團說明向團主繳交，本站不代收揪團費用。
+      </p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <label className="block text-sm">
@@ -136,9 +123,11 @@ export default function BookPage({ params }: Props) {
           />
         </label>
 
-        <div className="rounded-xl bg-brand-50 p-4 text-sm">
-          <p>單價 NT$ {unitPrice} × {form.slots} 人</p>
-          <p className="mt-1 text-lg font-bold text-brand-800">合計 NT$ {total}</p>
+        <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-600">
+          <p className="font-medium text-slate-700">參考團費（向團主繳交）</p>
+          <p className="mt-1">
+            約 NT$ {unitPrice} × {form.slots} 人 ≈ NT$ {total}
+          </p>
         </div>
 
         {error && <p className="text-sm text-red-600">{error}</p>}
@@ -148,7 +137,7 @@ export default function BookPage({ params }: Props) {
           disabled={loading || !teamId}
           className="w-full rounded-xl bg-brand-600 py-3 text-sm font-bold text-white hover:bg-brand-700 disabled:opacity-50"
         >
-          {loading ? "處理中…" : "確認並前往付款"}
+          {loading ? "處理中…" : "確認送出預約"}
         </button>
       </form>
     </div>

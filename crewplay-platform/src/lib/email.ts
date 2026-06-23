@@ -233,26 +233,26 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
   return lines(rows);
 }
 
-/** 新預約（待付款）：通知您 + 回覆報名者 */
-export async function sendBookingPendingEmails(ctx: BookingMailContext) {
+/** 新預約（報名）：通知您 + 回覆報名者（無線上金流） */
+export async function sendBookingSubmittedEmails(ctx: BookingMailContext) {
   const cfg = getMailConfig();
   if (!cfg) {
-    console.warn("Gmail not configured; skipping booking pending emails");
+    console.warn("Gmail not configured; skipping booking submitted emails");
     return;
   }
 
-  const trade = ctx.booking.merchant_trade_no?.slice(0, 12) ?? ctx.booking.id.slice(0, 8);
+  const ref = ctx.booking.id.slice(0, 8);
 
   await sendMail({
     to: cfg.notifyTo,
-    subject: `[揪團預約·待付款] ${ctx.team.arena_name}（${trade}）`,
+    subject: `[揪團預約] ${ctx.team.arena_name}（${ref}）`,
     text: [
-      "【揪團查詢】新預約（待付款）",
+      "【揪團查詢】新預約報名",
       `提交時間：${ctx.booking.created_at ?? new Date().toISOString()}`,
       "",
       bookingLines(ctx),
       "",
-      "付款完成後系統會再寄一封「已付款」通知。",
+      "團費請報名者依團主規定現場繳交，平台不代收揪團費用。",
     ].join("\n"),
     replyTo: ctx.booking.guest_email || undefined,
   });
@@ -260,20 +260,25 @@ export async function sendBookingPendingEmails(ctx: BookingMailContext) {
   if (ctx.booking.guest_email) {
     await sendMail({
       to: ctx.booking.guest_email,
-      subject: `[CrewPlay] 預約已建立，請完成付款（${trade}）`,
+      subject: `[CrewPlay] 預約已送出（${ref}）`,
       text: [
         `${ctx.booking.guest_name} 您好，`,
         "",
-        "您已在 CrewPlay運動媒合平台提交揪團預約，請於付款頁完成金流：",
+        "您已在 CrewPlay運動媒合平台提交揪團預約：",
         "",
         bookingLines(ctx, false),
         "",
-        "若已完成付款但未收到確認，請回信至 crew.matchplay@gmail.com 並提供訂單編號。",
+        "團主將與您聯繫確認細節；團費請依揪團說明向團主繳交。",
         "",
         "CrewPlay運動媒合平台",
       ].join("\n"),
     });
   }
+}
+
+/** @deprecated 舊版待付款流程，保留給歷史訂單 */
+export async function sendBookingPendingEmails(ctx: BookingMailContext) {
+  return sendBookingSubmittedEmails(ctx);
 }
 
 /** 付款成功：通知您 + 回覆報名者 */

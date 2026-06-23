@@ -91,7 +91,7 @@ export default async function HomePage() {
             "一鍵瀏覽附近揪團，想動就動",
             "依運動、縣市、團名搜尋",
             "羽球、桌球、排球等多元項目",
-            "線上預約＋金流，減少放鳥",
+            "線上預約報名，快速聯繫團主",
           ].map((text) => (
             <li
               key={text}

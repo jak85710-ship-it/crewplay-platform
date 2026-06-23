@@ -1,5 +1,5 @@
 export type TeamStatus = "published" | "hidden" | "full";
-export type BookingStatus = "pending_payment" | "paid" | "cancelled" | "refunded";
+export type BookingStatus = "submitted" | "pending_payment" | "paid" | "cancelled" | "refunded";
 export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 
 export interface Team {
