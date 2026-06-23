@@ -1,0 +1,124 @@
+{
+  "exportedAt": "2026-06-16T07:25:13.324Z",
+  "columns": [
+    "sport",
+    "arena_name",
+    "introduce",
+    "photo",
+    "assign_url",
+    "region",
+    "location"
+  ],
+  "rows": [
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：每週二 9:30～11:30時\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n費用：190/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27606532478940461/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27606532478940461/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "",
+        "contact": "",
+        "raw_text": "時間：每週二 9:30～11:30\n地點：星勝羽球館\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n費用：190元/人",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：17:00～19:00時\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n費用：210/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498003113126732/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498003113126732/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "日期：每週三\n歡迎大家一起來同樂！",
+        "contact": "",
+        "raw_text": "日期：每週三\n時間：17:00～19:00\n地點：星勝羽球館\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n人數：7～8人/場\n費用：210元/人\n歡迎大家一起來同樂！",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：20:00～22:00時\n程度：新手（懂基本規則、打得到球）～中階\n用球：YONEX TR\n費用：230/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498024876457889/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498024876457889/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "日期：每週五\n甲組教練陪打\n歡迎大家一起來同樂！",
+        "contact": "",
+        "raw_text": "日期：每週五\n時間：20:00～22:00\n地點：星勝羽球館\n程度：新手（懂基本規則、打得到球）～中階\n用球：YONEX TR\n人數：7～8人/場\n費用：230元/人\n甲組教練陪打\n歡迎大家一起來同樂！",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館-有點多羽羽球團",
+      "venue": "星勝羽球館",
+      "team_name": "有點多羽羽球團",
+      "introduce": "地點：星勝羽球館\n時間：20:00-22:00時\n程度：中階\n用球：R4或同級球\n費用：220/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "團名：有點多羽羽球團\n有點多羽羽球團誠徵臨打或固定球友\n徵初中階（4-7階），也歡迎高手前來交流\n打球日期：6/18（四）\n打球時間：20:00-22:00\n打球地點：星勝羽球館\n打球費用：220元\n場地數：4場",
+        "contact": "私訊；留言報名",
+        "raw_text": "有點多羽羽球團誠徵臨打或固定球友\n徵初中階（4-7階），也歡迎高手前來交流\n打球日期：6/18（四）\n打球時間：20:00-22:00\n打球地點：星勝羽球館\n打球費用：220元\n用球：R4或同級球\n場地數：4場\n歡迎各路朋友在下面留言或私訊一下，謝謝",
+        "region": "",
+        "team_name": "有點多羽羽球團",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：1600-1800\n程度：男6up、女4up\n用球：塔瑞尼斯比賽球\n費用：250／人/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27570002882593421/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27570002882593421/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "週二固定流汗團\n想流汗、想運動、想認識球友嗎？\n無壓力、暢快淋漓的打球\n日期：6/16\n想運動流汗的人\n想培養球感、增加實戰經驗的人\n輕鬆友善氣氛\n男女不拘，一起開心打球\n不管你是想培養運動習慣，還是想來場熱血對戰，歡迎加入我們！",
+        "contact": "",
+        "raw_text": "週二固定流汗團\n想流汗、想運動、想認識球友嗎？\n無壓力、暢快淋漓的打球\n程度：男6up、女4up\n日期：6/16\n時間：1600-1800\n地點：星勝羽球館\n場地：2號場\n費用：250元／人\n用球：塔瑞尼斯比賽球\n招募對象\n初中階球友\n想運動流汗的人\n想培養球感、增加實戰經驗的人\n活動特色\n兩小時暢打\n輕鬆友善氣氛\n單人報名也歡迎\n男女不拘，一起開心打球\n不管你是想培養運動習慣，還是想來場熱血對戰，歡迎加入我們！",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    }
+  ]
+}

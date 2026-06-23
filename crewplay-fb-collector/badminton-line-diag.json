@@ -1,0 +1,136 @@
+﻿{
+    "checkedAt":  "2026-06-17 15:29:44",
+    "sheetId":  "1wBIDO4zPqB-4z4C1yPy-8CgOH-MInB36j7Tw46BR9VE",
+    "sheetName":  "工作表1",
+    "totalRows":  267,
+    "sportBreakdown":  [
+                           {
+                               "sport":  "羽球",
+                               "count":  205
+                           },
+                           {
+                               "sport":  "匹克球",
+                               "count":  32
+                           },
+                           {
+                               "sport":  "排球",
+                               "count":  26
+                           },
+                           {
+                               "sport":  "桌球",
+                               "count":  2
+                           },
+                           {
+                               "sport":  "籃球",
+                               "count":  1
+                           },
+                           {
+                               "sport":  "玉米洞",
+                               "count":  1
+                           }
+                       ],
+    "badmintonTotal":  205,
+    "badmintonLineReady":  123,
+    "badmintonNotReady":  82,
+    "otherSportLineReady":  55,
+    "lineCarouselLimit":  10,
+    "badmintonOverLimit":  true,
+    "likelyCauses":  [
+                         "羽球合格列 123 筆 \u003e LINE carousel 上限 10，可能整段羽球選項渲染失敗"
+                     ],
+    "badmintonReadySample":  [
+                                 "3|新手互戳羽球團",
+                                 "5|邁特帶萌羽球社",
+                                 "6|羽毛毛蟲",
+                                 "7|小皮歡樂羽球團",
+                                 "8|心碎小狗羽球團",
+                                 "9|亮劍羽球聯盟(大戰士 )",
+                                 "10|凱璿羽球團",
+                                 "11|牽羊羽球團",
+                                 "12|胖丁羽球特攻隊",
+                                 "13|星期天固定團",
+                                 "14|小羽宙羽球隊",
+                                 "15|羽鷹飛翔(鷹揚羽球館)"
+                             ],
+    "badmintonIssuesTop":  [
+                               {
+                                   "row":  180,
+                                   "arena":  "星勝羽球館",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  181,
+                                   "arena":  "星勝羽球館",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  182,
+                                   "arena":  "星勝羽球館-有點多羽羽球團",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  183,
+                                   "arena":  "星勝羽球館",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  184,
+                                   "arena":  "世大羽球館-藥聯羽球隊",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  185,
+                                   "arena":  "世大羽球館-炸蝦羽球隊",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  186,
+                                   "arena":  "屏東信義羽球場-不收新手，",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  187,
+                                   "arena":  "屏東 世大羽球館",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  188,
+                                   "arena":  "屏東信義羽球館",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  189,
+                                   "arena":  "大樹體育館",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  190,
+                                   "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  191,
+                                   "arena":  "嘉鴻羽球館「嘉鴻」",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  192,
+                                   "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  193,
+                                   "arena":  "嘉得羽球館-樂咖羽球隊",
+                                   "issues":  "no_photo"
+                               },
+                               {
+                                   "row":  194,
+                                   "arena":  "嘉鴻羽球館「嘉鴻」",
+                                   "issues":  "no_photo"
+                               }
+                           ],
+    "syncApi":  {
+                    "body":  "{\"success\": true, \"message\": \"\\u6210\\u529f\\u540c\\u6b65 267 \\u7b46\\u65b0\\u5834\\u5730\\u8cc7\\u6599\\u3002\", \"count\": 267}",
+                    "status":  200
+                }
+}

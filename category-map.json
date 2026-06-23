@@ -1,0 +1,9 @@
+[
+  { "folder": "何其美系列", "id": "holttumii", "brand": "何其美鹿角蕨", "rarity": 5, "price": 4200, "desc": "東南亞巨型種，體型壯觀。" },
+  { "folder": "侏儒系列", "id": "dwarf", "brand": "侏儒鹿角蕨", "rarity": 2, "price": 1200, "desc": "精巧迷你，適合小空間收藏。" },
+  { "folder": "十八原生種系列", "id": "native18", "brand": "十八原生種", "rarity": 3, "price": 1500, "desc": "經典原生品種，適合入門至進階玩家。" },
+  { "folder": "深綠系列", "id": "hillii", "brand": "深綠鹿角蕨", "rarity": 2, "price": 900, "desc": "葉色深綠厚實，耐陰好種。" },
+  { "folder": "爪哇系列", "id": "java", "brand": "爪哇鹿角蕨", "rarity": 4, "price": 2800, "desc": "羽裂深邃，垂感優美。" },
+  { "folder": "皇冠系列", "id": "coronarium", "brand": "皇冠鹿角蕨", "rarity": 4, "price": 3200, "desc": "王者風範，孢子葉如瀑布下垂。" },
+  { "folder": "銀鹿系列", "id": "silver", "brand": "銀鹿鹿角蕨", "rarity": 3, "price": 2000, "desc": "葉面銀白星毛，耐旱亮眼。" }
+]

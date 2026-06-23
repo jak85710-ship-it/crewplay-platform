@@ -1,0 +1,17 @@
+﻿{
+    "file":  "crewplay-batch-20260615-160818.json",
+    "fixed":  78,
+    "rejected":  2,
+    "rejectedItems":  [
+                          {
+                              "index":  29,
+                              "arena":  "本球館可穿線-星光團羽球隊",
+                              "reason":  "場館/時間/費用無法修正或含 FB 雜訊"
+                          },
+                          {
+                              "index":  41,
+                              "arena":  "鳳西羽球館",
+                              "reason":  "場館/時間/費用無法修正或含 FB 雜訊"
+                          }
+                      ]
+}

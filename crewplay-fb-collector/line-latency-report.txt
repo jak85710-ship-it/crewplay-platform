@@ -1,0 +1,11 @@
+﻿LINE 即時預約 延遲排查報告
+時間：2026-06-20 15:06:21
+總列數：280
+平均 introduce 字數：71
+sheet_sync 平均：56 ms
+羽球 合格 214 筆 > carousel 10
+匹克球 合格 35 筆 > carousel 10
+排球 合格 26 筆 > carousel 10
+
+給管理員：若 no healthy upstream 或延遲 >3s，請查 webhook 日誌、DB 索引、快取。
+給資料維護：主表每運動 <=10 筆可明顯改善 LINE 選單速度。

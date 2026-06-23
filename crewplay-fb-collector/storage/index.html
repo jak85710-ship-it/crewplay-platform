@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CrewPlay 場地圖片網址檢查</title>
+  <style>
+    :root { --bg:#0f1419; --card:#1a2332; --text:#e7ecf3; --muted:#8b9cb3; --ok:#3dd68c; --bad:#ff6b6b; --accent:#4dabf7; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Microsoft JhengHei",Segoe UI,sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+    .wrap { max-width:920px; margin:0 auto; padding:24px 16px 48px; }
+    h1 { font-size:1.35rem; margin:0 0 8px; }
+    .sub { color:var(--muted); margin-bottom:20px; }
+    .card { background:var(--card); border:1px solid #2a3548; border-radius:12px; padding:16px; margin-bottom:16px; }
+    label { display:block; font-size:.9rem; color:var(--muted); margin-bottom:6px; }
+    input, textarea { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #334155; background:#0b1220; color:var(--text); font-size:.95rem; }
+    textarea { min-height:88px; resize:vertical; }
+    button { margin-top:10px; padding:10px 16px; border:none; border-radius:8px; background:var(--accent); color:#041018; font-weight:700; cursor:pointer; }
+    button.secondary { background:#334155; color:var(--text); margin-left:8px; }
+    .preview { margin-top:16px; min-height:180px; display:flex; align-items:center; justify-content:center; background:#0b1220; border:1px dashed #334155; border-radius:10px; overflow:hidden; }
+    .preview img { max-width:100%; max-height:320px; display:block; }
+    .status { margin-top:12px; padding:10px 12px; border-radius:8px; font-size:.92rem; }
+    .status.ok { background:rgba(61,214,140,.12); color:var(--ok); }
+    .status.bad { background:rgba(255,107,107,.12); color:var(--bad); }
+    code { background:#0b1220; padding:2px 6px; border-radius:4px; }
+    ul { margin:8px 0 0 18px; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin-top:12px; }
+    .thumb { background:#0b1220; border:1px solid #334155; border-radius:8px; padding:8px; text-align:center; cursor:pointer; }
+    .thumb img { width:100%; height:96px; object-fit:cover; border-radius:6px; }
+    .thumb span { display:block; font-size:.75rem; color:var(--muted); margin-top:6px; word-break:break-all; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>CrewPlay 場地圖片（Storage）檢查工具</h1>
+    <p class="sub">貼上試算表 <code>photo</code> 欄的網址，確認能否正常顯示。404 會回 XML，看起來像亂碼。</p>
+
+    <div class="card">
+      <label for="url">圖片網址</label>
+      <input id="url" type="url" placeholder="https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg" value="https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg">
+      <button type="button" id="checkBtn">檢查並預覽</button>
+      <button type="button" class="secondary" id="defaultBtn">填入預設可用網址</button>
+      <div id="status" class="status ok" style="display:none"></div>
+      <div class="preview" id="preview"><span style="color:#8b9cb3">預覽區</span></div>
+    </div>
+
+    <div class="card">
+      <strong>photo 欄規則（試算表要求）</strong>
+      <ul>
+        <li>必須是 <strong>JPG</strong>（<code>.jpg</code>），png / webp 不行</li>
+        <li>必須上傳到 GCS：<code>crewplay-arena-storage</code>（連字號 <strong>-</strong>）</li>
+        <li>路徑：<code>/photo/檔名.jpg</code>，建議 <code>r{試算表列號}.jpg</code></li>
+        <li>預設可用：<code id="defaultUrl">https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg</code></li>
+        <li>本機轉檔：雙擊專案內 <code>轉圖片上傳JPG.bat</code></li>
+      </ul>
+      <p style="color:#ff6b6b;margin:12px 0 0">勿用（404 亂碼）：<code>crewplay_arena_storage/photo_example.jpg</code></p>
+    </div>
+
+    <div class="card">
+      <strong>目前已確認存在的圖片（點一下帶入上方）</strong>
+      <div class="grid" id="known"></div>
+    </div>
+
+    <div class="card">
+      <strong>給 CrewPlay 管理員：上傳新圖到 GCS</strong>
+      <pre style="white-space:pre-wrap;background:#0b1220;padding:12px;border-radius:8px;color:#cbd5e1;font-size:.85rem">gsutil -h "Content-Type:image/jpeg" cp 你的圖.jpg gs://crewplay-arena-storage/photo/a2.jpg
+gsutil acl ch -u AllUsers:R gs://crewplay-arena-storage/photo/a2.jpg
+
+試算表 photo 欄填：
+https://storage.googleapis.com/crewplay-arena-storage/photo/a2.jpg</pre>
+    </div>
+  </div>
+  <script>
+    const DEFAULT = 'https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg';
+    const KNOWN = [
+      { url: DEFAULT, label: 'a1.jpg（建議預設）' },
+      { url: 'https://storage.googleapis.com/crewplay-arena-storage/photo/a0.png', label: 'a0.png（檔案很大）' }
+    ];
+    const urlEl = document.getElementById('url');
+    const statusEl = document.getElementById('status');
+    const previewEl = document.getElementById('preview');
+    const knownEl = document.getElementById('known');
+    document.getElementById('defaultUrl').textContent = DEFAULT;
+
+    KNOWN.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+      div.innerHTML = `<img src="${item.url}" alt=""><span>${item.label}</span>`;
+      div.onclick = () => { urlEl.value = item.url; check(); };
+      knownEl.appendChild(div);
+    });
+
+    async function check() {
+      const url = urlEl.value.trim();
+      statusEl.style.display = 'block';
+      previewEl.innerHTML = '<span style="color:#8b9cb3">載入中…</span>';
+      if (!url) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = '請輸入網址';
+        previewEl.innerHTML = '';
+        return;
+      }
+      try {
+        const resp = await fetch(url, { method: 'HEAD', mode: 'cors' });
+        const type = resp.headers.get('content-type') || '';
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        if (!type.startsWith('image/')) throw new Error('Content-Type 不是圖片：' + type);
+        statusEl.className = 'status ok';
+        statusEl.textContent = 'OK：' + resp.status + ' | ' + type + ' — 可填入試算表 photo 欄';
+        previewEl.innerHTML = `<img src="${url}" alt="preview">`;
+      } catch (e) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = '無法顯示：' + e.message + '。若 404，瀏覽器可能顯示 XML 亂碼。請改用已知可用網址或請管理員上傳。';
+        previewEl.innerHTML = '<span style="color:#ff6b6b">無法載入圖片</span>';
+      }
+    }
+
+    document.getElementById('checkBtn').onclick = check;
+    document.getElementById('defaultBtn').onclick = () => { urlEl.value = DEFAULT; check(); };
+    check();
+  </script>
+</body>
+</html>

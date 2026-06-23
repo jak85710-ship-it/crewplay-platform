@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1A3020">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- SEO -->
+  <title>鹿角蕨穿搭模擬器 | 打造你的植物藝術品</title>
+  <meta name="description" content="自由搭配稀有鹿角蕨植株、品牌板材與專屬配件，即時預覽你的植物藝術品組合，立即預購專屬設計。">
+
+  <!-- Prevent LINE browser from injecting -->
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Open Graph for LINE sharing -->
+  <meta property="og:title" content="鹿角蕨穿搭模擬器 | 打造你的植物藝術品">
+  <meta property="og:description" content="自由搭配稀有鹿角蕨 × 品牌板材 × 專屬配件，即時預覽，立即預購。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/ui/og-image.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- GA4 Placeholder — Replace G-XXXXXXXXXX with your actual Measurement ID -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  -->
+
+  <!-- Meta Pixel Placeholder — Replace YOUR_PIXEL_ID with actual ID -->
+  <!--
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+  </script>
+  -->
+</head>
+
+<body>
+
+  <!-- ========================================================
+       SITE HEADER
+       ======================================================== -->
+  <header class="site-header" role="banner">
+    <a href="#" class="logo" aria-label="鹿角蕨穿搭模擬器首頁">
+      <div class="logo-icon" aria-hidden="true">🌿</div>
+      <div class="logo-text">
+        <span class="logo-name">鹿角蕨藝術所</span>
+        <span class="logo-sub">Staghorn Art Studio</span>
+      </div>
+    </a>
+    <div class="header-actions">
+      <button class="btn-analytics" id="btn-open-analytics" onclick="openAnalyticsPanel()" aria-label="開啟數據分析儀表板" title="數據儀表板">
+        <span class="analytics-dot" aria-hidden="true"></span>
+        數據
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       STEP PROGRESS
+       ======================================================== -->
+  <nav class="progress-wrapper" aria-label="配置步驟進度">
+    <div class="progress-track" role="list">
+
+      <div class="step-node active" id="step-node-1" role="listitem">
+        <div class="step-circle" aria-hidden="true">1</div>
+        <span class="step-label">植株</span>
+      </div>
+
+      <div class="step-node" id="step-node-2" role="listitem">
+        <div class="step-circle" aria-hidden="true">2</div>
+        <span class="step-label">板材</span>
+      </div>
+
+      <div class="step-node" id="step-node-3" role="listitem">
+        <div class="step-circle" aria-hidden="true">3</div>
+        <span class="step-label">配件</span>
+      </div>
+
+      <div class="step-node" id="step-node-4" role="listitem">
+        <div class="step-circle" aria-hidden="true">✓</div>
+        <span class="step-label">預購</span>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ========================================================
+       MAIN LAYOUT
+       ======================================================== -->
+  <main class="main-layout" id="main-content">
+
+    <!-- ── PREVIEW SECTION (LEFT on desktop, TOP on mobile) ── -->
+    <section class="preview-section" aria-label="即時搭配預覽">
+
+      <div class="preview-wrapper">
+        <p class="preview-label" aria-live="polite">即時預覽</p>
+
+        <div class="preview-canvas" id="preview-canvas" role="img" aria-label="您的鹿角蕨搭配組合預覽">
+
+          <!-- Layer 1: Base Board (bottom) -->
+          <div class="layer" id="layer-base" aria-hidden="true">
+            <img src="" alt="板材" style="display:none;" draggable="false">
+          </div>
+
+          <!-- Layer 2: Plant Core (middle) -->
+          <div class="layer" id="layer-plant" aria-hidden="true">
+            <img src="" alt="植株" style="display:none;" draggable="false">
+          </div>
+
+          <!-- Layer 3: Accessory Part (top) -->
+          <div class="layer" id="layer-part" style="align-items:flex-end;justify-content:flex-end;padding:16%;" aria-hidden="true">
+            <span class="part-overlay" style="font-size:0;transition:all 0.3s ease;"></span>
+          </div>
+
+          <!-- Placeholder when nothing selected -->
+          <div class="preview-placeholder" id="preview-placeholder">
+            <div class="placeholder-icon">🌿</div>
+            <p class="placeholder-text">開始選擇，看見你的植物藝術品</p>
+          </div>
+
+        </div><!-- .preview-canvas -->
+      </div><!-- .preview-wrapper -->
+
+    </section>
+
+    <!-- ── CONFIGURATOR SECTION (RIGHT on desktop, BOTTOM on mobile) ── -->
+    <div class="config-section" role="region" aria-label="配置選項">
+
+      <!-- ============================================
+           STEP 1: SELECT PLANT
+           ============================================ -->
+      <section class="step-panel active" id="step-panel-1" role="tabpanel" aria-labelledby="step1-title">
+
+        <div class="step-header">
+          <p class="step-eyebrow">Step 01</p>
+          <h1 class="step-title" id="step1-title">選擇你的植株</h1>
+          <p class="step-desc">每一株都源自嚴選的稀有品種，健康有保證。選擇你最心動的那一棵。</p>
+        </div>
+
+        <div class="plant-toolbar" role="search">
+          <label class="search-box" for="plant-search">
+            <span class="search-icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              id="plant-search"
+              class="search-input"
+              placeholder="搜尋品種名稱、系列…"
+              autocomplete="off"
+              enterkeyhint="search"
+              aria-label="搜尋鹿角蕨品種"
+            >
+          </label>
+          <div class="category-tabs" id="plant-category-tabs" role="tablist" aria-label="鹿角蕨系列分類">
+            <!-- Rendered by app.js -->
+          </div>
+          <p class="plant-result-count" id="plant-result-count" aria-live="polite"></p>
+        </div>
+
+        <div class="cards-grid" id="plant-cards" role="radiogroup" aria-label="植株選項">
+          <!-- Rendered by app.js -->
+        </div>
+
+        <div class="nav-actions">
+          <button class="btn btn-primary" id="btn-step1-next" onclick="goToStep(2)" aria-label="進入板材選擇">
+            下一步：挑選板材 →
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ============================================
+           STEP 2: SELECT BASE BOARD
+           ============================================ -->
+      <section class="step-panel" id="step-panel-2" role="tabpanel" aria-labelledby="step2-title">
+
+        <div class="step-header">
+          <p class="step-eyebrow">Step 02</p>
+          <h2 class="step-title" id="step2-title">挑選板材</h2>
+          <p class="step-desc">板材決定整件作品的靈魂風格。每款均來自專業合作品牌，品質嚴選保證。</p>
+        </div>
+
+        <div class="cards-grid" id="base-cards" role="radiogroup" aria-label="板材選項">
+          <!-- Rendered by app.js -->
+        </div>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary" id="btn-step2-back" onclick="goToStep(1)" aria-label="返回植株選擇">← 返回</button>
+          <button class="btn btn-primary" id="btn-step2-next" onclick="goToStep(3)" aria-label="進入配件選擇">
+            下一步：點綴配件 →
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ============================================
+           STEP 3: SELECT ACCESSORY
+           ============================================ -->
+      <section class="step-panel" id="step-panel-3" role="tabpanel" aria-labelledby="step3-title">
+
+        <div class="step-header">
+          <p class="step-eyebrow">Step 03</p>
+          <h2 class="step-title" id="step3-title">點綴專屬配件</h2>
+          <p class="step-desc">最後一哩路。選擇一款配件，為你的植物藝術品畫龍點睛。</p>
+        </div>
+
+        <div class="parts-grid" id="part-cards" role="radiogroup" aria-label="配件選項">
+          <!-- Rendered by app.js -->
+        </div>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary" id="btn-step3-back" onclick="goToStep(2)" aria-label="返回板材選擇">← 返回</button>
+          <button class="btn btn-primary" id="btn-step3-next" onclick="goToStep(4)" aria-label="進入預購確認">
+            完成搭配 →
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ============================================
+           STEP 4: PRE-ORDER CTA
+           ============================================ -->
+      <section class="step-panel" id="step-panel-4" role="tabpanel" aria-labelledby="step4-title">
+
+        <div class="step-header">
+          <p class="step-eyebrow">Step 04</p>
+          <h2 class="step-title" id="step4-title">你的搭配完成了 🎉</h2>
+          <p class="step-desc">你的專屬植物藝術品已準備就緒！立即預購，我們會在第一時間與你確認。</p>
+        </div>
+
+        <!-- Final preview summary -->
+        <div class="order-summary" style="margin-bottom:24px;">
+          <div class="order-row">
+            <span class="order-row-label">🌿 植株</span>
+            <span class="order-row-value" id="final-plant">—</span>
+          </div>
+          <div class="order-row">
+            <span class="order-row-label">🪵 板材</span>
+            <span class="order-row-value" id="final-base">—</span>
+          </div>
+          <div class="order-row">
+            <span class="order-row-label">✨ 配件</span>
+            <span class="order-row-value" id="final-part">—</span>
+          </div>
+          <hr class="order-divider">
+          <div class="order-total-row">
+            <span class="order-total-label">搭配總價</span>
+            <span class="order-total-price" id="final-total">NT$ 0</span>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary" id="btn-step4-back" onclick="goToStep(3)" aria-label="返回配件選擇">← 修改配件</button>
+          <button class="btn btn-cta" id="btn-preorder" onclick="openPreorderAndFillSummary()" aria-label="完成搭配，立即預購">
+            完成搭配，立即預購 🌿
+          </button>
+        </div>
+
+      </section>
+
+    </div><!-- .config-section -->
+
+  </main>
+
+  <!-- ========================================================
+       STICKY PRICE BAR
+       ======================================================== -->
+  <div class="price-bar" role="status" aria-live="polite" aria-label="目前搭配總價">
+    <div class="price-breakdown">
+      <div class="price-item">
+        <span class="price-item-label">植株</span>
+        <span class="price-item-value" id="price-plant">NT$ 0</span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-label">板材</span>
+        <span class="price-item-value" id="price-base">NT$ 0</span>
+      </div>
+      <div class="price-item">
+        <span class="price-item-label">配件</span>
+        <span class="price-item-value" id="price-part">NT$ 0</span>
+      </div>
+    </div>
+    <div class="price-total-block">
+      <div class="price-total-label">合計</div>
+      <div class="price-total-value" id="price-total">NT$ 0</div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PREORDER MODAL (BOTTOM SHEET)
+       ======================================================== -->
+  <div class="modal-overlay" id="preorder-overlay" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+
+    <div class="bottom-sheet" id="preorder-sheet">
+      <div class="sheet-handle" aria-hidden="true"></div>
+
+      <div id="modal-form-view">
+        <h3 class="sheet-title" id="sheet-title">確認你的搭配</h3>
+        <p class="sheet-subtitle">選擇預購方式，讓你的植物藝術品盡快到家。</p>
+
+        <!-- Order Summary -->
+        <div class="order-summary" role="summary">
+          <div class="order-row">
+            <span class="order-row-label">🌿 植株</span>
+            <span class="order-row-value" id="summary-plant">—</span>
+          </div>
+          <div class="order-row">
+            <span class="order-row-label">🪵 板材</span>
+            <span class="order-row-value" id="summary-base">—</span>
+          </div>
+          <div class="order-row">
+            <span class="order-row-label">✨ 配件</span>
+            <span class="order-row-value" id="summary-part">—</span>
+          </div>
+          <hr class="order-divider">
+          <div class="order-total-row">
+            <span class="order-total-label">搭配總價</span>
+            <span class="order-total-price" id="summary-total">NT$ 0</span>
+          </div>
+        </div>
+
+        <!-- Option A: LINE -->
+        <button class="btn-line" id="btn-line-order" onclick="handleLineRedirect()" aria-label="透過 LINE 官方帳號預購">
+          <span class="line-icon" aria-hidden="true">💬</span>
+          LINE 確認訂單 (@313lykia)
+        </button>
+
+        <!-- Divider -->
+        <div class="cta-divider" role="separator">
+          <span class="cta-divider-text">或留下資料，由我們主動聯繫</span>
+        </div>
+
+        <!-- Option B: Lead Form -->
+        <form class="lead-form" id="lead-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="lead-name">您的姓名</label>
+            <input
+              type="text"
+              id="lead-name"
+              class="form-input"
+              placeholder="例：王小明"
+              required
+              autocomplete="name"
+              enterkeyhint="next"
+            >
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="lead-contact">聯絡方式（手機或 Email）</label>
+            <input
+              type="text"
+              id="lead-contact"
+              class="form-input"
+              placeholder="0912-345-678 或 example@email.com"
+              required
+              autocomplete="tel"
+              inputmode="tel"
+              enterkeyhint="done"
+            >
+          </div>
+          <button type="submit" class="btn btn-submit" id="btn-lead-submit">
+            送出資料，優先預購通知 →
+          </button>
+        </form>
+
+        <button class="btn-close-sheet" onclick="closePreorderModal()" aria-label="關閉預購視窗">
+          稍後再說
+        </button>
+      </div><!-- #modal-form-view -->
+
+      <!-- Success State -->
+      <div class="success-state" id="modal-success" role="alert">
+        <div class="success-icon" aria-hidden="true">🎉</div>
+        <h3 class="success-title">成功送出！</h3>
+        <p class="success-desc">
+          我們已收到你的預購資訊。<br>
+          將在 24 小時內以 LINE 或電話與你確認訂單。<br><br>
+          <strong>感謝你選擇鹿角蕨藝術所 🌿</strong>
+        </p>
+        <button class="btn btn-primary" style="margin-top:24px;width:100%;border-radius:999px;padding:14px;" onclick="closePreorderModal()">
+          繼續探索
+        </button>
+      </div>
+
+    </div><!-- .bottom-sheet -->
+  </div><!-- .modal-overlay -->
+
+  <!-- ========================================================
+       ANALYTICS PANEL (SLIDE DRAWER)
+       ======================================================== -->
+  <aside class="analytics-panel" id="analytics-panel" role="complementary" aria-label="數據分析儀表板">
+
+    <div class="analytics-header">
+      <span class="analytics-title">📊 即時數據儀表板</span>
+      <button class="btn-close-analytics" onclick="closeAnalyticsPanel()" aria-label="關閉儀表板">✕</button>
+    </div>
+
+    <div class="analytics-body">
+
+      <!-- KPI Cards -->
+      <div>
+        <p class="metric-section-title">核心指標</p>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-value" id="kpi-visitors">0</div>
+            <div class="kpi-label">訪客數</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value" id="kpi-preorders">0</div>
+            <div class="kpi-label">預購點擊</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value" id="kpi-conversion">0%</div>
+            <div class="kpi-label">轉換率</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value" id="kpi-leads">0</div>
+            <div class="kpi-label">Lead 數</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value" id="kpi-line">0</div>
+            <div class="kpi-label">LINE 點擊</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value" style="font-size:18px;color:#7EBC8A">MVP</div>
+            <div class="kpi-label">模擬追蹤</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conversion Funnel -->
+      <div>
+        <p class="metric-section-title">轉換漏斗</p>
+        <div class="funnel-chart">
+          <div class="funnel-step">
+            <span class="funnel-label">選植株</span>
+            <div class="funnel-bar-track"><div class="funnel-bar-fill" id="funnel-bar-0"></div></div>
+            <span class="funnel-pct" id="funnel-pct-0">—</span>
+          </div>
+          <div class="funnel-step">
+            <span class="funnel-label">選板材</span>
+            <div class="funnel-bar-track"><div class="funnel-bar-fill" id="funnel-bar-1"></div></div>
+            <span class="funnel-pct" id="funnel-pct-1">—</span>
+          </div>
+          <div class="funnel-step">
+            <span class="funnel-label">選配件</span>
+            <div class="funnel-bar-track"><div class="funnel-bar-fill" id="funnel-bar-2"></div></div>
+            <span class="funnel-pct" id="funnel-pct-2">—</span>
+          </div>
+          <div class="funnel-step">
+            <span class="funnel-label">點擊預購</span>
+            <div class="funnel-bar-track"><div class="funnel-bar-fill" id="funnel-bar-3"></div></div>
+            <span class="funnel-pct" id="funnel-pct-3">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Board Click Heatmap -->
+      <div>
+        <p class="metric-section-title">板材點擊熱區</p>
+        <div class="board-clicks">
+          <div class="board-click-row">
+            <span class="board-click-label">壓克力板</span>
+            <div class="board-click-bar-track"><div class="board-click-bar-fill" id="board-bar-acrylic"></div></div>
+            <span class="board-click-count" id="board-count-acrylic">0</span>
+          </div>
+          <div class="board-click-row">
+            <span class="board-click-label">3D 木板</span>
+            <div class="board-click-bar-track"><div class="board-click-bar-fill" id="board-bar-wood_3d"></div></div>
+            <span class="board-click-count" id="board-count-wood_3d">0</span>
+          </div>
+          <div class="board-click-row">
+            <span class="board-click-label">金屬網板</span>
+            <div class="board-click-bar-track"><div class="board-click-bar-fill" id="board-bar-metal_grid"></div></div>
+            <span class="board-click-count" id="board-count-metal_grid">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leads Log -->
+      <div>
+        <p class="metric-section-title">Lead 紀錄</p>
+        <div class="leads-log" id="leads-log">
+          <div class="leads-empty">尚無 Lead 資料</div>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <div style="background:rgba(184,137,42,0.1);border:1px solid rgba(184,137,42,0.25);border-radius:8px;padding:12px;margin-top:8px;">
+        <p style="font-size:11px;color:rgba(255,255,255,0.55);line-height:1.7;">
+          ⚡ 目前為 MVP 模擬追蹤模式，數據存於本機。<br>
+          取得 GA4 Measurement ID 後，取消 index.html 中的 GA4 程式碼註解即可啟用正式追蹤。
+        </p>
+      </div>
+
+    </div><!-- .analytics-body -->
+
+  </aside>
+
+  <!-- ========================================================
+       SCRIPTS
+       ======================================================== -->
+  <script src="app.js"></script>
+  <script>
+    // Fill step 4 summary card (called on entering step 4)
+    function fillStep4Summary() {
+      const p  = getPlantById(state.selections.plant);
+      const b  = PRODUCTS.bases.find(x  => x.id === state.selections.base);
+      const pt = PRODUCTS.parts.find(x  => x.id === state.selections.part);
+      const prices = getPrice();
+      const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+      set('final-plant', p?.name  || '—');
+      set('final-base',  b?.name  || '—');
+      set('final-part',  pt?.name || '無配件');
+      set('final-total', formatPrice(prices.total));
+    }
+
+    // Patch goToStep to auto-fill step 4 summary
+    const _origGoToStep = goToStep;
+    goToStep = function(step) {
+      _origGoToStep(step);
+      if (step === 4) fillStep4Summary();
+    };
+
+    // Open modal and fill modal summary
+    function openPreorderAndFillSummary() {
+      const p  = getPlantById(state.selections.plant);
+      const b  = PRODUCTS.bases.find(x  => x.id === state.selections.base);
+      const pt = PRODUCTS.parts.find(x  => x.id === state.selections.part);
+      const prices = getPrice();
+      const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+      set('summary-plant', p?.name  || '—');
+      set('summary-base',  b?.name  || '—');
+      set('summary-part',  pt?.name || '無配件');
+      set('summary-total', formatPrice(prices.total));
+      openPreorderModal();
+    }
+  </script>
+
+</body>
+</html>

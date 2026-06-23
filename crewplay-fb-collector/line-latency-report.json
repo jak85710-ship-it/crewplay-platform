@@ -1,0 +1,78 @@
+﻿{
+    "avgSyncMs":  56,
+    "totalRows":  280,
+    "syncRuns":  [
+                     {
+                         "run":  1,
+                         "ms":  104,
+                         "status":  0,
+                         "ok":  false,
+                         "message":  "no healthy upstream"
+                     },
+                     {
+                         "run":  2,
+                         "ms":  21,
+                         "status":  0,
+                         "ok":  false,
+                         "message":  "no healthy upstream"
+                     },
+                     {
+                         "run":  3,
+                         "ms":  44,
+                         "status":  0,
+                         "ok":  false,
+                         "message":  "no healthy upstream"
+                     }
+                 ],
+    "at":  "2026-06-20T15:06:21",
+    "overCarousel":  [
+                         {
+                             "sport":  "羽球",
+                             "lineReady":  214,
+                             "overBy":  204
+                         },
+                         {
+                             "sport":  "匹克球",
+                             "lineReady":  35,
+                             "overBy":  25
+                         },
+                         {
+                             "sport":  "排球",
+                             "lineReady":  26,
+                             "overBy":  16
+                         }
+                     ],
+    "avgIntroLen":  71,
+    "dupArenaGroups":  25,
+    "sportStats":  {
+                       "籃球":  {
+                                  "lineReady":  1,
+                                  "total":  1
+                              },
+                       "玉米洞":  {
+                                   "lineReady":  1,
+                                   "total":  1
+                               },
+                       "匹克球":  {
+                                   "lineReady":  35,
+                                   "total":  35
+                               },
+                       "棒球":  {
+                                  "lineReady":  1,
+                                  "total":  1
+                              },
+                       "排球":  {
+                                  "lineReady":  26,
+                                  "total":  26
+                              },
+                       "羽球":  {
+                                  "lineReady":  214,
+                                  "total":  214
+                              },
+                       "桌球":  {
+                                  "lineReady":  2,
+                                  "total":  2
+                              }
+                   },
+    "lineCarouselMax":  10
+}

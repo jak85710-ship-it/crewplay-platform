@@ -1,0 +1,20 @@
+[
+  {
+    "id": "4d4c71f2-895b-4707-bda3-84690af3aaf8",
+    "submitted_at": "2026-06-20T13:25:33.903Z",
+    "sport": "羽球",
+    "location": "高雄",
+    "weekday": "星期二",
+    "time_slots": [
+      "01:00-02:00",
+      "04:00-05:00"
+    ],
+    "fee": "500",
+    "skill_level": "第一級",
+    "team_name": "雞雞",
+    "equipment": "不用",
+    "balls": "團主提供",
+    "phone": "0988555666",
+    "email": "jak85710@gmail.com"
+  }
+]

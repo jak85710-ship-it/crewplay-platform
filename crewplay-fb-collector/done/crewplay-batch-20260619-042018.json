@@ -1,0 +1,37 @@
+{
+  "exportedAt": "2026-06-19T04:20:18.033Z",
+  "columns": [
+    "sport",
+    "arena_name",
+    "introduce",
+    "photo",
+    "assign_url",
+    "region",
+    "location"
+  ],
+  "rows": [
+    {
+      "sport": "棒球",
+      "arena_name": "個人分兩隊",
+      "venue": "【旗津中洲壘球場】",
+      "team_name": "個人分兩隊",
+      "introduce": "地點：【旗津中洲壘球場】\n時間：(5/17 週三)12點\n程度：》:\n用球：團主決定\n費用：》: 免費",
+      "photo": "https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg",
+      "assign_url": "https://www.facebook.com/groups/2530388370452350/",
+      "region": "",
+      "location": "",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/2530388370452350/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "團名：個人分兩隊\n【旗津中洲壘球場】\n預計找22至24個人分兩隊打比賽(目前12個人\n到額滿為止)\n《參加費用》: 免費\n《參加條件》:\n有個人球具(建議有釘鞋)比較安全，若沒有手套或球棒可事先說一聲，可以無償提供借用\n《參加方式》\nLINE社群搜尋: 【 南高雄棒壘球大聯盟】\n加入後請至投票投選欲守備的位置即可\n《補充說明》\n另外，我們每週三晚上7點到9點\n在興仁公園棒球練投場，kgb+t座自主練習\n周三晚上有空的球友們也歡迎一起來動一動",
+        "fb_photo_url": "",
+        "contact": "",
+        "raw_text": "5/17(日)08~12點\n【旗津中洲壘球場】\n預計找22至24個人分兩隊打比賽(目前12個人\n到額滿為止)\n《參加費用》: 免費\n《參加條件》:\n有個人球具(建議有釘鞋)比較安全，若沒有手套或球棒可事先說一聲，可以無償提供借用\n《參加方式》\nLINE社群搜尋: 【 南高雄棒壘球大聯盟】\n加入後請至投票投選欲守備的位置即可\n《補充說明》\n另外，我們每週三晚上7點到9點\n在興仁公園棒球練投場，kgb+t座自主練習\n周三晚上有空的球友們也歡迎一起來動一動",
+        "region": "",
+        "team_name": "個人分兩隊",
+        "venue": "【旗津中洲壘球場】"
+      }
+    }
+  ]
+}

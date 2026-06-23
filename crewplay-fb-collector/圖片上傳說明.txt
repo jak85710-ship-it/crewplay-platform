@@ -1,0 +1,67 @@
+CrewPlay 試算表 photo 欄 — 圖片必須是 JPG 並上傳到 GCS
+====================================================
+
+【為什麼】
+  LINE 卡片只吃「公開可讀的 JPG 網址」。
+  FB 圖片網址會過期；png / webp / 錯誤 bucket 會 404（看起來像亂碼）。
+
+【正確格式】
+  https://storage.googleapis.com/crewplay-arena-storage/photo/檔名.jpg
+
+  bucket 是 crewplay-arena-storage（連字號 -）
+  副檔名必須 .jpg
+
+【抓取時 photo 欄（外掛 v1.12）】
+  不再寫入 FB 長網址。複製 / JSON / 同步時固定為：
+  https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg
+  FB 原圖只存在 inbox JSON 的 archive.fb_photo_url（供轉檔用）
+
+【建議檔名】
+  r{試算表列號}.jpg
+  例：第 72 列 → r72.jpg
+  網址：https://storage.googleapis.com/crewplay-arena-storage/photo/r72.jpg
+
+
+一、本機轉 JPG（你有圖檔）
+--------------------------
+1. 打開試算表，看要補圖的是第幾列（例如 72）
+2. 把圖片放到資料夾：
+   crewplay-fb-collector\storage\photos-inbox\
+   檔名：72.jpg 或 72.png（列號對應試算表列號）
+3. 雙擊「轉圖片上傳JPG.bat」
+4. 選 N 開始轉檔 → JPG 會出現在 storage\photos-jpg\r72.jpg
+
+
+二、上傳到 Google Cloud Storage
+------------------------------
+（需管理員或有 gsutil 權限的人）
+
+  gsutil -h "Content-Type:image/jpeg" cp storage\photos-jpg\r72.jpg gs://crewplay-arena-storage/photo/r72.jpg
+  gsutil acl ch -u AllUsers:R gs://crewplay-arena-storage/photo/r72.jpg
+
+批次上傳整個資料夾：
+
+  gsutil -m -h "Content-Type:image/jpeg" cp storage\photos-jpg\*.jpg gs://crewplay-arena-storage/photo/
+  gsutil -m acl ch -u AllUsers:R gs://crewplay-arena-storage/photo/r*.jpg
+
+
+三、寫回試算表
+--------------
+上傳完成後雙擊「寫回圖片網址.bat」
+→ 會依 photos-jpg 裡的 r{列號}.jpg 自動填 photo 欄
+
+或手動貼上網址到 photo 欄。
+
+
+四、從 FB 網址自動下載（僅少數列）
+----------------------------------
+若 photo 欄已是 FB 圖片網址，可直接跑轉檔（不需放 inbox）：
+  powershell -File convert-upload-photos.ps1
+
+FB 網址有時會擋下載；失敗時請改用手動存圖 → 放 inbox。
+
+
+五、完成後
+----------
+  強制同步LINE.bat   → 同步到 LINE
+  開啟圖片工具.bat   → 檢查網址能否預覽

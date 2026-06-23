@@ -1,0 +1,49 @@
+CrewPlay：為什麼 Google Cloud 按了沒畫面？
+========================================
+
+【重點】Google Cloud Scheduler 按「立即執行」本來就不會跳出任何畫面。
+成功與否只能到 Google Cloud Console -> Cloud Scheduler -> 該工作 ->「記錄」查看。
+這是正常行為，不是壞掉。
+
+【你不需要 Google Cloud 也能同步】
+請改用本機這兩支（在 crewplay-fb-collector 資料夾）：
+
+  1. 強制同步LINE.bat     ← 等同 Cloud 手動執行，會直接顯示結果
+  2. LINE同步診斷.bat     ← 讀試算表 + 同步 + 告訴你去哪裡看
+
+資料夾路徑：
+C:\Users\USER\OneDrive\桌面\.gemini\antigravity\scratch\staghorn-configurator\crewplay-fb-collector\
+
+
+【同步成功後，要去哪裡看？】
+不是在 Google Cloud 看，是在 LINE App：
+
+  1. 打開 LINE
+  2. 進入 CrewPlay 官方帳號
+  3. 找「場地列表 / 我要預約 / 搜尋球館」
+  4. 搜尋球館名稱測試
+
+sheet_sync 不會發推播到手機，也不會跳出同步畫面。
+
+
+【若 LINE 還是看不到場地】
+最常見原因（即使試算表有資料）：
+
+  1. photo 欄空白 → LINE 卡片常不顯示
+  2. 同一球館多列 → LINE 只顯示一間（去重）
+  3. introduce 格式不對 → 執行「排查試算表.bat」
+
+範例 photo（可先貼上測試）：
+https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg
+
+
+【每次更新資料的正確順序】
+  FB 抓取 → inbox 放 JSON → 執行同步.bat → 強制同步LINE.bat
+  或一次做完：完整同步.bat
+
+
+【剛才 API 測試結果（參考）】
+POST https://api.crewplay.tw/arena/sheet_sync
+回傳：成功同步 110 筆
+代表試算表 -> 後台 這段是通的。
+若 LINE 沒畫面，問題在「LINE 顯示條件」或「你去錯地方看」。

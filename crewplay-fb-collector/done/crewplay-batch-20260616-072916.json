@@ -1,0 +1,278 @@
+{
+  "exportedAt": "2026-06-16T07:29:16.330Z",
+  "columns": [
+    "sport",
+    "arena_name",
+    "introduce",
+    "photo",
+    "assign_url",
+    "region",
+    "location"
+  ],
+  "rows": [
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：每週二 9:30～11:30時\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n費用：190/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27606532478940461/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27606532478940461/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "",
+        "contact": "",
+        "raw_text": "時間：每週二 9:30～11:30\n地點：星勝羽球館\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n費用：190元/人",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：17:00～19:00時\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n費用：210/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498003113126732/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498003113126732/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "日期：每週三\n歡迎大家一起來同樂！",
+        "contact": "",
+        "raw_text": "日期：每週三\n時間：17:00～19:00\n地點：星勝羽球館\n程度：新手（懂基本規則、打得到球）～中階\n用球：K5\n人數：7～8人/場\n費用：210元/人\n歡迎大家一起來同樂！",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：20:00～22:00時\n程度：新手（懂基本規則、打得到球）～中階\n用球：YONEX TR\n費用：230/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498024876457889/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27498024876457889/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "日期：每週五\n甲組教練陪打\n歡迎大家一起來同樂！",
+        "contact": "",
+        "raw_text": "日期：每週五\n時間：20:00～22:00\n地點：星勝羽球館\n程度：新手（懂基本規則、打得到球）～中階\n用球：YONEX TR\n人數：7～8人/場\n費用：230元/人\n甲組教練陪打\n歡迎大家一起來同樂！",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "6月17號20號21號早上7點半到9點半信義羽毛球館-含球球隊",
+      "venue": "6月17號20號21號早上7點半到9點半信義羽毛球館",
+      "team_name": "含球球隊",
+      "introduce": "地點：6月17號20號21號早上7點半到9點半信義羽毛球館\n時間：6月17號20號21號早上7點半到9點半信義羽毛球館第二場地第三場地費用200含球球隊是友善團家儀 ID 0955-887-497\n用球：團主決定\n費用：200含球球隊是友善團家儀 ID 0955-887-497/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802",
+      "region": "臺北市",
+      "location": "大東羽球協會徵臨打時間6月17號20號21號早上7點半到9點半信義羽毛球館第二場地第三場地費用200含球球隊是友善團家儀ID0955-887-497",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "團名：含球球隊\n大東羽球協會徵臨打時間6月17號20號21號早上7點半到9點半信義羽毛球館第二場地第三場地費用200含球球隊是友善團家儀 ID 0955-887-497",
+        "contact": "電話: 0955-887-497",
+        "raw_text": "大東羽球協會徵臨打時間6月17號20號21號早上7點半到9點半信義羽毛球館第二場地第三場地費用200含球球隊是友善團家儀 ID 0955-887-497",
+        "region": "臺北市",
+        "team_name": "含球球隊",
+        "venue": "6月17號20號21號早上7點半到9點半信義羽毛球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：1600-1800\n程度：男6up、女4up\n用球：塔瑞尼斯比賽球\n費用：250／人/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27570002882593421/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27570002882593421/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "週二固定流汗團\n想流汗、想運動、想認識球友嗎？\n無壓力、暢快淋漓的打球\n日期：6/16\n想運動流汗的人\n想培養球感、增加實戰經驗的人\n輕鬆友善氣氛\n男女不拘，一起開心打球\n不管你是想培養運動習慣，還是想來場熱血對戰，歡迎加入我們！",
+        "contact": "",
+        "raw_text": "週二固定流汗團\n想流汗、想運動、想認識球友嗎？\n無壓力、暢快淋漓的打球\n程度：男6up、女4up\n日期：6/16\n時間：1600-1800\n地點：星勝羽球館\n場地：2號場\n費用：250元／人\n用球：塔瑞尼斯比賽球\n招募對象\n初中階球友\n想運動流汗的人\n想培養球感、增加實戰經驗的人\n活動特色\n兩小時暢打\n輕鬆友善氣氛\n單人報名也歡迎\n男女不拘，一起開心打球\n不管你是想培養運動習慣，還是想來場熱血對戰，歡迎加入我們！",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "世大羽球館-藥聯羽球隊",
+      "venue": "世大羽球館",
+      "team_name": "藥聯羽球隊",
+      "introduce": "地點：世大羽球館\n時間：7:30-10:30時\n程度：1、2號場初中階3、4屬於初階歡樂組\n用球：R4\n費用：270（櫃檯繳120登記姓名、球隊幹部會在收150球費）/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27582060124721030/",
+      "region": "",
+      "location": "場地：1-4號場",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27582060124721030/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "團名：藥聯羽球隊\n藥聯羽球隊6/14禮拜日早上誠徵臨打\n每天早上7:30-10:30（3H)\n設施：有飲水機、可盥洗、好停車",
+        "contact": "",
+        "raw_text": "藥聯羽球隊6/14禮拜日早上誠徵臨打\n世大羽球館\n每天早上7:30-10:30（3H)\n場地：1-4號場\n球種：R4\n費用：270元（櫃檯繳120元登記姓名、球隊幹部會在收150元球費）\n設施：有飲水機、可盥洗、好停車\n程度：1、2號場初中階3、4屬於初階歡樂組",
+        "region": "",
+        "team_name": "藥聯羽球隊",
+        "venue": "世大羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "世大羽球館-炸蝦羽球隊",
+      "venue": "世大羽球館",
+      "team_name": "炸蝦羽球隊",
+      "introduce": "地點：世大羽球館\n時間：晚上 7:30 - 10:00時\n程度：初階\n用球：團主決定\n費用：280/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27544181258508917/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市大連路20巷95號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27544181258508917/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "團名：炸蝦羽球隊\n日期 : 6月13日（週六）固定\n地點 : 世大羽球館（冷氣開放）\n時間 : 晚上 7:30 - 10:00\n費用 : 280\n程度 : 初階\n免費球拍使用\n首次參與贈送寶礦力\n2場，每週五跟六皆有開團",
+        "contact": "私訊；留言報名",
+        "raw_text": "炸蝦羽球隊\n日期 : 6月13日（週六）固定\n地點 : 世大羽球館（冷氣開放）\n時間 : 晚上 7:30 - 10:00\n費用 : 280\n程度 : 初階\n免費球拍使用\n首次參與贈送寶礦力\n2場，每週五跟六皆有開團\n可提前詢問\n報名可留言或私訊+1\n謝謝 ：)",
+        "region": "",
+        "team_name": "炸蝦羽球隊",
+        "venue": "世大羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "屏東信義羽球場-不收新手，",
+      "venue": "屏東信義羽球場",
+      "team_name": "不收新手，",
+      "introduce": "地點：屏東信義羽球場\n時間：早上7:00 - 10:00 (3小時）時\n程度：#不收新手，#球種yy50\n用球：yy50\n費用：300/人 只收4個",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27582616491332060/",
+      "region": "臺北市",
+      "location": "900屏東縣屏東市光榮里公園西路18號2樓",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/27582616491332060/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "團名：不收新手，\n哈哈哈羽球隊徵人中！\n2026/06/14（日）\n時間 早上7：00 - 10：00 (3小時）\n地點 屏東信義羽球場 (黃昏市場樓上)\n收費 300/人 只收4個\n程度 #不收新手，#球種yy50",
+        "contact": "",
+        "raw_text": "哈哈哈羽球隊徵人中！\n2026/06/14（日）\n時間 早上7：00 - 10：00 (3小時）\n地點 屏東信義羽球場 (黃昏市場樓上)\n收費 300/人 只收4個\n程度 #不收新手，#球種yy50\n請找我報名 趙秉孝 @精選",
+        "region": "臺北市",
+        "team_name": "不收新手，",
+        "venue": "屏東信義羽球場"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "星勝羽球館",
+      "venue": "星勝羽球館",
+      "team_name": "",
+      "introduce": "地點：星勝羽球館\n時間：19:00-22:00時\n用球：團主決定\n費用：260/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/9809315455755437/",
+      "region": "屏東縣",
+      "location": "900屏東縣屏東市瑞光里瑞華街33號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/9809315455755437/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "Facebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\n保持發言的成員\n每週（六）19:00-22:00\n新的場地，全新的體驗\n週六晚上歡迎一起來\n保持發言的成員\n查看更多留言\nCK Li已回覆\n請問9/7還可以+2嗎？\nCK Li已回覆\n以運動酷小編的身分留言\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook",
+        "contact": "留言報名",
+        "raw_text": "Facebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nCK Li\n保持發言的成員\nd\nS\np\ns\nr\no\nt\nn\no\ne\n年\n1\n2\nu\nm\nh\n0\nu\nl\n7\nm\n9\n0\n3\n9\n3\n8\n6\nf\n5\nc\nh\na\n2\n1\n2\ng\n1\n5\nf\ng\n月\n7\n3\n2\n8\nu\nu\n4\n8\n6\n7\nl\nc\n8\nh\nh\nh\n日\n6\n每週（六）19:00-22:00\n星勝羽球館\n費用：260/人\n新的場地，全新的體驗\n週六晚上歡迎一起來\nCK Li\n· 追蹤\n保持發言的成員\nd\nS\np\ns\nr\no\nt\nn\no\ne\n年\n1\n2\nu\nm\nh\n0\nu\nl\n7\nm\n9\n0\n3\n9\n3\n8\n6\nf\n5\nc\nh\na\n2\n1\n2\ng\n1\n5\nf\ng\n月\n7\n3\n2\n8\nu\nu\n4\n8\n6\n7\nl\nc\n8\nh\nh\nh\n日\n6\n所有心情：\n24\n24\n查看更多留言\n林庭興\n11/22 還可以+1嗎\n回覆\nCK Li已回覆\n1則回覆\n邱博揚\n請問9/7還可以+2嗎？\n回覆\nCK Li已回覆\n3則回覆\n以運動酷小編的身分留言\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook\nFacebook",
+        "region": "",
+        "team_name": "",
+        "venue": "星勝羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "屏東 世大羽球館",
+      "venue": "屏東 世大羽球館",
+      "team_name": "",
+      "introduce": "地點：屏東 世大羽球館\n時間：晚上1900-2200 三小時\n程度：：\n用球：RSL4號 或 GOSEN 80 用球\n費用：男生270、女生250/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/9602682943085357/",
+      "region": "",
+      "location": "用球：RSL4號或GOSEN80用球",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/9602682943085357/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "8-10級，中級以上\n日期：06/19 週五晚上\n程度 8-10級，中級以上\n4.約收15人上下",
+        "contact": "私訊；留言報名",
+        "raw_text": "程度：\n8-10級，中級以上\n日期：06/19 週五晚上\n時間：晚上1900-2200 三小時\n地點：屏東 世大羽球館\n場地：四、五號 兩面場地\n用球：RSL4號 或 GOSEN 80 用球\n費用： 男生270元、女生250元\n備註：\n1.請留言或私訊+1 報名\n2.\n程度 8-10級，中級以上\n3.謝絕初學或新手，程度未能符合者，真心建議請勿報名！感謝…\n4.約收15人上下",
+        "region": "",
+        "team_name": "",
+        "venue": "屏東 世大羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "屏東信義羽球館",
+      "venue": "屏東信義羽球館",
+      "team_name": "",
+      "introduce": "地點：屏東信義羽球館\n時間：(9/30 週一)12點\n程度：初階以上（如圖）\n用球：團主決定\n費用：用：男200、女180/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/26569413485985704/",
+      "region": "臺北市",
+      "location": "900屏東縣屏東市光榮里公園西路18號2樓",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/26569413485985704/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "屏東市徵臨打\n週一、四、五\n早上9.30-12點\n屏東信義羽球館\n臨打費用：男200元、女180元\n新手友善、高手過癮\n歡迎大家一起來",
+        "contact": "",
+        "raw_text": "屏東市徵臨打\n週一、四、五\n早上9.30-12點\n屏東信義羽球館\n臨打費用：男200元、女180元\n程度：初階以上（如圖）\n新手友善、高手過癮\n歡迎大家一起來",
+        "region": "臺北市",
+        "team_name": "",
+        "venue": "屏東信義羽球館"
+      }
+    },
+    {
+      "sport": "羽球",
+      "arena_name": "大樹體育館",
+      "venue": "大樹體育館",
+      "team_name": "",
+      "introduce": "地點：大樹體育館\n時間：每週五18:00～20:00時\n程度：初～中\n用球：翎美羽球或同等羽球\n費用：約：150/人",
+      "photo": "",
+      "assign_url": "https://www.facebook.com/groups/490032737683802/posts/24934713706122365/",
+      "region": "",
+      "location": "840台灣大樹區九曲里九大路639號",
+      "archive": {
+        "assign_url": "https://www.facebook.com/groups/490032737683802/posts/24934713706122365/",
+        "official_url": "",
+        "other_urls": "",
+        "extra_notes": "分攤費用約：150",
+        "contact": "留言報名",
+        "raw_text": "時間：每週五18:00～20：00\n地點：大樹體育館（舊鐵橋斜斜斜對面）\n分攤費用約：150\n程度：初～中\n用球：翎美羽球或同等羽球\n有興趣請留言報名或詢問社群連結",
+        "region": "",
+        "team_name": "",
+        "venue": "大樹體育館"
+      }
+    }
+  ]
+}

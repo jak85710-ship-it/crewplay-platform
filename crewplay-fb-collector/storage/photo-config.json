@@ -1,0 +1,20 @@
+{
+  "bucket": "crewplay-arena-storage",
+  "baseUrl": "https://storage.googleapis.com/crewplay-arena-storage",
+  "defaultPhoto": "https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg",
+  "knownWorking": [
+    "https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg",
+    "https://storage.googleapis.com/crewplay-arena-storage/photo/a0.png"
+  ],
+  "brokenExamples": [
+    "https://storage.googleapis.com/crewplay_arena_storage/photo_example.jpg",
+    "https://storage.googleapis.com/crewplay-arena-storage/photo_example.jpg"
+  ],
+  "urlPattern": "https://storage.googleapis.com/crewplay-arena-storage/photo/{filename}.jpg",
+  "requirements": {
+    "format": "jpg",
+    "bucket": "crewplay-arena-storage",
+    "naming": "r{sheetRow}.jpg recommended"
+  },
+  "notes": "bucket 名稱是 crewplay-arena-storage（連字號），不是 crewplay_arena_storage。photo_example.jpg 不存在會回 404 XML，瀏覽器看起來像亂碼。"
+}

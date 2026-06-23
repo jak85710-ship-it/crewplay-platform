@@ -1,0 +1,39 @@
+# CrewPlay 正式站 → www.crewplay.tw
+# Netlify：Repository 根目錄建置，實際 app 在 crewplay-platform/
+
+[build]
+  base = "crewplay-platform"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# 裸網域 → www（HTTPS）
+[[redirects]]
+  from = "https://crewplay.tw/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://crewplay.tw/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.crewplay.tw/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

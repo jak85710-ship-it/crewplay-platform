@@ -1,0 +1,1930 @@
+﻿{
+    "processed":  [
+                      {
+                          "row":  2,
+                          "arena":  "萬拓乒乓",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r2.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r2.jpg"
+                      },
+                      {
+                          "row":  3,
+                          "arena":  "WUMO 米雪初階羽球團｜週日開打中",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r3.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r3.jpg"
+                      },
+                      {
+                          "row":  4,
+                          "arena":  "洪竿女子排球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r4.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r4.jpg"
+                      },
+                      {
+                          "row":  5,
+                          "arena":  "邁特帶萌羽球社",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r5.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r5.jpg"
+                      },
+                      {
+                          "row":  6,
+                          "arena":  "羽毛毛蟲",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r6.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r6.jpg"
+                      },
+                      {
+                          "row":  7,
+                          "arena":  "小皮歡樂羽球團 ",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r7.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r7.jpg"
+                      },
+                      {
+                          "row":  8,
+                          "arena":  "心碎小狗羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r8.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r8.jpg"
+                      },
+                      {
+                          "row":  9,
+                          "arena":  "亮劍羽球聯盟(大戰士 ) ",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r9.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r9.jpg"
+                      },
+                      {
+                          "row":  10,
+                          "arena":  "凱璿羽球團  ",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r10.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r10.jpg"
+                      },
+                      {
+                          "row":  11,
+                          "arena":  "牽羊羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r11.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r11.jpg"
+                      },
+                      {
+                          "row":  12,
+                          "arena":  "胖丁羽球特攻隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r12.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r12.jpg"
+                      },
+                      {
+                          "row":  13,
+                          "arena":  "南Fang夜訓團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r13.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r13.jpg"
+                      },
+                      {
+                          "row":  14,
+                          "arena":  "小羽宙羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r14.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r14.jpg"
+                      },
+                      {
+                          "row":  15,
+                          "arena":  "羽鷹飛翔(鷹揚羽球館)",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r15.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r15.jpg"
+                      },
+                      {
+                          "row":  16,
+                          "arena":  "羽鷹飛翔(裕興羽球館)",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r16.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r16.jpg"
+                      },
+                      {
+                          "row":  17,
+                          "arena":  "Wumo羽球館 ",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r17.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r17.jpg"
+                      },
+                      {
+                          "row":  18,
+                          "arena":  "天鷹羽球隊",
+                          "status":  "failed",
+                          "error":  "以 \"1\" 引數呼叫 \".ctor\" 時發生例外狀況: \"參數無效。\""
+                      },
+                      {
+                          "row":  19,
+                          "arena":  "XS匹克球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r19.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r19.jpg"
+                      },
+                      {
+                          "row":  20,
+                          "arena":  "週末歡樂匹克團 ",
+                          "status":  "failed",
+                          "error":  "以 \"1\" 引數呼叫 \".ctor\" 時發生例外狀況: \"參數無效。\""
+                      },
+                      {
+                          "row":  21,
+                          "arena":  "三民公園羽球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r21.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r21.jpg"
+                      },
+                      {
+                          "row":  22,
+                          "arena":  "正勤活動中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r22.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r22.jpg"
+                      },
+                      {
+                          "row":  23,
+                          "arena":  "文西里廣場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r23.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r23.jpg"
+                      },
+                      {
+                          "row":  24,
+                          "arena":  "鷹揚羽球館",
+                          "status":  "failed",
+                          "error":  "以 \"1\" 引數呼叫 \".ctor\" 時發生例外狀況: \"參數無效。\""
+                      },
+                      {
+                          "row":  25,
+                          "arena":  "台北體育館(紅館)7樓",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r25.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r25.jpg"
+                      },
+                      {
+                          "row":  26,
+                          "arena":  "嘉世羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r26.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r26.jpg"
+                      },
+                      {
+                          "row":  27,
+                          "arena":  "嘉世羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r27.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r27.jpg"
+                      },
+                      {
+                          "row":  28,
+                          "arena":  "嘉世羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r28.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r28.jpg"
+                      },
+                      {
+                          "row":  29,
+                          "arena":  "嘉世羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r29.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r29.jpg"
+                      },
+                      {
+                          "row":  30,
+                          "arena":  "鷹揚羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r30.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r30.jpg"
+                      },
+                      {
+                          "row":  31,
+                          "arena":  "鷹揚羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r31.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r31.jpg"
+                      },
+                      {
+                          "row":  32,
+                          "arena":  "鷹揚羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r32.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r32.jpg"
+                      },
+                      {
+                          "row":  33,
+                          "arena":  "鷹揚羽球館(桌球場)",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r33.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r33.jpg"
+                      },
+                      {
+                          "row":  34,
+                          "arena":  "鷹揚羽球館(匹克球場)",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r34.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r34.jpg"
+                      },
+                      {
+                          "row":  35,
+                          "arena":  "咕靈匹克球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r35.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r35.jpg"
+                      },
+                      {
+                          "row":  36,
+                          "arena":  "PRF 匹克球玩轉基地",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r36.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r36.jpg"
+                      },
+                      {
+                          "row":  37,
+                          "arena":  "GXS羽毛球雅潭館明鴻運動訓練中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r37.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r37.jpg"
+                      },
+                      {
+                          "row":  38,
+                          "arena":  "豐原國民暨兒童運動中心3F",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r38.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r38.jpg"
+                      },
+                      {
+                          "row":  39,
+                          "arena":  "Pickzone台中西屯",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r39.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r39.jpg"
+                      },
+                      {
+                          "row":  40,
+                          "arena":  "新羽力俱樂部",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r40.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r40.jpg"
+                      },
+                      {
+                          "row":  41,
+                          "arena":  "羽克打球聚會所",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r41.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r41.jpg"
+                      },
+                      {
+                          "row":  42,
+                          "arena":  "2F綜合球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r42.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r42.jpg"
+                      },
+                      {
+                          "row":  43,
+                          "arena":  "玩樂倉庫複合式運動館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r43.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r43.jpg"
+                      },
+                      {
+                          "row":  44,
+                          "arena":  "南區羽球自由高醫館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r44.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r44.jpg"
+                      },
+                      {
+                          "row":  45,
+                          "arena":  "排球訓練基地",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r45.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r45.jpg"
+                      },
+                      {
+                          "row":  46,
+                          "arena":  "實踐大學體育館第二場女網",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r46.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r46.jpg"
+                      },
+                      {
+                          "row":  47,
+                          "arena":  "蘆洲Oin排球基地",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r47.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r47.jpg"
+                      },
+                      {
+                          "row":  48,
+                          "arena":  "永和運動中心6F ",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r48.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r48.jpg"
+                      },
+                      {
+                          "row":  49,
+                          "arena":  "PCL 柏吉倫排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r49.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r49.jpg"
+                      },
+                      {
+                          "row":  50,
+                          "arena":  "新莊259排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r50.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r50.jpg"
+                      },
+                      {
+                          "row":  51,
+                          "arena":  "鎮昌國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r51.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r51.jpg"
+                      },
+                      {
+                          "row":  52,
+                          "arena":  "鎮昌國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r52.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r52.jpg"
+                      },
+                      {
+                          "row":  53,
+                          "arena":  "鎮昌國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r53.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r53.jpg"
+                      },
+                      {
+                          "row":  54,
+                          "arena":  "諾亞羽球館/ 匹克球/ 皮拉提斯/ 瑜伽運動俱樂部",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r54.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r54.jpg"
+                      },
+                      {
+                          "row":  55,
+                          "arena":  "DOPE水瀨綠洲匹克球俱樂部",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r55.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r55.jpg"
+                      },
+                      {
+                          "row":  56,
+                          "arena":  "板城輕鬆玩",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r56.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r56.jpg"
+                      },
+                      {
+                          "row":  57,
+                          "arena":  "新北新店北新國小綜合大樓四樓球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r57.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r57.jpg"
+                      },
+                      {
+                          "row":  58,
+                          "arena":  "頭前國中（靠入口）球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r58.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r58.jpg"
+                      },
+                      {
+                          "row":  59,
+                          "arena":  "板橋國中",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r59.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r59.jpg"
+                      },
+                      {
+                          "row":  60,
+                          "arena":  "文藻外語大學體育館一樓",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r60.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r60.jpg"
+                      },
+                      {
+                          "row":  61,
+                          "arena":  "文藻外語大學體育館一樓",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r61.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r61.jpg"
+                      },
+                      {
+                          "row":  62,
+                          "arena":  "文藻外語大學體育館一樓",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r62.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r62.jpg"
+                      },
+                      {
+                          "row":  63,
+                          "arena":  "大寮MVC排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r63.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r63.jpg"
+                      },
+                      {
+                          "row":  64,
+                          "arena":  "小咘排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r64.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r64.jpg"
+                      },
+                      {
+                          "row":  65,
+                          "arena":  "屏東大學屏商校區風雨球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r65.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r65.jpg"
+                      },
+                      {
+                          "row":  66,
+                          "arena":  "嚮網排羽休閒旗艦館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r66.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r66.jpg"
+                      },
+                      {
+                          "row":  67,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r67.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r67.jpg"
+                      },
+                      {
+                          "row":  68,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r68.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r68.jpg"
+                      },
+                      {
+                          "row":  69,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r69.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r69.jpg"
+                      },
+                      {
+                          "row":  70,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r70.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r70.jpg"
+                      },
+                      {
+                          "row":  71,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r71.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r71.jpg"
+                      },
+                      {
+                          "row":  72,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r72.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r72.jpg"
+                      },
+                      {
+                          "row":  73,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r73.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r73.jpg"
+                      },
+                      {
+                          "row":  74,
+                          "arena":  "活力小蛙泰林排球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r74.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r74.jpg"
+                      },
+                      {
+                          "row":  75,
+                          "arena":  "羽潮休閒館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r75.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r75.jpg"
+                      },
+                      {
+                          "row":  76,
+                          "arena":  "苓雅運動中心綜合球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r76.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r76.jpg"
+                      },
+                      {
+                          "row":  77,
+                          "arena":  "泰山羽神拍拍館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r77.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r77.jpg"
+                      },
+                      {
+                          "row":  78,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r78.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r78.jpg"
+                      },
+                      {
+                          "row":  79,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r79.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r79.jpg"
+                      },
+                      {
+                          "row":  80,
+                          "arena":  "神力羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r80.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r80.jpg"
+                      },
+                      {
+                          "row":  81,
+                          "arena":  "力羽美羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r81.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r81.jpg"
+                      },
+                      {
+                          "row":  82,
+                          "arena":  "力羽美羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r82.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r82.jpg"
+                      },
+                      {
+                          "row":  83,
+                          "arena":  "力羽美羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r83.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r83.jpg"
+                      },
+                      {
+                          "row":  84,
+                          "arena":  "力羽美羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r84.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r84.jpg"
+                      },
+                      {
+                          "row":  85,
+                          "arena":  "內惟國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r85.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r85.jpg"
+                      },
+                      {
+                          "row":  86,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r86.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r86.jpg"
+                      },
+                      {
+                          "row":  87,
+                          "arena":  "仁愛國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r87.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r87.jpg"
+                      },
+                      {
+                          "row":  88,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r88.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r88.jpg"
+                      },
+                      {
+                          "row":  89,
+                          "arena":  "苓雅國中",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r89.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r89.jpg"
+                      },
+                      {
+                          "row":  90,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r90.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r90.jpg"
+                      },
+                      {
+                          "row":  91,
+                          "arena":  "More羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r91.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r91.jpg"
+                      },
+                      {
+                          "row":  92,
+                          "arena":  "YUNI 羽球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r92.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r92.jpg"
+                      },
+                      {
+                          "row":  93,
+                          "arena":  "戰將羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r93.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r93.jpg"
+                      },
+                      {
+                          "row":  94,
+                          "arena":  "復興國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r94.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r94.jpg"
+                      },
+                      {
+                          "row":  95,
+                          "arena":  "復興國小4樓禮堂",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r95.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r95.jpg"
+                      },
+                      {
+                          "row":  96,
+                          "arena":  "仁武羽利羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r96.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r96.jpg"
+                      },
+                      {
+                          "row":  97,
+                          "arena":  "鼎金國中",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r97.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r97.jpg"
+                      },
+                      {
+                          "row":  98,
+                          "arena":  "苓洲國小活動中心3F",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r98.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r98.jpg"
+                      },
+                      {
+                          "row":  99,
+                          "arena":  "左營概念館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r99.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r99.jpg"
+                      },
+                      {
+                          "row":  100,
+                          "arena":  "嘉世羽球館左楠館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r100.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r100.jpg"
+                      },
+                      {
+                          "row":  101,
+                          "arena":  "瘋羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r101.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r101.jpg"
+                      },
+                      {
+                          "row":  102,
+                          "arena":  "嘉世羽球館左楠館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r102.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r102.jpg"
+                      },
+                      {
+                          "row":  103,
+                          "arena":  "More羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r103.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r103.jpg"
+                      },
+                      {
+                          "row":  104,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r104.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r104.jpg"
+                      },
+                      {
+                          "row":  105,
+                          "arena":  "左營Wumo羽球館(愛惜羽毛團)",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r105.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r105.jpg"
+                      },
+                      {
+                          "row":  106,
+                          "arena":  "More羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r106.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r106.jpg"
+                      },
+                      {
+                          "row":  107,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r107.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r107.jpg"
+                      },
+                      {
+                          "row":  108,
+                          "arena":  "力羽美下午團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r108.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r108.jpg"
+                      },
+                      {
+                          "row":  109,
+                          "arena":  "優勢冷氣羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r109.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r109.jpg"
+                      },
+                      {
+                          "row":  110,
+                          "arena":  "G山羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r110.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r110.jpg"
+                      },
+                      {
+                          "row":  111,
+                          "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球徵固定和",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r111.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r111.jpg"
+                      },
+                      {
+                          "row":  112,
+                          "arena":  "以球會友",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r112.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r112.jpg"
+                      },
+                      {
+                          "row":  113,
+                          "arena":  "XS羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r113.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r113.jpg"
+                      },
+                      {
+                          "row":  114,
+                          "arena":  "午後羽茶時光高光624羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r114.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r114.jpg"
+                      },
+                      {
+                          "row":  115,
+                          "arena":  "羽Vi同樂",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r115.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r115.jpg"
+                      },
+                      {
+                          "row":  116,
+                          "arena":  "高雄大裕隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r116.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r116.jpg"
+                      },
+                      {
+                          "row":  117,
+                          "arena":  "力羽美下午團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r117.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r117.jpg"
+                      },
+                      {
+                          "row":  118,
+                          "arena":  "四海羽我羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r118.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r118.jpg"
+                      },
+                      {
+                          "row":  119,
+                          "arena":  "勝負慾太高 怪隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r119.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r119.jpg"
+                      },
+                      {
+                          "row":  120,
+                          "arena":  "三民區莊敬國小羽球館1面場地",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r120.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r120.jpg"
+                      },
+                      {
+                          "row":  121,
+                          "arena":  "賀逗陣 週三團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r121.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r121.jpg"
+                      },
+                      {
+                          "row":  122,
+                          "arena":  "新手互戳羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r122.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r122.jpg"
+                      },
+                      {
+                          "row":  123,
+                          "arena":  "技擊館羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r123.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r123.jpg"
+                      },
+                      {
+                          "row":  124,
+                          "arena":  "羽凡團子｜溫馨揪團打球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r124.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r124.jpg"
+                      },
+                      {
+                          "row":  125,
+                          "arena":  "光榮國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r125.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r125.jpg"
+                      },
+                      {
+                          "row":  126,
+                          "arena":  "優勢冷氣羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r126.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r126.jpg"
+                      },
+                      {
+                          "row":  127,
+                          "arena":  "就將星期二下午團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r127.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r127.jpg"
+                      },
+                      {
+                          "row":  128,
+                          "arena":  "新力羽球仁武館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r128.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r128.jpg"
+                      },
+                      {
+                          "row":  129,
+                          "arena":  "奧本羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r129.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r129.jpg"
+                      },
+                      {
+                          "row":  130,
+                          "arena":  "More 羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r130.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r130.jpg"
+                      },
+                      {
+                          "row":  131,
+                          "arena":  "歡樂羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r131.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r131.jpg"
+                      },
+                      {
+                          "row":  132,
+                          "arena":  "阿瑪莉莉絲羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r132.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r132.jpg"
+                      },
+                      {
+                          "row":  133,
+                          "arena":  "鳳西羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r133.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r133.jpg"
+                      },
+                      {
+                          "row":  134,
+                          "arena":  "南區高醫自由館第2、3、4場地",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r134.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r134.jpg"
+                      },
+                      {
+                          "row":  135,
+                          "arena":  "榮總好朋友羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r135.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r135.jpg"
+                      },
+                      {
+                          "row":  136,
+                          "arena":  "前鎮區復興國小四樓禮堂",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r136.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r136.jpg"
+                      },
+                      {
+                          "row":  137,
+                          "arena":  "《追球格格》羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r137.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r137.jpg"
+                      },
+                      {
+                          "row":  138,
+                          "arena":  "G山羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r138.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r138.jpg"
+                      },
+                      {
+                          "row":  139,
+                          "arena":  "羽曜球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r139.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r139.jpg"
+                      },
+                      {
+                          "row":  140,
+                          "arena":  "可以打得非常盡興，完全消耗體力，高CP值球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r140.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r140.jpg"
+                      },
+                      {
+                          "row":  141,
+                          "arena":  "不用等太久羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r141.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r141.jpg"
+                      },
+                      {
+                          "row":  142,
+                          "arena":  "徵固定",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r142.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r142.jpg"
+                      },
+                      {
+                          "row":  143,
+                          "arena":  "來帕羽球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r143.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r143.jpg"
+                      },
+                      {
+                          "row":  144,
+                          "arena":  "山山羽球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r144.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r144.jpg"
+                      },
+                      {
+                          "row":  145,
+                          "arena":  "羽利羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r145.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r145.jpg"
+                      },
+                      {
+                          "row":  146,
+                          "arena":  "東尼美術館羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r146.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r146.jpg"
+                      },
+                      {
+                          "row":  147,
+                          "arena":  "《梓羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r147.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r147.jpg"
+                      },
+                      {
+                          "row":  148,
+                          "arena":  "東尼鳳山 羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r148.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r148.jpg"
+                      },
+                      {
+                          "row":  149,
+                          "arena":  "GOGO21羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r149.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r149.jpg"
+                      },
+                      {
+                          "row":  150,
+                          "arena":  "凱富羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r150.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r150.jpg"
+                      },
+                      {
+                          "row":  151,
+                          "arena":  "鳳西 星期二 團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r151.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r151.jpg"
+                      },
+                      {
+                          "row":  152,
+                          "arena":  "［吃飽再打羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r152.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r152.jpg"
+                      },
+                      {
+                          "row":  153,
+                          "arena":  "［早上羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r153.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r153.jpg"
+                      },
+                      {
+                          "row":  154,
+                          "arena":  "快樂球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r154.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r154.jpg"
+                      },
+                      {
+                          "row":  155,
+                          "arena":  "BMT羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r155.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r155.jpg"
+                      },
+                      {
+                          "row":  156,
+                          "arena":  "星光夜羽羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r156.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r156.jpg"
+                      },
+                      {
+                          "row":  157,
+                          "arena":  "小怪獸羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r157.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r157.jpg"
+                      },
+                      {
+                          "row":  158,
+                          "arena":  "格洛斯特 羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r158.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r158.jpg"
+                      },
+                      {
+                          "row":  159,
+                          "arena":  "梓羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r159.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r159.jpg"
+                      },
+                      {
+                          "row":  160,
+                          "arena":  "Snake羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r160.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r160.jpg"
+                      },
+                      {
+                          "row":  161,
+                          "arena":  "南Fang夜訓團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r161.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r161.jpg"
+                      },
+                      {
+                          "row":  162,
+                          "arena":  "鳳西 星期五團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r162.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r162.jpg"
+                      },
+                      {
+                          "row":  163,
+                          "arena":  "［晚上羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r163.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r163.jpg"
+                      },
+                      {
+                          "row":  164,
+                          "arena":  "柏林羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r164.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r164.jpg"
+                      },
+                      {
+                          "row":  165,
+                          "arena":  "羽宙team",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r165.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r165.jpg"
+                      },
+                      {
+                          "row":  166,
+                          "arena":  "透中午羽你同樂 固定每週六徵零打",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r166.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r166.jpg"
+                      },
+                      {
+                          "row":  167,
+                          "arena":  "More羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r167.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r167.jpg"
+                      },
+                      {
+                          "row":  168,
+                          "arena":  "德蔻羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r168.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r168.jpg"
+                      },
+                      {
+                          "row":  169,
+                          "arena":  "德蔻許願羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r169.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r169.jpg"
+                      },
+                      {
+                          "row":  170,
+                          "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球徵",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r170.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r170.jpg"
+                      },
+                      {
+                          "row":  171,
+                          "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r171.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r171.jpg"
+                      },
+                      {
+                          "row":  172,
+                          "arena":  "康橋羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r172.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r172.jpg"
+                      },
+                      {
+                          "row":  173,
+                          "arena":  "隼勝羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r173.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r173.jpg"
+                      },
+                      {
+                          "row":  174,
+                          "arena":  "陀螺羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r174.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r174.jpg"
+                      },
+                      {
+                          "row":  175,
+                          "arena":  "民族館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r175.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r175.jpg"
+                      },
+                      {
+                          "row":  176,
+                          "arena":  "星勝羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r176.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r176.jpg"
+                      },
+                      {
+                          "row":  177,
+                          "arena":  "星勝羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r177.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r177.jpg"
+                      },
+                      {
+                          "row":  178,
+                          "arena":  "星勝羽球館-有點多羽羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r178.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r178.jpg"
+                      },
+                      {
+                          "row":  179,
+                          "arena":  "星勝羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r179.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r179.jpg"
+                      },
+                      {
+                          "row":  180,
+                          "arena":  "世大羽球館-藥聯羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r180.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r180.jpg"
+                      },
+                      {
+                          "row":  181,
+                          "arena":  "世大羽球館-炸蝦羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r181.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r181.jpg"
+                      },
+                      {
+                          "row":  182,
+                          "arena":  "屏東信義羽球場-不收新手，",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r182.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r182.jpg"
+                      },
+                      {
+                          "row":  183,
+                          "arena":  "屏東 世大羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r183.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r183.jpg"
+                      },
+                      {
+                          "row":  184,
+                          "arena":  "屏東信義羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r184.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r184.jpg"
+                      },
+                      {
+                          "row":  185,
+                          "arena":  "大樹體育館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r185.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r185.jpg"
+                      },
+                      {
+                          "row":  186,
+                          "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r186.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r186.jpg"
+                      },
+                      {
+                          "row":  187,
+                          "arena":  "嘉鴻羽球館「嘉鴻」",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r187.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r187.jpg"
+                      },
+                      {
+                          "row":  188,
+                          "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r188.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r188.jpg"
+                      },
+                      {
+                          "row":  189,
+                          "arena":  "嘉得羽球館-樂咖羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r189.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r189.jpg"
+                      },
+                      {
+                          "row":  190,
+                          "arena":  "嘉鴻羽球館「嘉鴻」",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r190.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r190.jpg"
+                      },
+                      {
+                          "row":  191,
+                          "arena":  "香湖羽球館新館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r191.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r191.jpg"
+                      },
+                      {
+                          "row":  192,
+                          "arena":  "湖美羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r192.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r192.jpg"
+                      },
+                      {
+                          "row":  193,
+                          "arena":  "福興羽球館-純羽球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r193.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r193.jpg"
+                      },
+                      {
+                          "row":  194,
+                          "arena":  "嘉鴻羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r194.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r194.jpg"
+                      },
+                      {
+                          "row":  195,
+                          "arena":  "台北市信義區吳興國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r195.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r195.jpg"
+                      },
+                      {
+                          "row":  196,
+                          "arena":  "成功高中0620端午徵求4人",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r196.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r196.jpg"
+                      },
+                      {
+                          "row":  197,
+                          "arena":  "新北三重運動中心-三重羽球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r197.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r197.jpg"
+                      },
+                      {
+                          "row":  198,
+                          "arena":  "中山運動中心4 樓-羽毛球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r198.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r198.jpg"
+                      },
+                      {
+                          "row":  199,
+                          "arena":  "延平國小羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r199.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r199.jpg"
+                      },
+                      {
+                          "row":  200,
+                          "arena":  "台北市信義區吳興國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r200.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r200.jpg"
+                      },
+                      {
+                          "row":  201,
+                          "arena":  "大安運動中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r201.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r201.jpg"
+                      },
+                      {
+                          "row":  202,
+                          "arena":  "南港運動中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r202.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r202.jpg"
+                      },
+                      {
+                          "row":  203,
+                          "arena":  "板橋羽球館6/23-AI排版，不用擔心自己來打找不到隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r203.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r203.jpg"
+                      },
+                      {
+                          "row":  204,
+                          "arena":  "中山運動中心4樓",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r204.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r204.jpg"
+                      },
+                      {
+                          "row":  205,
+                          "arena":  "森羽羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r205.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r205.jpg"
+                      },
+                      {
+                          "row":  206,
+                          "arena":  "鼓山運動中心-來帕匹克球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r206.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r206.jpg"
+                      },
+                      {
+                          "row":  207,
+                          "arena":  "鼓山運動中心-來帕匹克球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r207.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r207.jpg"
+                      },
+                      {
+                          "row":  208,
+                          "arena":  "羽神拍拍館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r208.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r208.jpg"
+                      },
+                      {
+                          "row":  209,
+                          "arena":  "三重碧華國小-三重匹克球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r209.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r209.jpg"
+                      },
+                      {
+                          "row":  210,
+                          "arena":  "丁克斯匹克球場-PGC 週六高雄",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r210.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r210.jpg"
+                      },
+                      {
+                          "row":  211,
+                          "arena":  "匹克贏球場-匹克球",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r211.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r211.jpg"
+                      },
+                      {
+                          "row":  212,
+                          "arena":  "前鎮 鎮昌國小 - 龍哥匹克球俱樂部",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r212.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r212.jpg"
+                      },
+                      {
+                          "row":  213,
+                          "arena":  "動力羽球館-徵球友",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r213.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r213.jpg"
+                      },
+                      {
+                          "row":  214,
+                          "arena":  "自強國中5樓羽球場-欣動羽球 6/16(二) ",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r214.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r214.jpg"
+                      },
+                      {
+                          "row":  215,
+                          "arena":  "會稽國小禮堂",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r215.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r215.jpg"
+                      },
+                      {
+                          "row":  216,
+                          "arena":  "桃園國民運動中心4樓-週三",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r216.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r216.jpg"
+                      },
+                      {
+                          "row":  217,
+                          "arena":  "展躍羽球館7號場-週三羽貓球羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r217.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r217.jpg"
+                      },
+                      {
+                          "row":  218,
+                          "arena":  "東泰羽球會館-徵零打",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r218.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r218.jpg"
+                      },
+                      {
+                          "row":  219,
+                          "arena":  "鶯歌國民運動中心2樓-新傳羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r219.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r219.jpg"
+                      },
+                      {
+                          "row":  220,
+                          "arena":  "八德動力羽球館-羽球暢打",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r220.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r220.jpg"
+                      },
+                      {
+                          "row":  221,
+                          "arena":  "蘆竹羽球館3F二號場地-姊妹歡樂流汗球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r221.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r221.jpg"
+                      },
+                      {
+                          "row":  222,
+                          "arena":  "蘆竹羽球館3F",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r222.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r222.jpg"
+                      },
+                      {
+                          "row":  223,
+                          "arena":  "翼升羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r223.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r223.jpg"
+                      },
+                      {
+                          "row":  224,
+                          "arena":  "太子羽球館 第2、3場地",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r224.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r224.jpg"
+                      },
+                      {
+                          "row":  225,
+                          "arena":  "忠孝國中",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r225.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r225.jpg"
+                      },
+                      {
+                          "row":  226,
+                          "arena":  "振翔羽球館-星期日",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r226.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r226.jpg"
+                      },
+                      {
+                          "row":  227,
+                          "arena":  "享飛羽球館-羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r227.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r227.jpg"
+                      },
+                      {
+                          "row":  228,
+                          "arena":  "竹北市安興國小羽球場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r228.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r228.jpg"
+                      },
+                      {
+                          "row":  229,
+                          "arena":  "寶山晴天羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r229.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r229.jpg"
+                      },
+                      {
+                          "row":  230,
+                          "arena":  "POWER羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r230.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r230.jpg"
+                      },
+                      {
+                          "row":  231,
+                          "arena":  "金羽羽球館-時段",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r231.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r231.jpg"
+                      },
+                      {
+                          "row":  232,
+                          "arena":  "金羽羽球館-星期六)",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r232.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r232.jpg"
+                      },
+                      {
+                          "row":  233,
+                          "arena":  "動智AI羽球館2-3場固定場",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r233.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r233.jpg"
+                      },
+                      {
+                          "row":  234,
+                          "arena":  "竹北維特羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r234.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r234.jpg"
+                      },
+                      {
+                          "row":  235,
+                          "arena":  "振翔羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r235.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r235.jpg"
+                      },
+                      {
+                          "row":  236,
+                          "arena":  "金羽羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r236.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r236.jpg"
+                      },
+                      {
+                          "row":  237,
+                          "arena":  "沛傑羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r237.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r237.jpg"
+                      },
+                      {
+                          "row":  238,
+                          "arena":  "竹東鎮立羽球館-星期日",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r238.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r238.jpg"
+                      },
+                      {
+                          "row":  239,
+                          "arena":  "金拍羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r239.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r239.jpg"
+                      },
+                      {
+                          "row":  240,
+                          "arena":  "東峰羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r240.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r240.jpg"
+                      },
+                      {
+                          "row":  241,
+                          "arena":  "鼓山運動中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r241.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r241.jpg"
+                      },
+                      {
+                          "row":  242,
+                          "arena":  "金拍羽球館 - 羽你相聚團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r242.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r242.jpg"
+                      },
+                      {
+                          "row":  243,
+                          "arena":  "學進國小",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r243.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r243.jpg"
+                      },
+                      {
+                          "row":  244,
+                          "arena":  "新福羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r244.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r244.jpg"
+                      },
+                      {
+                          "row":  245,
+                          "arena":  "南屯運動中心3樓-羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r245.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r245.jpg"
+                      },
+                      {
+                          "row":  246,
+                          "arena":  "西屯區 朝馬運動中心-週四",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r246.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r246.jpg"
+                      },
+                      {
+                          "row":  247,
+                          "arena":  "GXS雅潭館-小週末羽球團",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r247.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r247.jpg"
+                      },
+                      {
+                          "row":  248,
+                          "arena":  "球館有免費停車場、淋浴間-羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r248.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r248.jpg"
+                      },
+                      {
+                          "row":  249,
+                          "arena":  "北區 運動中心 一面場地-睛靈羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r249.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r249.jpg"
+                      },
+                      {
+                          "row":  250,
+                          "arena":  "臺灣體育運動大學羽球場-哲哲Chill隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r250.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r250.jpg"
+                      },
+                      {
+                          "row":  251,
+                          "arena":  "福雅羽球會館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r251.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r251.jpg"
+                      },
+                      {
+                          "row":  252,
+                          "arena":  "大翔羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r252.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r252.jpg"
+                      },
+                      {
+                          "row":  253,
+                          "arena":  "東原羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r253.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r253.jpg"
+                      },
+                      {
+                          "row":  254,
+                          "arena":  "大墩羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r254.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r254.jpg"
+                      },
+                      {
+                          "row":  255,
+                          "arena":  "台中市朝馬國民運動中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r255.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r255.jpg"
+                      },
+                      {
+                          "row":  256,
+                          "arena":  "新福羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r256.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r256.jpg"
+                      },
+                      {
+                          "row":  257,
+                          "arena":  "帥宏羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r257.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r257.jpg"
+                      },
+                      {
+                          "row":  258,
+                          "arena":  "洲際羽球館-難瘦香菇羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r258.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r258.jpg"
+                      },
+                      {
+                          "row":  259,
+                          "arena":  "南屯運動中心3樓-羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r259.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r259.jpg"
+                      },
+                      {
+                          "row":  260,
+                          "arena":  "西屯區 朝馬運動中心-週四",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r260.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r260.jpg"
+                      },
+                      {
+                          "row":  261,
+                          "arena":  "羽奏羽球館-哇打羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r261.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r261.jpg"
+                      },
+                      {
+                          "row":  262,
+                          "arena":  "朝馬國民運動中心",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r262.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r262.jpg"
+                      },
+                      {
+                          "row":  263,
+                          "arena":  "大都會福華羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r263.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r263.jpg"
+                      },
+                      {
+                          "row":  264,
+                          "arena":  "中信羽球館 【請直接到 8 號場地報到】",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r264.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r264.jpg"
+                      },
+                      {
+                          "row":  265,
+                          "arena":  "TYNPCLUB",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r265.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r265.jpg"
+                      },
+                      {
+                          "row":  267,
+                          "arena":  "TYNP Club DUPR NO.38",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r267.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r267.jpg"
+                      },
+                      {
+                          "row":  268,
+                          "arena":  "羽動洄瀾運動球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r268.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r268.jpg"
+                      },
+                      {
+                          "row":  269,
+                          "arena":  "地 點:小窩242羽球休閒館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r269.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r269.jpg"
+                      },
+                      {
+                          "row":  270,
+                          "arena":  "羽勁球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r270.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r270.jpg"
+                      },
+                      {
+                          "row":  271,
+                          "arena":  "羽動洄瀾運動球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r271.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r271.jpg"
+                      },
+                      {
+                          "row":  272,
+                          "arena":  "小窩242羽球休閒館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r272.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r272.jpg"
+                      },
+                      {
+                          "row":  273,
+                          "arena":  "冠羽羽球館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r273.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r273.jpg"
+                      },
+                      {
+                          "row":  274,
+                          "arena":  "中原國小體育館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r274.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r274.jpg"
+                      },
+                      {
+                          "row":  275,
+                          "arena":  "大業羽球隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r275.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r275.jpg"
+                      },
+                      {
+                          "row":  276,
+                          "arena":  "小窩242羽球休閒館",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r276.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r276.jpg"
+                      },
+                      {
+                          "row":  277,
+                          "arena":  "個人分兩隊",
+                          "status":  "converted",
+                          "localJpg":  "C:\\Users\\USER\\OneDrive\\桌面\\.gemini\\antigravity\\scratch\\staghorn-configurator\\crewplay-fb-collector\\storage\\photos-jpg\\r277.jpg",
+                          "gcsUrl":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r277.jpg"
+                      }
+                  ],
+    "skipped":  1,
+    "dryRun":  false,
+    "upload":  false,
+    "at":  "2026-06-21T21:13:24"
+}

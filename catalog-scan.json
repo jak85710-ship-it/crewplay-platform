@@ -1,0 +1,135 @@
+﻿[
+    {
+        "category":  "何其美系列",
+        "files":  [
+
+                  ]
+    },
+    {
+        "category":  "侏儒系列",
+        "files":  [
+                      {
+                          "name":  "NANO.jpg",
+                          "ext":  ".jpg",
+                          "size":  370241
+                      },
+                      {
+                          "name":  "OMG.jpg",
+                          "ext":  ".jpg",
+                          "size":  83826
+                      },
+                      {
+                          "name":  "p.willinckii Yuki.jpg",
+                          "ext":  ".jpg",
+                          "size":  360754
+                      },
+                      {
+                          "name":  "TFN.jpg",
+                          "ext":  ".jpg",
+                          "size":  190896
+                      },
+                      {
+                          "name":  "TOTORO.jpg",
+                          "ext":  ".jpg",
+                          "size":  252468
+                      },
+                      {
+                          "name":  "侏儒深綠.jpg",
+                          "ext":  ".jpg",
+                          "size":  234621
+                      },
+                      {
+                          "name":  "玉女.jpg",
+                          "ext":  ".jpg",
+                          "size":  183887
+                      },
+                      {
+                          "name":  "珍妮.jpg",
+                          "ext":  ".jpg",
+                          "size":  66432
+                      },
+                      {
+                          "name":  "珠寶.jpg",
+                          "ext":  ".jpg",
+                          "size":  287683
+                      },
+                      {
+                          "name":  "細菌.jpg",
+                          "ext":  ".jpg",
+                          "size":  260452
+                      },
+                      {
+                          "name":  "金童.jpg",
+                          "ext":  ".jpg",
+                          "size":  126147
+                      },
+                      {
+                          "name":  "雪.jpg",
+                          "ext":  ".jpg",
+                          "size":  550769
+                      },
+                      {
+                          "name":  "黃月.jpg",
+                          "ext":  ".jpg",
+                          "size":  352718
+                      }
+                  ]
+    },
+    {
+        "category":  "十八原生種系列",
+        "files":  [
+
+                  ]
+    },
+    {
+        "category":  "深綠系列",
+        "files":  [
+                      {
+                          "name":  "深綠.jpg",
+                          "ext":  ".jpg",
+                          "size":  215051
+                      },
+                      {
+                          "name":  "龍.jpg",
+                          "ext":  ".jpg",
+                          "size":  345425
+                      }
+                  ]
+    },
+    {
+        "category":  "爪哇系列",
+        "files":  [
+                      {
+                          "name":  "GSTRING.jpg",
+                          "ext":  ".jpg",
+                          "size":  255108
+                      }
+                  ]
+    },
+    {
+        "category":  "皇冠系列",
+        "files":  [
+
+                  ]
+    },
+    {
+        "category":  "銀鹿系列",
+        "files":  [
+                      {
+                          "name":  "AR.jpg",
+                          "ext":  ".jpg",
+                          "size":  184885
+                      },
+                      {
+                          "name":  "索爾.jpg",
+                          "ext":  ".jpg",
+                          "size":  632931
+                      },
+                      {
+                          "name":  "野採銀鹿.jpg",
+                          "ext":  ".jpg",
+                          "size":  266454
+                      }
+                  ]
+    }
+]

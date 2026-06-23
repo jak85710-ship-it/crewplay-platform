@@ -1,0 +1,59 @@
+【精簡版】請改看完整指南：Cloud排程POST修正完整指南.txt
+【本機驗證】雙擊：Cloud排程診斷.bat
+
+Cloud Scheduler 失敗修正（sync-google-excel）
+========================================
+
+【失敗原因】
+你的工作 sync-google-excel 目標是：
+  https://api.crewplay.tw/arena/sheet_sync
+
+Cloud Scheduler 預設用 GET 呼叫，
+但這個 API 只接受 POST。
+→ GET 會回 405 → 排程顯示「失敗」
+
+本機「強制同步LINE.bat」用 POST，所以會成功。
+
+
+【修正步驟】在 Google Cloud Console
+
+1. 點工作名稱 sync-google-excel（或上方「編輯」）
+
+2. 找到「HTTP 目標」或「設定」區塊
+
+3. 把 HTTP 方法改成：
+   POST   ← 最重要！不能是 GET
+
+4. 其他建議設定：
+   - URL：https://api.crewplay.tw/arena/sheet_sync
+   - Content-Type（若有 Headers 欄）：application/json
+   - Body：可留空 {} 或不填
+   - 逾時：至少 120 秒（同步 110 筆可能較久）
+
+5. 儲存
+
+6. 按「強制執行」測試
+
+7. 點進該工作 →「記錄」分頁
+   - 成功：HTTP 200，body 含 success:true
+   - 仍失敗：把記錄裡的錯誤碼截圖
+
+
+【如何確認成功】
+記錄裡應看到類似：
+  {"success": true, "message": "成功同步 110 筆新場地資料。", "count": 110}
+
+注意：成功也不會跳出畫面，只能看「記錄」。
+
+
+【頻率建議】
+目前是每 5 天一次（30 3 */5 * *）
+若要每天同步可改成：
+  30 3 * * *    （每天凌晨 3:30）
+
+若要更即時：每次更新試算表後，本機執行「強制同步LINE.bat」
+
+
+【暫時解法（不等 Cloud 修好）】
+雙擊：強制同步LINE.bat
+效果與 Cloud Scheduler 相同，且會直接顯示結果。

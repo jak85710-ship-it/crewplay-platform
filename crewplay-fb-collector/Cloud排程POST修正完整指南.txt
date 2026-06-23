@@ -1,0 +1,295 @@
+Cloud Scheduler「sync-google-excel」完整修正指南
+================================================
+
+本指南對應「後續建議 2」：
+  把 Cloud Scheduler 的 HTTP 方法從 GET 改成 POST
+
+若你只想快速修好，看【Part A】即可。
+若你想理解原理、驗證、排錯，請從頭讀到【Part E】。
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part A｜2 分鐘快速修正（Google Cloud Console）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【問題】
+  工作名稱：sync-google-excel
+  目標 URL：https://api.crewplay.tw/arena/sheet_sync
+  現況：HTTP 方法 = GET → API 回 405 → 排程顯示「失敗」
+
+【正確做法】
+  HTTP 方法必須改成 POST
+
+────────────────────────────────────────
+步驟 1：進入 Cloud Scheduler
+────────────────────────────────────────
+
+1. 瀏覽器開啟：
+   https://console.cloud.google.com/cloudscheduler
+
+2. 左上角確認已選到正確的 Google Cloud 專案
+   （CrewPlay 後台建立排程的那個專案，不是 crewplay-sync 也可以，
+    重點是排程 job 在哪個專案就在哪個專案改）
+
+3. 左側選單 →「Cloud Scheduler」
+   （繁中介面可能顯示「Cloud 排程器」）
+
+4. 在工作列表找到：
+   sync-google-excel
+
+────────────────────────────────────────
+步驟 2：編輯工作
+────────────────────────────────────────
+
+1. 點工作名稱 sync-google-excel 那一列
+   或點右側「⋮」→「編輯」
+
+2. 捲到「設定」或「HTTP 目標」區塊
+
+3. 逐項確認以下設定：
+
+   ┌─────────────────────────────────────────────────────┐
+   │ 欄位              │ 正確值                          │
+   ├─────────────────────────────────────────────────────┤
+   │ 區域              │ 維持原設定（常見 asia-east1）   │
+   │ 說明              │ 可維持原樣                      │
+   │ 頻率              │ 見 Part D（可選是否改每天）     │
+   │ 時區              │ Asia/Taipei（建議）             │
+   │ 目標類型          │ HTTP                            │
+   │ URL               │ https://api.crewplay.tw/arena/  │
+   │                   │ sheet_sync                      │
+   │ HTTP 方法         │ POST  ←★ 最重要，不能是 GET    │
+   │ HTTP 標頭         │ 見下方「標頭設定」              │
+   │ 內文（Body）      │ {}  或留空                      │
+   │ 驗證標頭          │ 無（此 API 不需 OAuth）         │
+   │ 嘗試次數          │ 1～3 皆可                       │
+   │ 逾時              │ 180 秒（建議，見 Part C）       │
+   └─────────────────────────────────────────────────────┘
+
+4. 標頭設定（Headers）：
+   若畫面有「HTTP 標頭 / Headers」欄位，按「新增標頭」：
+
+     名稱：Content-Type
+     值：  application/json
+
+   若沒有 Headers 欄位，只改 POST 通常也能成功。
+
+5. Body（內文）：
+   - 若有「內文 / Body」文字框，填入：
+     {}
+   - 若沒有 Body 欄位，留空即可（POST 空 body 仍可成功）
+
+6. 按「更新」或「儲存」
+
+────────────────────────────────────────
+步驟 3：手動測試（強制執行）
+────────────────────────────────────────
+
+1. 回到 Cloud Scheduler 工作列表
+
+2. 勾選 sync-google-excel
+
+3. 按上方「強制執行」或「Run now」
+
+   ★ 注意：按下去不會跳出任何視窗！這是正常的！
+   成功與否只能看「記錄」。
+
+4. 點進 sync-google-excel → 切到「記錄」分頁
+
+5. 看最新一筆執行結果：
+
+   【成功範例】
+     狀態：成功 / OK
+     HTTP 狀態碼：200
+     回應內文類似：
+       {"success":true,"message":"成功同步 178 筆新場地資料。","count":178}
+
+   【仍失敗範例】
+     HTTP 405 → 方法仍是 GET，請重新編輯
+     HTTP 504 / timeout → 逾時太短，改 180 秒
+     HTTP 500 → 後端暫時錯誤，稍後再試或聯絡 CrewPlay
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part B｜本機先驗證（改 Cloud 前先確認 API 正常）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+在 crewplay-fb-collector 資料夾：
+
+  雙擊：Cloud排程診斷.bat
+
+它會同時測試 GET 與 POST，你應看到：
+
+  GET  → HTTP 405 失敗   （模擬 Cloud Scheduler 舊設定）
+  POST → HTTP 200 成功   （正確設定）
+
+若 POST 在本機成功、Cloud 仍失敗，99% 是 Cloud 還沒改成 POST，
+或改錯專案 / 改錯 job。
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part C｜各欄位詳細說明（為什麼這樣設）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 為什麼一定要 POST？
+   CrewPlay 後端 API 設計為「觸發同步動作」，屬於寫入操作。
+   GET 只用於讀取；對 sheet_sync 發 GET 會回：
+     405 Method Not Allowed
+   Cloud Scheduler 建立 HTTP job 時，預設方法常常是 GET，
+   因此會一直顯示失敗。
+
+2. URL 要不要加參數？
+   不要。完整 URL 就是：
+     https://api.crewplay.tw/arena/sheet_sync
+   後面不要加 ?sheet=... 之類的參數。
+
+3. Body 要填什麼？
+   此 API 不需要試算表 ID（後端已綁定你的 Google Sheet）。
+   Body 填 {} 或留空皆可。
+   本機 trigger-line-sync.ps1 也是 POST 空 body。
+
+4. Content-Type 要不要加？
+   建議加 application/json，但不是必須。
+   若只改 POST 就成功，Headers 可省略。
+
+5. 逾時要設多久？
+   試算表 100～200 列時，同步可能需要 30～90 秒。
+   建議：
+     嘗試逾時：180 秒（3 分鐘）
+   若設 30 秒，可能出現 timeout 假失敗。
+
+6. 需要 Auth 嗎？
+   不需要。此 URL 是 CrewPlay 後台公開的同步端點。
+   「驗證標頭」維持「無」即可。
+
+7. 成功後會發 LINE 推播嗎？
+   不會。sheet_sync 只更新後台場地資料庫。
+   使用者要在 LINE 官方帳號內搜尋球館才看得到。
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part D｜排程頻率建議（可選，順便一起改）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【目前常見設定】
+  Cron：30 3 */5 * *
+  意思：每 5 天的凌晨 3:30 執行一次
+
+【問題】
+  你每次手動更新試算表後，若沒按「強制同步LINE.bat」，
+  可能要等最多 5 天 Cloud 才會自動同步到 LINE。
+
+【建議方案】（擇一）
+
+  方案 A｜維持 5 天 + 本機手動同步（最省事）
+    Cloud 排程：維持 */5
+    每次更新試算表後，本機執行：
+      完整同步.bat
+    或：
+      執行同步.bat → 強制同步LINE.bat
+
+  方案 B｜改成每天自動同步（推薦）
+    編輯 sync-google-excel → 頻率改成：
+      30 3 * * *
+    意思：每天凌晨 3:30 自動 POST 同步一次
+
+  方案 C｜改成每 6 小時（較即時）
+      0 */6 * * *
+    意思：每 6 小時整點同步
+
+  方案 D｜每小時（不建議，除非資料很常更新）
+      0 * * * *
+
+時區請設：Asia/Taipei
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part E｜用 gcloud 指令修改（進階，可選）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+若你電腦有安裝 Google Cloud SDK，可用指令一次改好。
+（需先 gcloud auth login 並選對專案）
+
+1. 查看現有 job：
+   gcloud scheduler jobs describe sync-google-excel --location=asia-east1
+
+   ※ location 請改成你畫面上顯示的區域（可能是 asia-east1、
+     asia-northeast1 等）
+
+2. 更新為 POST（範例，location 請替換）：
+   gcloud scheduler jobs update http sync-google-excel ^
+     --location=asia-east1 ^
+     --uri="https://api.crewplay.tw/arena/sheet_sync" ^
+     --http-method=POST ^
+     --headers="Content-Type=application/json" ^
+     --message-body="{}" ^
+     --attempt-deadline=180s
+
+3. 手動觸發測試：
+   gcloud scheduler jobs run sync-google-excel --location=asia-east1
+
+4. 看執行記錄：
+   到 Console → Cloud Scheduler → sync-google-excel → 記錄
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part F｜常見錯誤對照表
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+| 現象 | 原因 | 解法 |
+|------|------|------|
+| 狀態「失敗」HTTP 405 | 仍用 GET | 改成 POST |
+| 按強制執行沒畫面 | 正常行為 | 看「記錄」分頁 |
+| HTTP 200 但 LINE 沒新場地 | photo 空白 / 格式錯 | 排查試算表.bat |
+| HTTP 504 / DEADLINE_EXCEEDED | 逾時太短 | 改 180 秒 |
+| 改完仍 405 | 改錯 job 或沒儲存 | 重新編輯確認 POST |
+| POST 成功 count=0 | 試算表無有效列 | 檢查工作表1 格式 |
+| 本機 POST 成功 Cloud 失敗 | Cloud 設定未更新 | 對照 Part A 重設 |
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part G｜修正完成後的標準作業流程
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+日常更新（建議）：
+  FB 抓取 → inbox 放 JSON
+  → 修正inbox.bat（若有新批次）
+  → 執行同步.bat（寫入試算表）
+  → 強制同步LINE.bat（立即同步，不用等 Cloud）
+
+Cloud Scheduler 的角色：
+  當作「備援自動同步」
+  即使你忘記按本機 bat，排程仍會定期 POST 同步
+
+建議最終狀態：
+  ✓ Cloud Scheduler：POST + 每天 3:30（或維持 5 天）
+  ✓ 本機：每次手動更新後跑「完整同步.bat」
+  ✓ 試算表：刪除空白列、補 photo、introduce 5 行格式
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Part H｜需要截圖給我協助時，請提供這 3 張
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+若照 Part A 改完仍失敗，請截圖：
+
+1. Cloud Scheduler 編輯畫面（HTTP 方法那一區，確認是 POST）
+2. sync-google-excel「記錄」分頁最新一筆（含 HTTP code 與 body）
+3. 本機執行「Cloud排程診斷.bat」的輸出畫面
+
+有這 3 張通常就能判斷是 Cloud 設定問題還是後端問題。
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+相關本機工具（都在 crewplay-fb-collector 資料夾）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Cloud排程診斷.bat          ← GET vs POST 對照測試
+  強制同步LINE.bat           ← 本機 POST 同步（等同 Cloud 手動執行）
+  完整同步.bat               ← 試算表寫入 + LINE 同步一次做完
+  排查試算表.bat             ← 檢查 introduce / photo 格式
+  Cloud排程失敗修正.txt      ← 精簡版速查
+  本檔案                     ← 完整版指南
+
+資料夾路徑：
+C:\Users\USER\OneDrive\桌面\.gemini\antigravity\scratch\staghorn-configurator\crewplay-fb-collector\

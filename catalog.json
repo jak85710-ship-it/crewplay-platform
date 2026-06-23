@@ -1,0 +1,268 @@
+﻿{
+    "categories":  [
+                       {
+                           "id":  "all",
+                           "name":  "全部"
+                       },
+                       {
+                           "id":  "holttumii",
+                           "name":  "何其美系列"
+                       },
+                       {
+                           "id":  "dwarf",
+                           "name":  "侏儒系列"
+                       },
+                       {
+                           "id":  "native18",
+                           "name":  "十八原生種系列"
+                       },
+                       {
+                           "id":  "hillii",
+                           "name":  "深綠系列"
+                       },
+                       {
+                           "id":  "java",
+                           "name":  "爪哇系列"
+                       },
+                       {
+                           "id":  "coronarium",
+                           "name":  "皇冠系列"
+                       },
+                       {
+                           "id":  "silver",
+                           "name":  "銀鹿系列"
+                       }
+                   ],
+    "plants":  [
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_001",
+                       "desc":  "侏儒鹿角蕨 - NANO",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "NANO",
+                       "img":  "assets/plants/dwarf/dwarf_001.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_002",
+                       "desc":  "侏儒鹿角蕨 - OMG",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "OMG",
+                       "img":  "assets/plants/dwarf/dwarf_002.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_003",
+                       "desc":  "侏儒鹿角蕨 - p.willinckii Yuki",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "p.willinckii Yuki",
+                       "img":  "assets/plants/dwarf/dwarf_003.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_004",
+                       "desc":  "侏儒鹿角蕨 - TFN",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "TFN",
+                       "img":  "assets/plants/dwarf/dwarf_004.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_005",
+                       "desc":  "侏儒鹿角蕨 - TOTORO",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "TOTORO",
+                       "img":  "assets/plants/dwarf/dwarf_005.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_006",
+                       "desc":  "侏儒鹿角蕨 - 玉女",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "玉女",
+                       "img":  "assets/plants/dwarf/dwarf_006.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_007",
+                       "desc":  "侏儒鹿角蕨 - 侏儒深綠",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "侏儒深綠",
+                       "img":  "assets/plants/dwarf/dwarf_007.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_008",
+                       "desc":  "侏儒鹿角蕨 - 金童",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "金童",
+                       "img":  "assets/plants/dwarf/dwarf_008.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_009",
+                       "desc":  "侏儒鹿角蕨 - 珍妮",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "珍妮",
+                       "img":  "assets/plants/dwarf/dwarf_009.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_010",
+                       "desc":  "侏儒鹿角蕨 - 珠寶",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "珠寶",
+                       "img":  "assets/plants/dwarf/dwarf_010.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_011",
+                       "desc":  "侏儒鹿角蕨 - 細菌",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "細菌",
+                       "img":  "assets/plants/dwarf/dwarf_011.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_012",
+                       "desc":  "侏儒鹿角蕨 - 雪",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "雪",
+                       "img":  "assets/plants/dwarf/dwarf_012.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "侏儒系列",
+                       "id":  "dwarf_013",
+                       "desc":  "侏儒鹿角蕨 - 黃月",
+                       "price":  1200,
+                       "category":  "dwarf",
+                       "name":  "黃月",
+                       "img":  "assets/plants/dwarf/dwarf_013.jpg",
+                       "brand":  "侏儒鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "深綠系列",
+                       "id":  "hillii_001",
+                       "desc":  "深綠鹿角蕨 - 深綠",
+                       "price":  900,
+                       "category":  "hillii",
+                       "name":  "深綠",
+                       "img":  "assets/plants/hillii/hillii_001.jpg",
+                       "brand":  "深綠鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "深綠系列",
+                       "id":  "hillii_002",
+                       "desc":  "深綠鹿角蕨 - 龍",
+                       "price":  900,
+                       "category":  "hillii",
+                       "name":  "龍",
+                       "img":  "assets/plants/hillii/hillii_002.jpg",
+                       "brand":  "深綠鹿角蕨",
+                       "rarity":  2,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "爪哇系列",
+                       "id":  "java_001",
+                       "desc":  "爪哇鹿角蕨 - GSTRING",
+                       "price":  2800,
+                       "category":  "java",
+                       "name":  "GSTRING",
+                       "img":  "assets/plants/java/java_001.jpg",
+                       "brand":  "爪哇鹿角蕨",
+                       "rarity":  4,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "銀鹿系列",
+                       "id":  "silver_001",
+                       "desc":  "銀鹿鹿角蕨 - AR",
+                       "price":  2000,
+                       "category":  "silver",
+                       "name":  "AR",
+                       "img":  "assets/plants/silver/silver_001.jpg",
+                       "brand":  "銀鹿鹿角蕨",
+                       "rarity":  3,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "銀鹿系列",
+                       "id":  "silver_002",
+                       "desc":  "銀鹿鹿角蕨 - 索爾",
+                       "price":  2000,
+                       "category":  "silver",
+                       "name":  "索爾",
+                       "img":  "assets/plants/silver/silver_002.jpg",
+                       "brand":  "銀鹿鹿角蕨",
+                       "rarity":  3,
+                       "emoji":  "leaf"
+                   },
+                   {
+                       "categoryName":  "銀鹿系列",
+                       "id":  "silver_003",
+                       "desc":  "銀鹿鹿角蕨 - 野採銀鹿",
+                       "price":  2000,
+                       "category":  "silver",
+                       "name":  "野採銀鹿",
+                       "img":  "assets/plants/silver/silver_003.jpg",
+                       "brand":  "銀鹿鹿角蕨",
+                       "rarity":  3,
+                       "emoji":  "leaf"
+                   }
+               ],
+    "source":  "C:\\Users\\USER\\OneDrive\\桌面\\喚鹿工作室商品圖片",
+    "updated":  "2026-06-06 16:10:19"
+}
