@@ -9,17 +9,7 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[[redirects]]
-  from = "https://crewplay.tw/*"
-  to = "https://www.crewplay.tw/:splat"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "http://crewplay.tw/*"
-  to = "https://www.crewplay.tw/:splat"
-  status = 301
-  force = true
+# Primary domain 請設為 www.crewplay.tw（Netlify 後台），裸網域由 Netlify 轉到 www
 
 [[redirects]]
   from = "http://www.crewplay.tw/*"
