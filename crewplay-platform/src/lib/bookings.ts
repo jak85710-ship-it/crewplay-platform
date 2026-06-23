@@ -1,10 +1,18 @@
 import fs from "fs";
 import path from "path";
+import { getStore } from "@netlify/blobs";
 import type { Booking, BookingsManifest } from "@/types";
 
 const BOOKINGS_FILE = path.join(process.cwd(), "public", "data", "bookings.json");
+const BLOB_STORE = "crewplay-bookings";
+const BLOB_MANIFEST_KEY = "manifest";
 
-function ensureBookingsFile() {
+/** Writable local JSON only when running `npm run dev` on your machine. */
+function useLocalFileStorage(): boolean {
+  return process.env.NODE_ENV === "development" && !process.env.NETLIFY_DEV;
+}
+
+function ensureLocalBookingsFile() {
   const dir = path.dirname(BOOKINGS_FILE);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(BOOKINGS_FILE)) {
@@ -12,9 +20,9 @@ function ensureBookingsFile() {
   }
 }
 
-function readBookings(): Booking[] {
-  ensureBookingsFile();
+function readSeedBookings(): Booking[] {
   try {
+    if (!fs.existsSync(BOOKINGS_FILE)) return [];
     const raw = fs.readFileSync(BOOKINGS_FILE, "utf8");
     const data = JSON.parse(raw) as BookingsManifest;
     return data.bookings ?? [];
@@ -23,9 +31,41 @@ function readBookings(): Booking[] {
   }
 }
 
-function writeBookings(bookings: Booking[]) {
-  ensureBookingsFile();
+function readBookingsFromFile(): Booking[] {
+  ensureLocalBookingsFile();
+  return readSeedBookings();
+}
+
+function writeBookingsToFile(bookings: Booking[]) {
+  ensureLocalBookingsFile();
   fs.writeFileSync(BOOKINGS_FILE, JSON.stringify({ bookings }, null, 2), "utf8");
+}
+
+async function readBookingsFromBlob(): Promise<Booking[]> {
+  const store = getStore(BLOB_STORE);
+  const data = await store.get(BLOB_MANIFEST_KEY, { type: "json" });
+  if (data && typeof data === "object" && "bookings" in data) {
+    return (data as BookingsManifest).bookings ?? [];
+  }
+  return readSeedBookings();
+}
+
+async function writeBookingsToBlob(bookings: Booking[]): Promise<void> {
+  const store = getStore(BLOB_STORE);
+  await store.setJSON(BLOB_MANIFEST_KEY, { bookings });
+}
+
+async function loadBookings(): Promise<Booking[]> {
+  if (useLocalFileStorage()) return readBookingsFromFile();
+  return readBookingsFromBlob();
+}
+
+async function saveBookings(bookings: Booking[]): Promise<void> {
+  if (useLocalFileStorage()) {
+    writeBookingsToFile(bookings);
+    return;
+  }
+  await writeBookingsToBlob(bookings);
 }
 
 export async function listBookings(): Promise<Booking[]> {
@@ -38,7 +78,8 @@ export async function listBookings(): Promise<Booking[]> {
       .order("created_at", { ascending: false });
     if (data) return data as Booking[];
   }
-  return readBookings().sort(
+  const list = await loadBookings();
+  return list.sort(
     (a, b) => new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime()
   );
 }
@@ -81,9 +122,9 @@ export async function createBooking(input: {
     return data as Booking;
   }
 
-  const list = readBookings();
+  const list = await loadBookings();
   list.push(booking);
-  writeBookings(list);
+  await saveBookings(list);
   return booking;
 }
 
@@ -100,7 +141,7 @@ export async function markBookingPaid(tradeNo: string): Promise<Booking | null> 
     return (data as Booking) ?? null;
   }
 
-  const list = readBookings();
+  const list = await loadBookings();
   const idx = list.findIndex((b) => b.merchant_trade_no === tradeNo);
   if (idx < 0) return null;
   list[idx] = {
@@ -108,6 +149,6 @@ export async function markBookingPaid(tradeNo: string): Promise<Booking | null> 
     status: "paid",
     paid_at: new Date().toISOString(),
   };
-  writeBookings(list);
+  await saveBookings(list);
   return list[idx];
 }

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/blobs": "^10.7.9",
     "@supabase/supabase-js": "^2.49.1",
     "next": "^15.1.0",
     "nodemailer": "^9.0.1",
