@@ -52,6 +52,11 @@ function Parse-Fee($introduce) {
     return @{ amount = $null; label = '' }
 }
 
+function Normalize-TaichungText([string]$value) {
+    if ([string]::IsNullOrWhiteSpace($value)) { return '' }
+    return ([string]$value).Replace('台中市', '臺中市').Replace('台中', '臺中')
+}
+
 function Normalize-Region([string]$value) {
     if ([string]::IsNullOrWhiteSpace($value)) { return '' }
     $from = [string][char]0x53F0
@@ -66,8 +71,19 @@ function Infer-RegionFromLocation([string]$location) {
     if ($location -match '臺南|台南') { return '臺南市' }
     if ($location -match '高雄') { return '高雄市' }
     if ($location -match '新北') { return '新北市' }
-    if ($location -match '桃園') { return '桃園市' }
+    if ($location -match '桃園|中壢') { return '桃園市' }
+    if ($location -match '竹北') { return '新竹縣' }
+    if ($location -match '花蓮') { return '花蓮縣' }
     return ''
+}
+
+function Canonical-Region([string]$region) {
+    if ([string]::IsNullOrWhiteSpace($region)) { return '' }
+    $r = Normalize-Region $region
+    if ($r -match '花蓮') { return '花蓮縣' }
+    if ($r -match '竹北') { return '新竹縣' }
+    if ($r -match '中壢') { return '桃園市' }
+    return $r
 }
 
 function Normalize-Photo([string]$photo) {
@@ -123,18 +139,21 @@ if ($mainData.values) {
         $id = if ($idMap.ContainsKey($rowKey)) { [string]$idMap[$rowKey] } else { (New-TeamId $rowIndex) }
         $idMap[$rowKey] = $id
 
-        $location = [string]$row[6]
-        $region = Normalize-Region ([string]$row[5])
+        $location = Normalize-TaichungText ([string]$row[6])
+        $region = Canonical-Region (Normalize-Region (Normalize-TaichungText ([string]$row[5])))
         if ([string]::IsNullOrWhiteSpace($region)) {
             $region = Infer-RegionFromLocation $location
+        }
+        if (-not [string]::IsNullOrWhiteSpace($region)) {
+            $region = Canonical-Region $region
         }
 
         $teams.Add([PSCustomObject]@{
             id          = $id
             sheet_row   = $rowIndex
-            sport       = [string]$row[0]
-            arena_name  = $arena
-            introduce   = [string]$row[2]
+            sport       = Normalize-TaichungText ([string]$row[0])
+            arena_name  = Normalize-TaichungText $arena
+            introduce   = Normalize-TaichungText ([string]$row[2])
             photo       = (Normalize-Photo ([string]$row[3]))
             assign_url  = [string]$row[4]
             region      = $region

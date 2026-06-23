@@ -34,7 +34,7 @@ export default async function HomePage() {
     { label: "桌球揪團", hint: "輕鬆上手", href: "/teams?sport=桌球", icon: "🏓" },
     { label: "排球揪團", hint: "團隊運動", href: "/teams?sport=排球", icon: "🏐" },
     { label: "匹克球", hint: "新興項目", href: "/teams?sport=匹克球", icon: "🎾" },
-    { label: "台中地區", hint: "中部精選", href: "/teams?region=臺中市", icon: "📍" },
+    { label: "臺中地區", hint: "中部精選", href: "/teams?region=臺中市", icon: "📍" },
     { label: "高雄地區", hint: "南部最多團", href: "/teams?region=高雄市", icon: "📍" },
     { label: "台南地區", hint: "週末好去處", href: "/teams?region=臺南市", icon: "📍" },
     { label: "新北地區", hint: "北區精選", href: "/teams?region=新北市", icon: "📍" },

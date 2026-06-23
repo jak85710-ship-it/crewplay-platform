@@ -1,14 +1,40 @@
+/** 試算表／文案中的台中 → 臺中（不影響「台版」等用詞） */
+export function normalizeTaichungCopy(text: string): string {
+  return (text || "").replace(/台中市/g, "臺中市").replace(/台中/g, "臺中");
+}
+
 /** 縣市名稱正規化（臺/台、空白） */
 export function normalizeRegionName(name: string): string {
-  return (name || "")
+  return normalizeTaichungCopy(name)
     .trim()
     .replace(/台/g, "臺")
     .replace(/\s+/g, "");
 }
 
+/** 縣市別名（試算表常見寫法 → 標準縣市） */
+const REGION_ALIASES: Record<string, string[]> = {
+  花蓮縣: ["花蓮市"],
+  新竹縣: ["竹北市", "竹北"],
+  桃園市: ["中壢市", "中壢"],
+  臺南市: ["台南市"],
+  臺中市: ["台中市"],
+  臺北市: ["台北市"],
+};
+
+/** 將試算表 region 正規化成網站標準縣市 */
+export function canonicalRegionName(name: string): string {
+  const n = normalizeRegionName(name);
+  if (!n) return "";
+  for (const [canonical, aliases] of Object.entries(REGION_ALIASES)) {
+    const c = normalizeRegionName(canonical);
+    if (n === c || aliases.some((a) => normalizeRegionName(a) === n)) return c;
+  }
+  return n;
+}
+
 export function regionsMatch(a: string, b: string): boolean {
-  const na = normalizeRegionName(a);
-  const nb = normalizeRegionName(b);
+  const na = canonicalRegionName(a);
+  const nb = canonicalRegionName(b);
   if (!na || !nb) return false;
   return na === nb || na.includes(nb) || nb.includes(na);
 }
