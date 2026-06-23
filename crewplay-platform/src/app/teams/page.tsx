@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { TeamCard } from "@/components/TeamCard";
+import { REGION_OPTIONS, regionsMatch } from "@/lib/region";
 import { filterTeams, getAllTeams } from "@/lib/teams";
-import { PAGE_SIZE, REGIONS, SPORTS } from "@/lib/utils";
+import { PAGE_SIZE, SPORTS } from "@/lib/utils";
 
 interface Props {
   searchParams: Promise<{ sport?: string; region?: string; q?: string; page?: string }>;
@@ -23,6 +24,9 @@ export default async function TeamsPage({ searchParams }: Props) {
 
   const sportsInData = [...new Set(all.map((t) => t.sport).filter(Boolean))];
   const regionsInData = [...new Set(all.map((t) => t.region).filter(Boolean))];
+  const regionOptions = REGION_OPTIONS.filter((r) =>
+    regionsInData.some((d) => regionsMatch(d, r))
+  );
 
   function pageUrl(p: number) {
     const sp = new URLSearchParams();
@@ -64,7 +68,7 @@ export default async function TeamsPage({ searchParams }: Props) {
         </select>
         <select name="region" defaultValue={region} className="rounded-xl border border-slate-200 px-3 py-2.5 text-sm">
           <option value="">全部縣市</option>
-          {REGIONS.filter((r) => regionsInData.some((d) => d.includes(r))).map((r) => (
+          {regionOptions.map((r) => (
             <option key={r} value={r}>{r}</option>
           ))}
         </select>

@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import type { Team, TeamsManifest } from "@/types";
+import { regionsMatch } from "@/lib/region";
 import { parseFee } from "./utils";
 import fs from "fs";
 import path from "path";
@@ -108,7 +109,7 @@ export function filterTeams(
 ): Team[] {
   let list = teams.map(enrichTeamFromIntro);
   if (opts.sport) list = list.filter((t) => t.sport === opts.sport);
-  if (opts.region) list = list.filter((t) => t.region.includes(opts.region!));
+  if (opts.region) list = list.filter((t) => regionsMatch(t.region, opts.region!));
   if (opts.q) {
     const q = opts.q.toLowerCase();
     list = list.filter(

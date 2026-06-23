@@ -20,7 +20,7 @@
                       "sport":  "羽球",
                       "arena_name":  "WUMO 米雪初階羽球團｜週日開打中",
                       "introduce":  "地點：Wumo 南區球場\n時間：每週日固定10:00–12:00\n費用：$200（含球）/人 \n程度：初階\n用球：美津濃50（或等價值用球）",
-                      "photo":  "/photo/r3.jpg",
+                      "photo":  "https://storage.googleapis.com/crewplay-arena-storage/photo/r3.jpg",
                       "assign_url":  "https://www.facebook.com/groups/140719169310057/permalink/26441447808810501/",
                       "region":  "高雄市",
                       "location":  "高雄市左營區左營大路918巷5號",
@@ -3879,6 +3879,6 @@
                       "status":  "published"
                   }
               ],
-    "exportedAt":  "2026-06-21T21:32:44.6082624+08:00",
+    "exportedAt":  "2026-06-23T18:34:36.8028660+08:00",
     "count":  277
 }

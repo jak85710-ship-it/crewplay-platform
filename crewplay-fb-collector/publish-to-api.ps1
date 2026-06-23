@@ -52,6 +52,24 @@ function Parse-Fee($introduce) {
     return @{ amount = $null; label = '' }
 }
 
+function Normalize-Region([string]$value) {
+    if ([string]::IsNullOrWhiteSpace($value)) { return '' }
+    $from = [string][char]0x53F0
+    $to = [string][char]0x81FA
+    return ([string]$value).Trim().Replace($from, $to)
+}
+
+function Infer-RegionFromLocation([string]$location) {
+    if ([string]::IsNullOrWhiteSpace($location)) { return '' }
+    if ($location -match '臺中|台中') { return '臺中市' }
+    if ($location -match '臺北|台北') { return '臺北市' }
+    if ($location -match '臺南|台南') { return '臺南市' }
+    if ($location -match '高雄') { return '高雄市' }
+    if ($location -match '新北') { return '新北市' }
+    if ($location -match '桃園') { return '桃園市' }
+    return ''
+}
+
 function Normalize-Photo([string]$photo) {
     if ([string]::IsNullOrWhiteSpace($photo)) { return $DefaultPhoto }
     if ($photo -match 'crewplay-arena-storage/photo/.+\.jpg') { return $photo }
@@ -105,6 +123,12 @@ if ($mainData.values) {
         $id = if ($idMap.ContainsKey($rowKey)) { [string]$idMap[$rowKey] } else { (New-TeamId $rowIndex) }
         $idMap[$rowKey] = $id
 
+        $location = [string]$row[6]
+        $region = Normalize-Region ([string]$row[5])
+        if ([string]::IsNullOrWhiteSpace($region)) {
+            $region = Infer-RegionFromLocation $location
+        }
+
         $teams.Add([PSCustomObject]@{
             id          = $id
             sheet_row   = $rowIndex
@@ -113,8 +137,8 @@ if ($mainData.values) {
             introduce   = [string]$row[2]
             photo       = (Normalize-Photo ([string]$row[3]))
             assign_url  = [string]$row[4]
-            region      = [string]$row[5]
-            location    = [string]$row[6]
+            region      = $region
+            location    = $location
             fee_amount  = $fee.amount
             fee_label   = $fee.label
             status      = 'published'
