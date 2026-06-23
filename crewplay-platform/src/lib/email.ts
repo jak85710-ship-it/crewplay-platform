@@ -236,7 +236,10 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
 /** 新預約（待付款）：通知您 + 回覆報名者 */
 export async function sendBookingPendingEmails(ctx: BookingMailContext) {
   const cfg = getMailConfig();
-  if (!cfg) throw new Error("Gmail 尚未設定：請在 .env.local 填入 GMAIL_APP_PASSWORD");
+  if (!cfg) {
+    console.warn("Gmail not configured; skipping booking pending emails");
+    return;
+  }
 
   const trade = ctx.booking.merchant_trade_no?.slice(0, 12) ?? ctx.booking.id.slice(0, 8);
 
@@ -276,7 +279,10 @@ export async function sendBookingPendingEmails(ctx: BookingMailContext) {
 /** 付款成功：通知您 + 回覆報名者 */
 export async function sendBookingPaidEmails(ctx: BookingMailContext) {
   const cfg = getMailConfig();
-  if (!cfg) throw new Error("Gmail 尚未設定：請在 .env.local 填入 GMAIL_APP_PASSWORD");
+  if (!cfg) {
+    console.warn("Gmail not configured; skipping booking paid emails");
+    return;
+  }
 
   const trade = ctx.booking.merchant_trade_no?.slice(0, 12) ?? ctx.booking.id.slice(0, 8);
 
