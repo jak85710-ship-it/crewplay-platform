@@ -26,3 +26,27 @@
   to = "https://www.crewplay.tw/:splat"
   status = 301
   force = true
+
+[[redirects]]
+  from = "https://crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true

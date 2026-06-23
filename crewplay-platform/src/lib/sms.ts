@@ -8,8 +8,15 @@ function providerMode(): SmsProvider {
   return "auto";
 }
 
+export function isMitakeProxyConfigured(): boolean {
+  return Boolean(process.env.MITAKE_PROXY_URL && process.env.SMS_PROXY_SECRET);
+}
+
 export function isMitakeConfigured(): boolean {
-  return Boolean(process.env.MITAKE_USERNAME && process.env.MITAKE_PASSWORD);
+  return (
+    isMitakeProxyConfigured() ||
+    Boolean(process.env.MITAKE_USERNAME && process.env.MITAKE_PASSWORD)
+  );
 }
 
 export function isTwilioConfigured(): boolean {
@@ -37,6 +44,45 @@ export function isDevOtpEnabled(): boolean {
 function otpMessage(code: string): string {
   const brand = process.env.SMS_BRAND_NAME || "CrewPlay";
   return `【${brand}】您的登入驗證碼為 ${code}，5 分鐘內有效。`;
+}
+
+async function sendViaMitakeProxy(phone: string, code: string): Promise<SmsSendResult> {
+  const url = process.env.MITAKE_PROXY_URL;
+  const secret = process.env.SMS_PROXY_SECRET;
+  if (!url || !secret) {
+    return { ok: false, error: "Mitake proxy 未設定", provider: "mitake-proxy" };
+  }
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${secret}`,
+    },
+    body: JSON.stringify({ phone, code }),
+  });
+
+  let data: { ok?: boolean; error?: string } = {};
+  const text = await res.text();
+  try {
+    data = JSON.parse(text);
+  } catch {
+    return {
+      ok: false,
+      error: text || `HTTP ${res.status}`,
+      provider: "mitake-proxy",
+    };
+  }
+
+  if (!res.ok || !data.ok) {
+    return {
+      ok: false,
+      error: data.error || `HTTP ${res.status}`,
+      provider: "mitake-proxy",
+    };
+  }
+
+  return { ok: true };
 }
 
 async function sendViaMitake(phone: string, message: string): Promise<SmsSendResult> {
@@ -104,10 +150,16 @@ async function sendViaTwilio(phone: string, message: string): Promise<SmsSendRes
   return { ok: true };
 }
 
-/** 發送登入 OTP 簡訊（正式環境優先三竹 Mitake） */
+/** 發送登入 OTP 簡訊（Netlify 經固定 IP 閘道，或直接 Mitake / Twilio） */
 export async function sendLoginOtpSms(phone: string, code: string): Promise<SmsSendResult> {
   const message = otpMessage(code);
   const mode = providerMode();
+
+  if (mode === "mitake" || mode === "auto") {
+    if (isMitakeProxyConfigured()) {
+      return sendViaMitakeProxy(phone, code);
+    }
+  }
 
   if (mode === "mitake") {
     return sendViaMitake(phone, message);

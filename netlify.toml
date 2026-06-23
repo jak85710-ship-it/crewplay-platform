@@ -31,6 +31,31 @@
   status = 301
   force = true
 
+# crew-play.com → 正式站
+[[redirects]]
+  from = "https://crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.crew-play.com/*"
+  to = "https://www.crewplay.tw/:splat"
+  status = 301
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
