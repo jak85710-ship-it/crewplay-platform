@@ -8,8 +8,8 @@ import {
   MultiSelectDropdown,
   TextField,
 } from "@/components/forms/FormControls";
-import { submitCheckoutForm } from "@/lib/checkout-client";
 import { VENUE_TIME_SLOTS } from "@/lib/form-options";
+import { LISTING_PAYMENT_URL } from "@/lib/listing-payment";
 
 export default function VenueJoinPage() {
   const [loading, setLoading] = useState(false);
@@ -54,12 +54,8 @@ export default function VenueJoinPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "提交失敗");
 
-      if (data.checkout?.action) {
-        submitCheckoutForm(data.checkout);
-        return;
-      }
-
-      throw new Error("無法建立付款，請稍後再試");
+      window.location.assign(data.paymentUrl || LISTING_PAYMENT_URL);
+      return;
     } catch (err) {
       setError(err instanceof Error ? err.message : "提交失敗");
     } finally {
@@ -71,7 +67,7 @@ export default function VenueJoinPage() {
     <div>
       <JoinFormHero
         title="刊登場地，成為場主"
-        subtitle={`出租閒置時段的空間，帶來精準客群。完成表單後需支付平台刊登費 NT$ ${platformFee.toLocaleString()}。`}
+        subtitle="出租閒置時段的空間，帶來精準客群，利用後台輕鬆管理訂單，增加額外收入！"
       />
       <form onSubmit={onSubmit} className="mx-auto max-w-3xl space-y-5 px-4 py-10">
         <FormSection title="場館基本資料">
@@ -144,9 +140,25 @@ export default function VenueJoinPage() {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 
-        <button type="submit" disabled={loading} className="btn-primary w-full sm:w-auto">
-          {loading ? "處理中…" : "確認並前往付款"}
-        </button>
+        <div className="space-y-2">
+          <button type="submit" disabled={loading} className="btn-primary block w-full sm:w-auto">
+            {loading ? "處理中…" : "確認並前往付款"}
+          </button>
+          <p className="text-left text-sm text-slate-500 sm:max-w-md">
+            完成表單後需支付平台刊登費 NT$ {platformFee.toLocaleString()}
+          </p>
+          <p className="text-left text-sm text-slate-500 sm:max-w-md">
+            若未自動跳轉，請{" "}
+            <a
+              href={LISTING_PAYMENT_URL}
+              className="font-medium text-brand-600 underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              點此前往付款
+            </a>
+          </p>
+        </div>
       </form>
     </div>
   );

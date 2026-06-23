@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 
 import { type HostSubmission } from "@/lib/email";
 import { getJoinHostFee } from "@/lib/join-fees";
-import { getPaymentProvider } from "@/lib/payment";
-import { siteUrl } from "@/lib/payment/site-url";
+import { getListingPaymentUrl } from "@/lib/listing-payment";
 import { createTradeNo, saveHostSubmission } from "@/lib/submissions";
 
 function missing(body: Record<string, unknown>, keys: string[]) {
@@ -40,6 +39,7 @@ export async function POST(req: Request) {
 
     const platformFee = getJoinHostFee();
     const merchantTradeNo = createTradeNo("CH");
+    const paymentUrl = getListingPaymentUrl();
 
     const record: HostSubmission = {
       id: crypto.randomUUID(),
@@ -57,21 +57,18 @@ export async function POST(req: Request) {
       email: String(body.email).trim(),
     };
 
-    await saveHostSubmission(record, merchantTradeNo, platformFee);
+    try {
+      await saveHostSubmission(record, merchantTradeNo, platformFee);
+    } catch (saveErr) {
+      console.error("saveHostSubmission failed:", saveErr);
+    }
 
-    const provider = getPaymentProvider();
-    const base = siteUrl();
-    const checkout = provider.createCheckoutForm({
-      merchantTradeNo,
-      amount: platformFee,
-      itemName: "CrewPlay 團主開團刊登費",
-      tradeDesc: `CrewPlay 團主開團 ${record.team_name}`.slice(0, 200),
-      returnUrl: `${base}/api/payment/ecpay/notify`,
-      orderResultUrl: `${base}/join/result?kind=host&status=ok&tradeNo=${merchantTradeNo}`,
-      clientBackUrl: `${base}/join/host`,
+    return NextResponse.json({
+      ok: true,
+      id: record.id,
+      paymentUrl,
+      platformFee,
     });
-
-    return NextResponse.json({ ok: true, id: record.id, checkout, platformFee });
   } catch (err) {
     const message = err instanceof Error ? err.message : "伺服器錯誤";
     return NextResponse.json({ error: message }, { status: 500 });

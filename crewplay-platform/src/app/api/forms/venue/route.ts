@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 
 import { type VenueSubmission } from "@/lib/email";
 import { getJoinVenueFee } from "@/lib/join-fees";
-import { getPaymentProvider } from "@/lib/payment";
-import { siteUrl } from "@/lib/payment/site-url";
+import { getListingPaymentUrl } from "@/lib/listing-payment";
 import { createTradeNo, saveVenueSubmission } from "@/lib/submissions";
 
 function missing(body: Record<string, unknown>, keys: string[]) {
@@ -34,6 +33,7 @@ export async function POST(req: Request) {
 
     const platformFee = getJoinVenueFee();
     const merchantTradeNo = createTradeNo("CV");
+    const paymentUrl = getListingPaymentUrl();
 
     const record: VenueSubmission = {
       id: crypto.randomUUID(),
@@ -48,21 +48,18 @@ export async function POST(req: Request) {
       time_slots: body.time_slots as string[],
     };
 
-    await saveVenueSubmission(record, merchantTradeNo, platformFee);
+    try {
+      await saveVenueSubmission(record, merchantTradeNo, platformFee);
+    } catch (saveErr) {
+      console.error("saveVenueSubmission failed:", saveErr);
+    }
 
-    const provider = getPaymentProvider();
-    const base = siteUrl();
-    const checkout = provider.createCheckoutForm({
-      merchantTradeNo,
-      amount: platformFee,
-      itemName: "CrewPlay 場主刊登費",
-      tradeDesc: `CrewPlay 場地刊登 ${record.venue_name}`.slice(0, 200),
-      returnUrl: `${base}/api/payment/ecpay/notify`,
-      orderResultUrl: `${base}/join/result?kind=venue&status=ok&tradeNo=${merchantTradeNo}`,
-      clientBackUrl: `${base}/join/venue`,
+    return NextResponse.json({
+      ok: true,
+      id: record.id,
+      paymentUrl,
+      platformFee,
     });
-
-    return NextResponse.json({ ok: true, id: record.id, checkout, platformFee });
   } catch (err) {
     const message = err instanceof Error ? err.message : "伺服器錯誤";
     return NextResponse.json({ error: message }, { status: 500 });
