@@ -1,4 +1,5 @@
 import fs from "fs";
+import os from "os";
 import path from "path";
 
 type OtpRecord = {
@@ -10,9 +11,9 @@ type OtpRecord = {
 
 function otpFilePath(): string {
   if (process.env.OTP_STORE_PATH) return process.env.OTP_STORE_PATH;
-  // Netlify/Lambda: only /tmp is writable
-  if (process.env.AWS_LAMBDA_FUNCTION_NAME) {
-    return path.join("/tmp", "crewplay-phone-otp.json");
+  // Netlify/serverless: project dir is read-only; os.tmpdir() -> /tmp on Linux
+  if (process.env.NODE_ENV === "production") {
+    return path.join(os.tmpdir(), "crewplay-phone-otp.json");
   }
   return path.join(process.cwd(), ".data", "phone-otp.json");
 }
