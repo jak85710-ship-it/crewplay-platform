@@ -19,14 +19,22 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
   const [error, setError] = useState("");
   const [devCode, setDevCode] = useState("");
   const [lineNotice, setLineNotice] = useState("");
+  const [showPhoneLogin, setShowPhoneLogin] = useState(!lineEnabled);
+
+  const lineLoginHref = `/api/auth/line/login${
+    redirect.startsWith("/") && redirect !== "/my/bookings"
+      ? `?redirect=${encodeURIComponent(redirect)}`
+      : ""
+  }`;
 
   useEffect(() => {
     if (lineStatus === "ok") {
       setLineNotice("LINE 登入成功");
     } else if (lineStatus === "failed") {
-      setLineNotice("LINE 登入失敗，請再試一次或改用手機登入");
+      setLineNotice("LINE 登入失敗，請再試一次，或改用手機驗證碼");
     } else if (lineStatus === "not_configured") {
-      setLineNotice("LINE 登入尚未設定，請聯絡管理員或改用手機登入");
+      setLineNotice("LINE 登入尚未設定，請改用手機驗證碼或聯絡管理員");
+      setShowPhoneLogin(true);
     }
   }, [lineStatus]);
 
@@ -107,92 +115,142 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         </p>
       )}
 
-      {step === "phone" ? (
-        <form onSubmit={sendCode} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <label className="block text-sm font-medium text-slate-700">
-            手機號碼
-            <input
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="0912 345 678"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-base focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
-            />
-          </label>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading || !phone.trim()}
-            className="w-full rounded-xl bg-brand-600 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-50"
-          >
-            {loading ? "發送中…" : "取得驗證碼"}
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={verifyCode} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm text-slate-600">
-            驗證碼已發送至 <span className="font-semibold text-slate-900">{phone}</span>
+      {lineEnabled && (
+        <div className="mt-8 rounded-2xl border border-[#06C755]/30 bg-gradient-to-b from-[#06C755]/10 to-white p-6 shadow-sm">
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-[#06C755] px-2.5 py-0.5 text-xs font-bold text-white">
+              推薦
+            </span>
+            <span className="text-xs font-semibold text-[#058842]">免費 · 一鍵登入</span>
+          </div>
+          <h2 className="mt-3 text-lg font-bold text-slate-900">使用 LINE 登入</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            最快、免費，不需收簡訊。登入後可查看我的預約。
           </p>
-          {devCode && (
-            <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-              開發模式驗證碼：<span className="font-mono font-bold">{devCode}</span>
-            </p>
-          )}
-          <label className="block text-sm font-medium text-slate-700">
-            6 位數驗證碼
-            <input
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              autoComplete="one-time-code"
-              placeholder="000000"
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              className="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-center text-xl tracking-[0.3em] focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
-            />
-          </label>
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading || code.length !== 6}
-            className="w-full rounded-xl bg-brand-600 py-3 text-sm font-bold text-white transition hover:bg-brand-700 disabled:opacity-50"
+          <Link
+            href={lineLoginHref}
+            className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#06C755] py-3.5 text-base font-bold text-white shadow-sm transition hover:bg-[#05b34c]"
           >
-            {loading ? "驗證中…" : "登入"}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setStep("phone");
-              setCode("");
-              setError("");
-              setDevCode("");
-            }}
-            className="w-full text-sm text-slate-500 hover:text-brand-700"
-          >
-            更換手機號碼
-          </button>
-        </form>
+            LINE 登入
+          </Link>
+        </div>
       )}
 
-      <div className="mt-8 rounded-2xl border border-slate-100 bg-slate-50 p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">其他登入方式</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {lineEnabled ? (
-            <Link
-              href={`/api/auth/line/login${redirect.startsWith("/") && redirect !== "/my/bookings" ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}
-              className="rounded-xl bg-[#06C755] px-4 py-2 text-sm font-semibold text-white"
-            >
-              LINE 登入
-            </Link>
+      {lineEnabled && !showPhoneLogin && step === "phone" && (
+        <button
+          type="button"
+          onClick={() => setShowPhoneLogin(true)}
+          className="mt-4 w-full text-center text-sm text-slate-500 underline-offset-2 hover:text-brand-700 hover:underline"
+        >
+          沒有 LINE？改用手機驗證碼登入
+        </button>
+      )}
+
+      {(showPhoneLogin || !lineEnabled) && (
+        <div
+          className={`space-y-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 ${
+            lineEnabled ? "mt-4" : "mt-8"
+          }`}
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              {lineEnabled ? "備用登入方式" : "登入方式"}
+            </p>
+            <h2 className="mt-1 text-base font-semibold text-slate-800">手機驗證碼登入</h2>
+            {lineEnabled && (
+              <p className="mt-1 text-xs text-slate-500">需收取簡訊驗證碼，建議優先使用 LINE</p>
+            )}
+          </div>
+
+          {step === "phone" ? (
+            <form onSubmit={sendCode} className="space-y-4">
+              <label className="block text-sm font-medium text-slate-700">
+                手機號碼
+                <input
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="0912 345 678"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+                />
+              </label>
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <button
+                type="submit"
+                disabled={loading || !phone.trim()}
+                className="w-full rounded-xl border border-brand-300 bg-white py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50 disabled:opacity-50"
+              >
+                {loading ? "發送中…" : "取得驗證碼"}
+              </button>
+            </form>
           ) : (
-            <span className="rounded-xl bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500">
-              LINE 登入（尚未設定）
-            </span>
+            <form onSubmit={verifyCode} className="space-y-4">
+              <p className="text-sm text-slate-600">
+                驗證碼已發送至 <span className="font-semibold text-slate-900">{phone}</span>
+              </p>
+              {devCode && (
+                <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                  開發模式驗證碼：<span className="font-mono font-bold">{devCode}</span>
+                </p>
+              )}
+              <label className="block text-sm font-medium text-slate-700">
+                6 位數驗證碼
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={6}
+                  autoComplete="one-time-code"
+                  placeholder="000000"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-xl tracking-[0.3em] focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+                />
+              </label>
+              {error && <p className="text-sm text-red-600">{error}</p>}
+              <button
+                type="submit"
+                disabled={loading || code.length !== 6}
+                className="w-full rounded-xl border border-brand-300 bg-white py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50 disabled:opacity-50"
+              >
+                {loading ? "驗證中…" : "登入"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setStep("phone");
+                  setCode("");
+                  setError("");
+                  setDevCode("");
+                }}
+                className="w-full text-sm text-slate-500 hover:text-brand-700"
+              >
+                更換手機號碼
+              </button>
+            </form>
+          )}
+
+          {lineEnabled && showPhoneLogin && step === "phone" && (
+            <button
+              type="button"
+              onClick={() => {
+                setShowPhoneLogin(false);
+                setError("");
+              }}
+              className="w-full text-sm text-slate-500 hover:text-brand-700"
+            >
+              返回 LINE 登入
+            </button>
           )}
         </div>
-      </div>
+      )}
+
+      {!lineEnabled && (
+        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          LINE 登入尚未設定。目前僅能手機驗證碼登入。
+        </div>
+      )}
     </>
   );
 }

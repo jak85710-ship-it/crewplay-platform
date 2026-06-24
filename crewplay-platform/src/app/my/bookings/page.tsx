@@ -50,7 +50,7 @@ export default async function MyBookingsPage() {
                     : ""}
             </p>
           ) : (
-            <p className="mt-2 text-sm text-slate-600">請使用手機號碼登入以查看您的預約</p>
+            <p className="mt-2 text-sm text-slate-600">請先登入以查看您的預約（建議使用 LINE）</p>
           )}
         </div>
 
@@ -59,7 +59,7 @@ export default async function MyBookingsPage() {
             href="/login?redirect=/my/bookings"
             className="rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white"
           >
-            手機登入
+            登入
           </Link>
         ) : (
           <Link href="/api/auth/logout" className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
@@ -70,7 +70,7 @@ export default async function MyBookingsPage() {
 
       {!member.isLoggedIn && (
         <p className="mt-6 rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">
-          輸入手機號碼取得驗證碼即可登入。
+          建議使用 LINE 免費登入；也可改用手機驗證碼。
           <Link href="/login?redirect=/my/bookings" className="ml-1 font-semibold underline">
             前往登入
           </Link>
