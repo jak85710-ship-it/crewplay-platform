@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 import { createBooking } from "@/lib/bookings";
 import { sendBookingSubmittedEmails } from "@/lib/email";
+import { getMemberSession } from "@/lib/member-session";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const cookieStore = await cookies();
+    const member = getMemberSession(cookieStore);
     const teamId = String(body.team_id ?? "");
     const guestName = String(body.guest_name ?? "").trim();
     const guestPhone = String(body.guest_phone ?? "").trim();
@@ -35,6 +39,8 @@ export async function POST(req: Request) {
       slots,
       amount,
       note: String(body.note ?? ""),
+      line_uid: member.method === "line" ? member.lineUid : null,
+      apple_uid: member.method === "apple" ? member.appleUid : null,
     });
 
     await sendBookingSubmittedEmails({

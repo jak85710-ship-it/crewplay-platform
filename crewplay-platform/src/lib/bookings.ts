@@ -97,6 +97,8 @@ export async function createBooking(input: {
   slots: number;
   amount: number;
   note?: string;
+  line_uid?: string | null;
+  apple_uid?: string | null;
 }): Promise<Booking> {
   const booking: Booking = {
     id: crypto.randomUUID(),
@@ -112,6 +114,9 @@ export async function createBooking(input: {
     note: input.note ?? "",
     created_at: new Date().toISOString(),
   };
+
+  if (input.line_uid) booking.line_uid = input.line_uid;
+  if (input.apple_uid) booking.apple_uid = input.apple_uid;
 
   const { getSupabaseAdmin } = await import("./teams");
   const supabase = getSupabaseAdmin();

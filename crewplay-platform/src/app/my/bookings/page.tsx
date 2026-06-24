@@ -2,8 +2,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { listBookings } from "@/lib/bookings";
+import { emptyBookingsMessage, filterBookingsForMember } from "@/lib/member-bookings";
 import { getMemberSession } from "@/lib/member-session";
-import { normalizePhone } from "@/lib/phone-auth";
 
 function bookingStatusLabel(status: string): string {
   switch (status) {
@@ -27,11 +27,7 @@ export default async function MyBookingsPage() {
   const member = getMemberSession(cookieStore);
 
   const bookings = await listBookings();
-  const mine = member.phone
-    ? bookings.filter((b) => normalizePhone(b.guest_phone) === member.phone)
-    : member.isLoggedIn
-      ? bookings.slice(0, 50)
-      : [];
+  const mine = filterBookingsForMember(bookings, member);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -79,7 +75,7 @@ export default async function MyBookingsPage() {
 
       {member.isLoggedIn && mine.length === 0 ? (
         <p className="mt-10 rounded-2xl border border-dashed p-8 text-center text-slate-500">
-          尚無與此手機號碼相符的預約紀錄。
+          {emptyBookingsMessage(member)}
           <Link href="/teams" className="text-brand-600 underline">
             去找團
           </Link>

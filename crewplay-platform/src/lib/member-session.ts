@@ -6,6 +6,8 @@ export type MemberSession = {
   isLoggedIn: boolean;
   displayName?: string;
   phone?: string;
+  lineUid?: string;
+  appleUid?: string;
   method?: "phone" | "line" | "apple";
 };
 
@@ -24,13 +26,23 @@ export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>
   const lineUid = cookieStore.get("line_uid")?.value;
   const lineName = cookieStore.get("line_name")?.value;
   if (lineUid) {
-    return { isLoggedIn: true, displayName: lineName || "LINE 會員", method: "line" };
+    return {
+      isLoggedIn: true,
+      displayName: lineName || "LINE 會員",
+      lineUid,
+      method: "line",
+    };
   }
 
   const appleUid = cookieStore.get("apple_uid")?.value;
   const appleName = cookieStore.get("apple_name")?.value;
   if (appleUid) {
-    return { isLoggedIn: true, displayName: appleName || "Apple 會員", method: "apple" };
+    return {
+      isLoggedIn: true,
+      displayName: appleName || "Apple 會員",
+      appleUid,
+      method: "apple",
+    };
   }
 
   return { isLoggedIn: false };

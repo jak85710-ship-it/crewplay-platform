@@ -49,6 +49,8 @@ create table if not exists bookings (
   id uuid primary key default gen_random_uuid(),
   team_id uuid not null references teams(id) on delete restrict,
   user_id uuid references users_profile(id) on delete set null,
+  line_uid text,
+  apple_uid text,
   guest_name text not null default '',
   guest_phone text not null default '',
   guest_email text not null default '',
@@ -66,6 +68,7 @@ create table if not exists bookings (
 create index if not exists idx_bookings_team on bookings(team_id);
 create index if not exists idx_bookings_status on bookings(status);
 create index if not exists idx_bookings_trade_no on bookings(merchant_trade_no);
+create index if not exists idx_bookings_line_uid on bookings(line_uid);
 
 create table if not exists payments (
   id uuid primary key default gen_random_uuid(),

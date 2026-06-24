@@ -30,6 +30,8 @@ export interface Booking {
   id: string;
   team_id: string;
   user_id?: string | null;
+  line_uid?: string | null;
+  apple_uid?: string | null;
   guest_name: string;
   guest_phone: string;
   guest_email: string;
