@@ -117,16 +117,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
 
       {lineEnabled && (
         <div className="mt-8 rounded-2xl border border-[#06C755]/30 bg-gradient-to-b from-[#06C755]/10 to-white p-6 shadow-sm">
-          <div className="flex items-center gap-2">
-            <span className="rounded-full bg-[#06C755] px-2.5 py-0.5 text-xs font-bold text-white">
-              推薦
-            </span>
-            <span className="text-xs font-semibold text-[#058842]">免費 · 一鍵登入</span>
-          </div>
-          <h2 className="mt-3 text-lg font-bold text-slate-900">使用 LINE 登入</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            最快、免費，不需收簡訊。登入後可查看我的預約。
-          </p>
+          <h2 className="text-lg font-bold text-slate-900">使用 LINE 登入</h2>
           <Link
             href={lineLoginHref}
             className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#06C755] py-3.5 text-base font-bold text-white shadow-sm transition hover:bg-[#05b34c]"
