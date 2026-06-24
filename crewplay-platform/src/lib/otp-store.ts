@@ -8,12 +8,21 @@ type OtpRecord = {
   attempts: number;
 };
 
-const OTP_FILE = path.join(process.cwd(), ".data", "phone-otp.json");
+function otpFilePath(): string {
+  if (process.env.OTP_STORE_PATH) return process.env.OTP_STORE_PATH;
+  // Netlify/Lambda: only /tmp is writable
+  if (process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return path.join("/tmp", "crewplay-phone-otp.json");
+  }
+  return path.join(process.cwd(), ".data", "phone-otp.json");
+}
+
 const SEND_COOLDOWN_MS = 60_000;
 const OTP_TTL_MS = 5 * 60_000;
 const MAX_ATTEMPTS = 5;
 
 function ensureStore() {
+  const OTP_FILE = otpFilePath();
   const dir = path.dirname(OTP_FILE);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(OTP_FILE)) {
@@ -23,6 +32,7 @@ function ensureStore() {
 
 function readStore(): Record<string, OtpRecord> {
   ensureStore();
+  const OTP_FILE = otpFilePath();
   try {
     return JSON.parse(fs.readFileSync(OTP_FILE, "utf8")) as Record<string, OtpRecord>;
   } catch {
@@ -32,6 +42,7 @@ function readStore(): Record<string, OtpRecord> {
 
 function writeStore(data: Record<string, OtpRecord>) {
   ensureStore();
+  const OTP_FILE = otpFilePath();
   fs.writeFileSync(OTP_FILE, JSON.stringify(data, null, 2), "utf8");
 }
 

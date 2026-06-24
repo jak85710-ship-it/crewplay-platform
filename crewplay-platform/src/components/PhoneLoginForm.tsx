@@ -41,7 +41,13 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
       });
-      const data = await res.json();
+      let data: Record<string, unknown> = {};
+      try {
+        data = await res.json();
+      } catch {
+        setError("伺服器錯誤，請稍後再試");
+        return;
+      }
       if (!res.ok) {
         if (data.error === "cooldown") {
           setError(`請 ${data.waitSec ?? 60} 秒後再試`);
