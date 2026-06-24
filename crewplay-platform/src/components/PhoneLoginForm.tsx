@@ -39,6 +39,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
       const res = await fetch("/api/auth/phone/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ phone }),
       });
       let data: Record<string, unknown> = {};
@@ -54,7 +55,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         } else if (data.error === "invalid_phone") {
           setError("請輸入正確的台灣手機號碼（09 開頭，10 碼）");
         } else if (data.error === "sms_failed" || data.error === "sms_not_configured") {
-          setError(data.message || "簡訊發送失敗，請稍後再試");
+          setError(String(data.message || "簡訊發送失敗，請稍後再試"));
         } else {
           setError("無法發送驗證碼，請稍後再試");
         }
@@ -62,6 +63,8 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
       }
       if (data.devCode) setDevCode(String(data.devCode));
       setStep("code");
+    } catch {
+      setError("連線失敗，請稍後再試");
     } finally {
       setLoading(false);
     }

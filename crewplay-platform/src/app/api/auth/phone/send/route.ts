@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { generateOtp, normalizePhone } from "@/lib/phone-auth";
-import { canSendOtp, saveOtp } from "@/lib/otp-store";
+import { buildOtpSetCookie, canSendOtp, saveOtp } from "@/lib/otp-store";
 import { isDevOtpEnabled, isSmsConfigured, sendLoginOtpSms } from "@/lib/sms";
 
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "invalid_phone" }, { status: 400 });
     }
 
-    const gate = canSendOtp(phone);
+    const gate = canSendOtp(phone, req.headers.get("cookie"));
     if (!gate.ok) {
       return NextResponse.json(
         { error: "cooldown", waitSec: gate.waitSec },
@@ -41,9 +41,14 @@ export async function POST(req: Request) {
 
     if (!sms.ok) {
       if (isDevOtpEnabled()) {
-        saveOtp(phone, code);
+        const res = NextResponse.json({ ok: true, devCode: code });
+        if (process.env.NODE_ENV === "production") {
+          res.headers.set("Set-Cookie", buildOtpSetCookie(phone, code));
+        } else {
+          saveOtp(phone, code);
+        }
         console.warn(`[CrewPlay OTP dev] ${phone} -> ${code} (${sms.error})`);
-        return NextResponse.json({ ok: true, devCode: code });
+        return res;
       }
       console.error(`[CrewPlay OTP] SMS failed (${sms.provider}): ${sms.error}`);
       return NextResponse.json(
@@ -55,8 +60,13 @@ export async function POST(req: Request) {
       );
     }
 
-    saveOtp(phone, code);
-    return NextResponse.json({ ok: true });
+    const res = NextResponse.json({ ok: true });
+    if (process.env.NODE_ENV === "production") {
+      res.headers.set("Set-Cookie", buildOtpSetCookie(phone, code));
+    } else {
+      saveOtp(phone, code);
+    }
+    return res;
   } catch (err) {
     console.error("[CrewPlay OTP] send error:", err);
     return NextResponse.json(
