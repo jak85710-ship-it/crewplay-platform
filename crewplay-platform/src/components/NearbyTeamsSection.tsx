@@ -125,7 +125,7 @@ export function NearbyTeamsSection({ teams, excludeIds = [] }: Props) {
               className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-sm"
               aria-label="選擇縣市"
             >
-              <option value="">全部（有圖優先）</option>
+              <option value="">全部</option>
               {REGION_OPTIONS.map((r) => (
                 <option key={r} value={r}>
                   {r}
