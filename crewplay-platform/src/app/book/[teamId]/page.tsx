@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { trackAction } from "@/lib/analytics";
+
 interface Props {
   params: Promise<{ teamId: string }>;
 }
@@ -56,6 +58,7 @@ export default function BookPage({ params }: Props) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "建立預約失敗");
 
+      trackAction("booking_submitted", { team_id: teamId });
       router.push(`/book/result?status=ok&id=${data.booking.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "錯誤");

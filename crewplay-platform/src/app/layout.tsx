@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GoogleAdsTag } from "@/components/GoogleAdsTag";
+import { SiteAnalytics } from "@/components/SiteAnalytics";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import "./globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="zh-Hant">
       <body className="flex min-h-screen flex-col antialiased">
         <GoogleAdsTag />
+        <SiteAnalytics />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
+import { trackAction } from "@/lib/analytics";
+
 type Props = { lineEnabled: boolean };
 
 export function PhoneLoginForm({ lineEnabled }: Props) {
@@ -70,6 +72,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         return;
       }
       if (data.devCode) setDevCode(String(data.devCode));
+      trackAction("phone_otp_sent");
       setStep("code");
     } catch {
       setError("連線失敗，請稍後再試");
@@ -94,6 +97,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         setError(data.message || "驗證失敗");
         return;
       }
+      trackAction("phone_login_success");
       router.push(redirect.startsWith("/") ? redirect : "/my/bookings");
       router.refresh();
     } finally {
@@ -120,6 +124,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
           <h2 className="text-lg font-bold text-slate-900">使用 LINE 登入</h2>
           <Link
             href={lineLoginHref}
+            onClick={() => trackAction("line_login_click")}
             className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#06C755] py-3.5 text-base font-bold text-white shadow-sm transition hover:bg-[#05b34c]"
           >
             LINE 登入
