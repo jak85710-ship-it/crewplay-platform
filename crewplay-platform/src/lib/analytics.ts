@@ -23,6 +23,33 @@ export const FUNNEL_STEPS: FunnelStep[] = [
   { name: "join_venue", label: "場地入駐", index: 9 },
 ];
 
+const SESSION_KEY = "crewplay_sid";
+
+function getSessionId(): string {
+  if (typeof window === "undefined") return "anonymous";
+  try {
+    let id = localStorage.getItem(SESSION_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(SESSION_KEY, id);
+    }
+    return id;
+  } catch {
+    return "anonymous";
+  }
+}
+
+function collectToServer(payload: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
+  fetch("/api/analytics/collect", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "same-origin",
+    keepalive: true,
+    body: JSON.stringify({ ...payload, session_id: getSessionId() }),
+  }).catch(() => {});
+}
+
 export function resolveFunnelStep(pathname: string, searchParams?: URLSearchParams): FunnelStep | null {
   if (pathname === "/") return FUNNEL_STEPS[0];
   if (pathname === "/teams") return FUNNEL_STEPS[1];
@@ -48,6 +75,14 @@ export function trackFunnelStep(step: FunnelStep, pagePath: string) {
     step_index: step.index,
     page_path: pagePath,
   });
+
+  collectToServer({
+    type: "funnel",
+    step_name: step.name,
+    step_label: step.label,
+    step_index: step.index,
+    page_path: pagePath,
+  });
 }
 
 export function trackFunnelFromRoute(pathname: string, searchParams?: URLSearchParams) {
@@ -57,4 +92,11 @@ export function trackFunnelFromRoute(pathname: string, searchParams?: URLSearchP
 
 export function trackAction(action: string, detail?: Record<string, string | number | boolean>) {
   trackEvent("crewplay_action", { action, ...detail });
+
+  collectToServer({
+    type: "action",
+    action,
+    page_path: typeof window !== "undefined" ? window.location.pathname : "",
+    meta: detail,
+  });
 }
