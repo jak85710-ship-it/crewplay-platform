@@ -30,9 +30,9 @@ export default async function HomePage() {
   const featuredIds = [...popularTeams, ...recommendedTeams].map((t) => t.id);
 
   const exploreCards: HomeExploreCard[] = [
-    { label: "羽球揪團", hint: "最受歡迎", href: "/teams?sport=羽球", icon: "🏸" },
-    { label: "桌球揪團", hint: "輕鬆上手", href: "/teams?sport=桌球", icon: "🏓" },
-    { label: "排球揪團", hint: "團隊運動", href: "/teams?sport=排球", icon: "🏐" },
+    { label: "羽球", hint: "最受歡迎", href: "/teams?sport=羽球", icon: "🏸" },
+    { label: "桌球", hint: "輕鬆上手", href: "/teams?sport=桌球", icon: "🏓" },
+    { label: "排球", hint: "團隊運動", href: "/teams?sport=排球", icon: "🏐" },
     { label: "匹克球", hint: "新興項目", href: "/teams?sport=匹克球", icon: "🎾" },
     { label: "臺中地區", hint: "中部精選", href: "/teams?region=臺中市", icon: "📍" },
     { label: "高雄地區", hint: "南部最多團", href: "/teams?region=高雄市", icon: "📍" },
