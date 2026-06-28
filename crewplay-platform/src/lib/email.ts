@@ -4,6 +4,7 @@ import type { Transporter } from "nodemailer";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
+const DEFAULT_NOTIFY_TO = "jak85710@gmail.com";
 
 type MailConfig = {
   user: string;
@@ -20,7 +21,7 @@ function getMailConfig(): MailConfig | null {
   return {
     user,
     pass,
-    notifyTo: process.env.GMAIL_NOTIFY_TO || user,
+    notifyTo: process.env.GMAIL_NOTIFY_TO || DEFAULT_NOTIFY_TO,
   };
 }
 
