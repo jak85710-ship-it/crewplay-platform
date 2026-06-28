@@ -2,9 +2,13 @@ import fs from "fs";
 import path from "path";
 import { getStore } from "@netlify/blobs";
 
-export const DEFAULT_CREDIT_SCORE = 100;
-export const NO_SHOW_PENALTY = 20;
-export const MIN_BOOKING_SCORE = 40;
+import {
+  DEFAULT_CREDIT_SCORE,
+  MIN_BOOKING_SCORE,
+  NO_SHOW_PENALTY,
+} from "@/lib/member-credit-constants";
+
+export { DEFAULT_CREDIT_SCORE, MIN_BOOKING_SCORE, NO_SHOW_PENALTY };
 
 export type MemberCreditProfile = {
   member_key: string;

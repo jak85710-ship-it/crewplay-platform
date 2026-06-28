@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import { NO_SHOW_PENALTY } from "@/lib/member-credit";
+import { NO_SHOW_PENALTY } from "@/lib/member-credit-constants";
 import type { Booking } from "@/types";
 
 function statusLabel(status: string): string {
