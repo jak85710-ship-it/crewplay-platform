@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 
 import { createBooking } from "@/lib/bookings";
 import { sendBookingSubmittedEmails } from "@/lib/email";
-import { getMemberSession } from "@/lib/member-session";
+import { getMemberSession, setMemberProfileCookies } from "@/lib/member-session";
+import { normalizePhone } from "@/lib/phone-auth";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 
 export async function POST(req: Request) {
@@ -11,16 +12,25 @@ export async function POST(req: Request) {
     const body = await req.json();
     const cookieStore = await cookies();
     const member = getMemberSession(cookieStore);
-    const teamId = String(body.team_id ?? "");
-    const guestName = String(body.guest_name ?? "").trim();
-    const guestPhone = String(body.guest_phone ?? "").trim();
-    const guestEmail = String(body.guest_email ?? "").trim();
 
-    if (!guestName || !guestPhone) {
-      return NextResponse.json({ error: "請填寫姓名與手機" }, { status: 400 });
+    if (!member.isLoggedIn) {
+      return NextResponse.json({ error: "login_required", message: "請先登入再報名" }, { status: 401 });
+    }
+
+    const teamId = String(body.team_id ?? "");
+    const guestName = String(body.guest_name ?? member.name ?? member.displayName ?? "").trim();
+    const guestEmail = String(body.guest_email ?? member.email ?? "").trim();
+    const guestPhoneRaw = String(body.guest_phone ?? member.contactPhone ?? member.phone ?? "").trim();
+    const guestPhone = guestPhoneRaw ? (normalizePhone(guestPhoneRaw) ?? guestPhoneRaw) : "";
+
+    if (!guestName) {
+      return NextResponse.json({ error: "請填寫姓名" }, { status: 400 });
     }
     if (!guestEmail || !guestEmail.includes("@")) {
-      return NextResponse.json({ error: "請填寫有效的 Email（用於寄送預約通知）" }, { status: 400 });
+      return NextResponse.json(
+        { error: "請綁定有效的 Email（用於報名通知與帳號識別）" },
+        { status: 400 }
+      );
     }
 
     const team = await getTeamById(teamId);
@@ -53,7 +63,13 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ booking });
+    const res = NextResponse.json({ booking });
+    setMemberProfileCookies(res, {
+      name: guestName,
+      email: guestEmail,
+      contactPhone: guestPhone || undefined,
+    });
+    return res;
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "建立失敗" },

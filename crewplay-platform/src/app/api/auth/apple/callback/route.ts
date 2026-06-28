@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { decodeAppleIdToken, exchangeAppleCode, isAppleLoginConfigured } from "@/lib/apple-auth";
+import { setMemberProfileCookies } from "@/lib/member-session";
 
 function siteUrl() {
   return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -51,6 +52,11 @@ async function handleCallback(req: Request) {
     if (claims.sub) {
       res.cookies.set("apple_uid", claims.sub, { httpOnly: true, maxAge: 86400 * 30, path: "/" });
       res.cookies.set("apple_name", displayName, { maxAge: 86400 * 30, path: "/" });
+      if (claims.email) {
+        setMemberProfileCookies(res, { name: displayName, email: claims.email });
+      } else {
+        setMemberProfileCookies(res, { name: displayName });
+      }
     }
     return res;
   } catch {

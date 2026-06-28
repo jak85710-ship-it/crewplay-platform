@@ -14,6 +14,12 @@ export function parseFee(introduce: string): { amount: number | null; label: str
   return { amount: num ? parseInt(num[1], 10) : null, label };
 }
 
+export function parseIntroField(introduce: string, label: string): string {
+  const re = new RegExp(`${label}[：:]\\s*([^\\n]+)`);
+  const m = (introduce || "").match(re);
+  return m ? m[1].trim() : "";
+}
+
 export function feeSummary(team: { fee_amount: number | null; fee_label: string; introduce: string }): string {
   if (team.fee_label) return team.fee_label;
   if (team.fee_amount) return `$${team.fee_amount}/人`;

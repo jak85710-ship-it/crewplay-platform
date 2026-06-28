@@ -43,6 +43,10 @@ export default async function TeamDetailPage({ params }: Props) {
           {team.location && <p className="mt-2 text-slate-600">{team.location}</p>}
           {fee && <p className="mt-4 text-lg font-semibold text-brand-700">{fee}</p>}
 
+          <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3 py-1 text-sm font-medium text-green-800">
+            免預付 · 到場向團主繳費
+          </p>
+
           <div className="mt-8">
             <h2 className="text-sm font-bold uppercase tracking-wide text-slate-500">團介紹</h2>
             <ul className="mt-3 space-y-1 text-sm leading-relaxed text-slate-700">
@@ -57,7 +61,7 @@ export default async function TeamDetailPage({ params }: Props) {
               href={`/book/${team.id}`}
               className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow hover:bg-brand-700"
             >
-              我要預約
+              快速報名（現場付費）
             </Link>
             {mapQuery && (
               <a

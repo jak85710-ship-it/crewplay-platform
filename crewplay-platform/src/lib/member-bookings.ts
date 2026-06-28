@@ -6,28 +6,26 @@ import { normalizePhone } from "@/lib/phone-auth";
 export function filterBookingsForMember(bookings: Booking[], member: MemberSession): Booking[] {
   if (!member.isLoggedIn) return [];
 
-  if (member.phone) {
-    const phone = member.phone;
-    return bookings.filter((b) => normalizePhone(b.guest_phone) === phone);
-  }
+  const email = member.email?.trim().toLowerCase();
 
-  if (member.lineUid) {
-    return bookings.filter((b) => b.line_uid === member.lineUid);
-  }
-
-  if (member.appleUid) {
-    return bookings.filter((b) => b.apple_uid === member.appleUid);
-  }
-
-  return [];
+  return bookings.filter((b) => {
+    if (member.lineUid && b.line_uid === member.lineUid) return true;
+    if (member.appleUid && b.apple_uid === member.appleUid) return true;
+    if (email && b.guest_email?.trim().toLowerCase() === email) return true;
+    if (member.phone) {
+      const guestPhone = normalizePhone(b.guest_phone);
+      if (guestPhone && guestPhone === member.phone) return true;
+    }
+    return false;
+  });
 }
 
 export function emptyBookingsMessage(member: MemberSession): string {
-  if (member.method === "phone") {
-    return "尚無與此手機號碼相符的預約紀錄。";
-  }
   if (member.method === "line") {
-    return "尚無與此 LINE 帳號相符的預約紀錄。若先前報名時未登入 LINE，請改用手機驗證碼登入查看。";
+    return "尚無與此 LINE 帳號相符的預約紀錄。";
+  }
+  if (member.email) {
+    return "尚無與此 Email 相符的預約紀錄。";
   }
   return "尚無預約紀錄。";
 }
