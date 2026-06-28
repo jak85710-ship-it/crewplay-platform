@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 import { trackAction } from "@/lib/analytics";
+import { normalizePhone } from "@/lib/phone-auth";
 import { feeSummary } from "@/lib/utils";
 
 interface Props {
@@ -34,9 +36,16 @@ type TeamInfo = {
   introduce: string;
 };
 
+async function fetchMemberProfile(): Promise<MemberProfile> {
+  const res = await fetch("/api/member/me", { credentials: "same-origin", cache: "no-store" });
+  return res.json();
+}
+
 export default function BookPage({ params }: Props) {
+  const { teamId } = use(params);
   const router = useRouter();
-  const [teamId, setTeamId] = useState("");
+  const redirectingRef = useRef(false);
+
   const [team, setTeam] = useState<TeamInfo | null>(null);
   const [member, setMember] = useState<MemberProfile | null>(null);
   const [credit, setCredit] = useState<CreditInfo | null>(null);
@@ -52,39 +61,73 @@ export default function BookPage({ params }: Props) {
   });
 
   useEffect(() => {
-    params.then(({ teamId: id }) => {
-      setTeamId(id);
-      Promise.all([
-        fetch("/api/member/me", { credentials: "same-origin" }).then((r) => r.json()),
-        fetch("/api/member/credit", { credentials: "same-origin" }).then((r) =>
+    let cancelled = false;
+    redirectingRef.current = false;
+
+    async function loadSession() {
+      setAuthChecked(false);
+      setError("");
+
+      const loginReturn =
+        typeof window !== "undefined" &&
+        (new URLSearchParams(window.location.search).has("line") ||
+          sessionStorage.getItem("crewplay_auth_return") === "1");
+
+      let memberData = await fetchMemberProfile();
+
+      if (!memberData.isLoggedIn && loginReturn) {
+        await new Promise((r) => setTimeout(r, 350));
+        memberData = await fetchMemberProfile();
+      }
+
+      if (cancelled) return;
+
+      if (!memberData.isLoggedIn) {
+        if (!redirectingRef.current) {
+          redirectingRef.current = true;
+          router.replace(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`);
+        }
+        return;
+      }
+
+      sessionStorage.removeItem("crewplay_auth_return");
+      if (typeof window !== "undefined" && window.location.search) {
+        router.replace(`/book/${teamId}`, { scroll: false });
+      }
+
+      const [creditRes, teamRes] = await Promise.all([
+        fetch("/api/member/credit", { credentials: "same-origin", cache: "no-store" }).then((r) =>
           r.ok ? r.json() : null
         ),
-        fetch(`/api/teams/${id}`).then((r) => r.json()),
-      ]).then(([memberData, creditData, teamData]) => {
-        if (!memberData.isLoggedIn) {
-          router.replace(`/login?redirect=${encodeURIComponent(`/book/${id}`)}`);
-          return;
-        }
-        setMember(memberData);
-        if (creditData?.credit_score != null) {
-          setCredit({
-            credit_score: creditData.credit_score,
-            no_show_count: creditData.no_show_count ?? 0,
-            can_book: creditData.can_book !== false,
-            min_score: creditData.min_score ?? 40,
-          });
-        }
-        setForm((prev) => ({
-          ...prev,
-          guest_name: memberData.name || prev.guest_name,
-          guest_email: memberData.email || prev.guest_email,
-          guest_phone: memberData.contactPhone || memberData.loginPhone || prev.guest_phone,
-        }));
-        if (teamData.team) setTeam(teamData.team);
-        setAuthChecked(true);
-      });
-    });
-  }, [params, router]);
+        fetch(`/api/teams/${teamId}`, { cache: "no-store" }).then((r) => r.json()),
+      ]);
+
+      if (cancelled) return;
+
+      setMember(memberData);
+      if (creditRes?.credit_score != null) {
+        setCredit({
+          credit_score: creditRes.credit_score,
+          no_show_count: creditRes.no_show_count ?? 0,
+          can_book: creditRes.can_book !== false,
+          min_score: creditRes.min_score ?? 40,
+        });
+      }
+      setForm((prev) => ({
+        ...prev,
+        guest_name: memberData.name || prev.guest_name,
+        guest_email: memberData.email || prev.guest_email,
+        guest_phone: memberData.contactPhone || memberData.loginPhone || prev.guest_phone,
+      }));
+      if (teamRes.team) setTeam(teamRes.team);
+      setAuthChecked(true);
+    }
+
+    loadSession();
+    return () => {
+      cancelled = true;
+    };
+  }, [teamId, router]);
 
   const unitPrice = team?.fee_amount ?? 200;
   const total = unitPrice * form.slots;
@@ -94,6 +137,14 @@ export default function BookPage({ params }: Props) {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    const phone = normalizePhone(form.guest_phone);
+    if (!phone) {
+      setError("請填寫有效的手機號碼（09 開頭，10 碼），方便團主聯絡");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/bookings/create", {
         method: "POST",
@@ -103,7 +154,7 @@ export default function BookPage({ params }: Props) {
           team_id: teamId,
           guest_name: form.guest_name,
           guest_email: form.guest_email,
-          guest_phone: form.guest_phone,
+          guest_phone: phone,
           slots: form.slots,
           note: form.note,
           amount: total,
@@ -111,6 +162,7 @@ export default function BookPage({ params }: Props) {
       });
       const data = await res.json();
       if (res.status === 401) {
+        sessionStorage.setItem("crewplay_auth_return", "1");
         router.replace(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`);
         return;
       }
@@ -202,12 +254,15 @@ export default function BookPage({ params }: Props) {
         )}
 
         <label className="block text-sm">
-          <span className="font-medium text-slate-700">手機（選填）</span>
+          <span className="font-medium text-slate-700">手機（必填）</span>
           <input
             type="tel"
+            required
+            inputMode="tel"
+            autoComplete="tel"
             value={form.guest_phone}
             onChange={(e) => setForm({ ...form, guest_phone: e.target.value })}
-            placeholder="方便團主聯絡，可不填"
+            placeholder="09xx xxx xxx（團主聯絡用）"
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5"
           />
         </label>

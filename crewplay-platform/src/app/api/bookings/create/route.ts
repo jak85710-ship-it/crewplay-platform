@@ -23,7 +23,13 @@ export async function POST(req: Request) {
     const guestName = String(body.guest_name ?? member.name ?? member.displayName ?? "").trim();
     const guestEmail = String(body.guest_email ?? member.email ?? "").trim();
     const guestPhoneRaw = String(body.guest_phone ?? member.contactPhone ?? member.phone ?? "").trim();
-    const guestPhone = guestPhoneRaw ? (normalizePhone(guestPhoneRaw) ?? guestPhoneRaw) : "";
+    const guestPhone = normalizePhone(guestPhoneRaw);
+    if (!guestPhone) {
+      return NextResponse.json(
+        { error: "請填寫有效的手機號碼（09 開頭，10 碼），方便團主聯絡" },
+        { status: 400 }
+      );
+    }
 
     if (!guestName) {
       return NextResponse.json({ error: "請填寫姓名" }, { status: 400 });

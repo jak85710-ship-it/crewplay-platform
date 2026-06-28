@@ -26,7 +26,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
   const [lineNotice, setLineNotice] = useState("");
 
   const lineLoginHref = `/api/auth/line/login${
-    redirect.startsWith("/") && redirect !== "/my/bookings"
+    redirect.startsWith("/") && !redirect.startsWith("//")
       ? `?redirect=${encodeURIComponent(redirect)}`
       : ""
   }`;
@@ -101,8 +101,8 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         return;
       }
       trackAction("email_login_success");
-      router.push(redirect.startsWith("/") ? redirect : "/my/bookings");
-      router.refresh();
+      sessionStorage.setItem("crewplay_auth_return", "1");
+      router.replace(redirect.startsWith("/") ? redirect : "/my/bookings");
     } finally {
       setLoading(false);
     }
@@ -154,8 +154,8 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
         return;
       }
       trackAction("phone_login_success");
-      router.push(redirect.startsWith("/") ? redirect : "/my/bookings");
-      router.refresh();
+      sessionStorage.setItem("crewplay_auth_return", "1");
+      router.replace(redirect.startsWith("/") ? redirect : "/my/bookings");
     } finally {
       setLoading(false);
     }

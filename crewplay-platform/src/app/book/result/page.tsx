@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
@@ -18,21 +19,18 @@ type TeamInfo = {
 };
 
 export default function BookResultPage({ searchParams }: Props) {
-  const [params, setParams] = useState<{ status?: string; id?: string; team?: string }>({});
+  const params = use(searchParams);
   const [team, setTeam] = useState<TeamInfo | null>(null);
 
   useEffect(() => {
-    searchParams.then((p) => {
-      setParams(p);
-      if (p.team) {
-        fetch(`/api/teams/${p.team}`)
-          .then((r) => r.json())
-          .then((data) => {
-            if (data.team) setTeam(data.team);
-          });
-      }
-    });
-  }, [searchParams]);
+    if (params.team) {
+      fetch(`/api/teams/${params.team}`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.team) setTeam(data.team);
+        });
+    }
+  }, [params.team]);
 
   const ok = params.status === "ok";
   const timeText = team ? parseIntroField(team.introduce, "時間") : "";
@@ -44,15 +42,25 @@ export default function BookResultPage({ searchParams }: Props) {
   return (
     <div className="mx-auto max-w-lg px-4 py-16">
       <div className="text-center">
-        <div
-          className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full text-2xl ${
-            ok ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
-        >
-          {ok ? "✓" : "!"}
-        </div>
-        <h1 className="mt-6 text-2xl font-bold text-slate-900">{ok ? "報名成功" : "報名未完成"}</h1>
+        {ok ? (
+          <Image
+            src="/images/booking-success.svg"
+            alt="報名成功"
+            width={320}
+            height={240}
+            priority
+            className="mx-auto h-auto w-full max-w-xs"
+          />
+        ) : (
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-700">
+            !
+          </div>
+        )}
+        <h1 className="mt-6 text-2xl font-bold text-slate-900">{ok ? "報名成功！" : "報名未完成"}</h1>
         {team && <p className="mt-2 text-slate-600">{team.arena_name}</p>}
+        {ok && (
+          <p className="mt-2 text-sm text-green-700">名額已保留，團主可透過您留的手機與 Email 聯絡。</p>
+        )}
       </div>
 
       {ok ? (
