@@ -110,11 +110,22 @@ export function setMemberProfileCookies(
   res: { cookies: { set: (name: string, value: string, opts?: object) => void } },
   profile: { name?: string; email?: string; contactPhone?: string }
 ) {
+  applyMemberProfileToCookieStore(res.cookies, profile);
+}
+
+type CookieWriter = {
+  set: (name: string, value: string, opts?: object) => void;
+};
+
+export function applyMemberProfileToCookieStore(
+  cookieWriter: CookieWriter,
+  profile: { name?: string; email?: string; contactPhone?: string }
+) {
   if (profile.name?.trim()) {
-    res.cookies.set("member_name", profile.name.trim().slice(0, 80), PROFILE_COOKIE_OPTS);
+    cookieWriter.set("member_name", profile.name.trim().slice(0, 80), PROFILE_COOKIE_OPTS);
   }
   if (profile.email?.trim() && profile.email.includes("@")) {
-    res.cookies.set("member_email", profile.email.trim().slice(0, 120), {
+    cookieWriter.set("member_email", profile.email.trim().slice(0, 120), {
       ...PROFILE_COOKIE_OPTS,
       httpOnly: true,
     });
@@ -122,7 +133,7 @@ export function setMemberProfileCookies(
   if (profile.contactPhone?.trim()) {
     const normalized = normalizePhone(profile.contactPhone.trim());
     if (normalized) {
-      res.cookies.set("member_contact_phone", normalized, PROFILE_COOKIE_OPTS);
+      cookieWriter.set("member_contact_phone", normalized, PROFILE_COOKIE_OPTS);
     }
   }
 }

@@ -94,7 +94,7 @@ export async function processMemberBooking(
     const enriched = enrichTeamFromIntro(team);
     const slots = Math.min(10, Math.max(1, parseInt(String(raw.slots ?? 1), 10) || 1));
     const unit = enriched.fee_amount ?? 200;
-    const amount = raw.amount ? parseInt(String(raw.amount), 10) : unit * slots;
+    const amount = unit * slots;
 
     const booking = await createBooking({
       team_id: team.id,

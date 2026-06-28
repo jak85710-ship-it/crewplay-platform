@@ -14,6 +14,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/my/bookings";
   const lineStatus = searchParams.get("line");
+  const sessionExpired = searchParams.get("reason") === "session_expired";
 
   const [mode, setMode] = useState<LoginMode>(lineEnabled ? "line" : "email");
   const [email, setEmail] = useState("");
@@ -165,6 +166,12 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
 
   return (
     <>
+      {sessionExpired && (
+        <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          登入狀態已過期，請重新 LINE 登入後再送出報名。
+        </p>
+      )}
+
       {lineNotice && (
         <p
           className={`mt-6 rounded-xl px-4 py-3 text-sm ${

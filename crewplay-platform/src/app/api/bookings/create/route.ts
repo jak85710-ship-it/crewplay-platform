@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { processMemberBooking, siteUrlFromRequest, type BookingInput } from "@/lib/create-member-booking";
-import { setMemberProfileCookies } from "@/lib/member-session";
+import { applyMemberProfileToCookieStore } from "@/lib/member-session";
 
 function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingInput {
   return {
@@ -78,6 +78,6 @@ export async function POST(req: Request) {
       )
     : NextResponse.json({ booking: result.booking });
 
-  setMemberProfileCookies(res, result.profile);
+  applyMemberProfileToCookieStore(res.cookies, result.profile);
   return res;
 }

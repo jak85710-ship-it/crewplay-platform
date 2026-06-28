@@ -15,6 +15,9 @@ export function LoginAutoRedirect() {
 
     const redirect = searchParams.get("redirect") || "/my/bookings";
     const target = redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "/my/bookings";
+    const sessionExpired = searchParams.get("reason") === "session_expired";
+
+    if (sessionExpired) return;
 
     fetch("/api/member/me", { credentials: "same-origin" })
       .then((r) => r.json())
