@@ -1,5 +1,11 @@
 export type TeamStatus = "published" | "hidden" | "full";
-export type BookingStatus = "submitted" | "pending_payment" | "paid" | "cancelled" | "refunded";
+export type BookingStatus =
+  | "submitted"
+  | "pending_payment"
+  | "paid"
+  | "cancelled"
+  | "refunded"
+  | "no_show";
 export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 
 export interface Team {
@@ -30,6 +36,7 @@ export interface Booking {
   id: string;
   team_id: string;
   user_id?: string | null;
+  member_key?: string | null;
   line_uid?: string | null;
   apple_uid?: string | null;
   guest_name: string;
@@ -42,6 +49,7 @@ export interface Booking {
   merchant_trade_no: string | null;
   note: string;
   paid_at?: string | null;
+  no_show_at?: string | null;
   created_at?: string;
   team?: Team;
 }

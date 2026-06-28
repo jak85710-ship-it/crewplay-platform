@@ -20,6 +20,13 @@ type MemberProfile = {
   needsEmail?: boolean;
 };
 
+type CreditInfo = {
+  credit_score: number;
+  no_show_count: number;
+  can_book: boolean;
+  min_score: number;
+};
+
 type TeamInfo = {
   arena_name: string;
   fee_amount: number | null;
@@ -32,6 +39,7 @@ export default function BookPage({ params }: Props) {
   const [teamId, setTeamId] = useState("");
   const [team, setTeam] = useState<TeamInfo | null>(null);
   const [member, setMember] = useState<MemberProfile | null>(null);
+  const [credit, setCredit] = useState<CreditInfo | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,13 +56,24 @@ export default function BookPage({ params }: Props) {
       setTeamId(id);
       Promise.all([
         fetch("/api/member/me", { credentials: "same-origin" }).then((r) => r.json()),
+        fetch("/api/member/credit", { credentials: "same-origin" }).then((r) =>
+          r.ok ? r.json() : null
+        ),
         fetch(`/api/teams/${id}`).then((r) => r.json()),
-      ]).then(([memberData, teamData]) => {
+      ]).then(([memberData, creditData, teamData]) => {
         if (!memberData.isLoggedIn) {
           router.replace(`/login?redirect=${encodeURIComponent(`/book/${id}`)}`);
           return;
         }
         setMember(memberData);
+        if (creditData?.credit_score != null) {
+          setCredit({
+            credit_score: creditData.credit_score,
+            no_show_count: creditData.no_show_count ?? 0,
+            can_book: creditData.can_book !== false,
+            min_score: creditData.min_score ?? 40,
+          });
+        }
         setForm((prev) => ({
           ...prev,
           guest_name: memberData.name || prev.guest_name,
@@ -95,6 +114,16 @@ export default function BookPage({ params }: Props) {
         router.replace(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`);
         return;
       }
+      if (res.status === 403 && data.error === "credit_blocked") {
+        setError(data.message || "信用分不足，暫時無法報名");
+        setCredit({
+          credit_score: data.credit_score ?? 0,
+          no_show_count: data.no_show_count ?? 0,
+          can_book: false,
+          min_score: 40,
+        });
+        return;
+      }
       if (!res.ok) throw new Error(data.error || data.message || "建立預約失敗");
 
       trackAction("booking_submitted", { team_id: teamId });
@@ -125,6 +154,22 @@ export default function BookPage({ params }: Props) {
           本場無需線上付款{feeLabel ? `，參考團費 ${feeLabel}` : ""}，請於開打時直接交給團主。
         </p>
       </div>
+
+      {credit && !credit.can_book && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+          <p className="font-semibold">暫時無法報名</p>
+          <p className="mt-1">
+            信用分 {credit.credit_score}（低於 {credit.min_score} 分）。爽約 {credit.no_show_count}{" "}
+            次會影響後續預約，若有疑問請聯絡客服。
+          </p>
+        </div>
+      )}
+
+      {credit && credit.can_book && credit.no_show_count > 0 && (
+        <p className="mt-4 text-sm text-amber-800">
+          信用分 {credit.credit_score} / 100（爽約 {credit.no_show_count} 次）
+        </p>
+      )}
 
       <form onSubmit={onSubmit} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <label className="block text-sm">
@@ -200,7 +245,7 @@ export default function BookPage({ params }: Props) {
 
         <button
           type="submit"
-          disabled={loading || !teamId}
+          disabled={loading || !teamId || (credit != null && !credit.can_book)}
           className="w-full rounded-xl bg-brand-600 py-3.5 text-base font-bold text-white hover:bg-brand-700 disabled:opacity-50"
         >
           {loading ? "處理中…" : "快速報名（現場付費）"}

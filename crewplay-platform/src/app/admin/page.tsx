@@ -1,6 +1,8 @@
 import { listBookings } from "@/lib/bookings";
 import { getAllTeams } from "@/lib/teams";
 
+import { AdminBookingsTable } from "@/components/AdminBookingsTable";
+
 export default async function AdminPage() {
   const teams = await getAllTeams();
   const bookings = await listBookings();
@@ -18,29 +20,8 @@ export default async function AdminPage() {
       </div>
 
       <section className="mt-10">
-        <h2 className="font-bold text-slate-800">最近預約</h2>
-        <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
-          <table className="min-w-full text-left text-sm">
-            <thead className="border-b bg-slate-50 text-slate-600">
-              <tr>
-                <th className="px-4 py-3">訂單</th>
-                <th className="px-4 py-3">姓名</th>
-                <th className="px-4 py-3">金額</th>
-                <th className="px-4 py-3">狀態</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.slice(0, 20).map((b) => (
-                <tr key={b.id} className="border-b last:border-0">
-                  <td className="px-4 py-3 font-mono text-xs">{b.merchant_trade_no}</td>
-                  <td className="px-4 py-3">{b.guest_name}</td>
-                  <td className="px-4 py-3">{b.amount}</td>
-                  <td className="px-4 py-3">{b.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
+        <AdminBookingsTable bookings={bookings} />
       </section>
 
       <section className="mt-10 rounded-xl border border-brand-200 bg-brand-50 p-5 text-sm text-brand-900">

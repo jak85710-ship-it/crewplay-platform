@@ -97,6 +97,7 @@ export async function createBooking(input: {
   slots: number;
   amount: number;
   note?: string;
+  member_key?: string | null;
   line_uid?: string | null;
   apple_uid?: string | null;
 }): Promise<Booking> {
@@ -115,6 +116,7 @@ export async function createBooking(input: {
     created_at: new Date().toISOString(),
   };
 
+  if (input.member_key) booking.member_key = input.member_key;
   if (input.line_uid) booking.line_uid = input.line_uid;
   if (input.apple_uid) booking.apple_uid = input.apple_uid;
 
@@ -155,4 +157,59 @@ export async function markBookingPaid(tradeNo: string): Promise<Booking | null> 
   };
   await saveBookings(list);
   return list[idx];
+}
+
+export async function markBookingNoShow(bookingId: string): Promise<{
+  booking: Booking | null;
+  memberKey: string | null;
+  alreadyMarked: boolean;
+}> {
+  const { getMemberKeyFromBooking } = await import("./member-key");
+  const { applyNoShowPenalty } = await import("./member-credit");
+
+  const { getSupabaseAdmin } = await import("./teams");
+  const supabase = getSupabaseAdmin();
+
+  if (supabase) {
+    const { data: existing } = await supabase
+      .from("bookings")
+      .select("*")
+      .eq("id", bookingId)
+      .maybeSingle();
+    if (!existing) return { booking: null, memberKey: null, alreadyMarked: false };
+    const booking = existing as Booking;
+    if (booking.status === "no_show") {
+      return { booking, memberKey: getMemberKeyFromBooking(booking), alreadyMarked: true };
+    }
+    const { data } = await supabase
+      .from("bookings")
+      .update({ status: "no_show", no_show_at: new Date().toISOString() })
+      .eq("id", bookingId)
+      .select()
+      .maybeSingle();
+    const updated = (data as Booking) ?? null;
+    const memberKey = updated ? getMemberKeyFromBooking(updated) : null;
+    if (memberKey) await applyNoShowPenalty(memberKey);
+    return { booking: updated, memberKey, alreadyMarked: false };
+  }
+
+  const list = await loadBookings();
+  const idx = list.findIndex((b) => b.id === bookingId);
+  if (idx < 0) return { booking: null, memberKey: null, alreadyMarked: false };
+
+  const existing = list[idx];
+  if (existing.status === "no_show") {
+    return { booking: existing, memberKey: getMemberKeyFromBooking(existing), alreadyMarked: true };
+  }
+
+  list[idx] = {
+    ...existing,
+    status: "no_show",
+    no_show_at: new Date().toISOString(),
+  };
+  await saveBookings(list);
+
+  const memberKey = getMemberKeyFromBooking(list[idx]);
+  if (memberKey) await applyNoShowPenalty(memberKey);
+  return { booking: list[idx], memberKey, alreadyMarked: false };
 }

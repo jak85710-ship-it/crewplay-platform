@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 
 import { createBooking } from "@/lib/bookings";
 import { sendBookingSubmittedEmails } from "@/lib/email";
+import { checkMemberCanBook, MIN_BOOKING_SCORE, touchMemberProfile } from "@/lib/member-credit";
+import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSession, setMemberProfileCookies } from "@/lib/member-session";
 import { normalizePhone } from "@/lib/phone-auth";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
@@ -33,6 +35,24 @@ export async function POST(req: Request) {
       );
     }
 
+    const memberKey = getMemberKeyFromSession(member);
+    if (!memberKey) {
+      return NextResponse.json({ error: "無法識別會員身分，請重新登入" }, { status: 400 });
+    }
+
+    const creditCheck = await checkMemberCanBook(memberKey);
+    if (!creditCheck.allowed) {
+      return NextResponse.json(
+        {
+          error: "credit_blocked",
+          message: `信用分不足（${creditCheck.credit_score} / 最低 ${MIN_BOOKING_SCORE}），暫時無法報名。若有疑問請聯絡客服。`,
+          credit_score: creditCheck.credit_score,
+          no_show_count: creditCheck.no_show_count,
+        },
+        { status: 403 }
+      );
+    }
+
     const team = await getTeamById(teamId);
     if (!team) return NextResponse.json({ error: "找不到揪團" }, { status: 404 });
 
@@ -49,8 +69,17 @@ export async function POST(req: Request) {
       slots,
       amount,
       note: String(body.note ?? ""),
+      member_key: memberKey,
       line_uid: member.method === "line" ? member.lineUid : null,
       apple_uid: member.method === "apple" ? member.appleUid : null,
+    });
+
+    await touchMemberProfile(memberKey, {
+      displayName: guestName,
+      email: guestEmail,
+      lineUid: member.lineUid,
+      appleUid: member.appleUid,
+      phone: guestPhone || member.phone,
     });
 
     await sendBookingSubmittedEmails({

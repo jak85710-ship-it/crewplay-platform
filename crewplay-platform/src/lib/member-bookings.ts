@@ -1,14 +1,17 @@
 import type { Booking } from "@/types";
 
 import type { MemberSession } from "@/lib/member-session";
+import { getMemberKeyFromSession } from "@/lib/member-key";
 import { normalizePhone } from "@/lib/phone-auth";
 
 export function filterBookingsForMember(bookings: Booking[], member: MemberSession): Booking[] {
   if (!member.isLoggedIn) return [];
 
   const email = member.email?.trim().toLowerCase();
+  const memberKey = getMemberKeyFromSession(member);
 
   return bookings.filter((b) => {
+    if (memberKey && b.member_key === memberKey) return true;
     if (member.lineUid && b.line_uid === member.lineUid) return true;
     if (member.appleUid && b.apple_uid === member.appleUid) return true;
     if (email && b.guest_email?.trim().toLowerCase() === email) return true;

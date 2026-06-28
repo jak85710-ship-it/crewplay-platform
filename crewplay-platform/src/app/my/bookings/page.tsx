@@ -2,6 +2,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { listBookings } from "@/lib/bookings";
+import { checkMemberCanBook, MIN_BOOKING_SCORE } from "@/lib/member-credit";
+import { getMemberKeyFromSession } from "@/lib/member-key";
 import { emptyBookingsMessage, filterBookingsForMember } from "@/lib/member-bookings";
 import { getMemberSession } from "@/lib/member-session";
 
@@ -17,6 +19,8 @@ function bookingStatusLabel(status: string): string {
       return "已取消";
     case "refunded":
       return "已退款";
+    case "no_show":
+      return "爽約";
     default:
       return status;
   }
@@ -28,6 +32,9 @@ export default async function MyBookingsPage() {
 
   const bookings = await listBookings();
   const mine = filterBookingsForMember(bookings, member);
+
+  const memberKey = getMemberKeyFromSession(member);
+  const credit = memberKey ? await checkMemberCanBook(memberKey) : null;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -68,11 +75,29 @@ export default async function MyBookingsPage() {
 
       {!member.isLoggedIn && (
         <p className="mt-6 rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">
-          建議使用 LINE 免費登入；也可改用手機驗證碼。
+          建議使用 LINE 免費登入；也可改用 Email 或手機驗證碼。
           <Link href="/login?redirect=/my/bookings" className="ml-1 font-semibold underline">
             前往登入
           </Link>
         </p>
+      )}
+
+      {member.isLoggedIn && credit && (
+        <div
+          className={`mt-6 rounded-xl border px-4 py-3 text-sm ${
+            credit.allowed
+              ? "border-slate-200 bg-slate-50 text-slate-700"
+              : "border-red-200 bg-red-50 text-red-900"
+          }`}
+        >
+          <p className="font-semibold">信用分 {credit.credit_score} / 100</p>
+          <p className="mt-1">
+            爽約紀錄 {credit.no_show_count} 次
+            {credit.allowed
+              ? ` · 低於 ${MIN_BOOKING_SCORE} 分將暫停報名`
+              : ` · 已低於 ${MIN_BOOKING_SCORE} 分，暫時無法報名新團`}
+          </p>
+        </div>
       )}
 
       {member.isLoggedIn && mine.length === 0 ? (
@@ -92,6 +117,8 @@ export default async function MyBookingsPage() {
                   className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                     b.status === "paid"
                       ? "bg-green-100 text-green-800"
+                      : b.status === "no_show"
+                        ? "bg-red-100 text-red-800"
                       : b.status === "pending_payment"
                         ? "bg-amber-100 text-amber-800"
                         : "bg-brand-100 text-brand-800"
