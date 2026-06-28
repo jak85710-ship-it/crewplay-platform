@@ -23,6 +23,7 @@ export type BookingSubmitResult =
       ok: true;
       booking: Awaited<ReturnType<typeof createBooking>>;
       profile: { name: string; email: string; contactPhone: string };
+      emailStatus: import("@/lib/email").BookingEmailResult;
     }
   | {
       ok: false;
@@ -117,24 +118,39 @@ export async function processMemberBooking(
       phone: guestPhone,
     });
 
+    let emailStatus: import("@/lib/email").BookingEmailResult = {
+      configured: false,
+      adminNotified: false,
+      guestNotified: false,
+    };
     try {
-      await sendBookingSubmittedEmails({
+      emailStatus = await sendBookingSubmittedEmails({
         booking,
         team: {
           arena_name: enriched.arena_name,
           sport: enriched.sport,
           region: enriched.region,
           location: enriched.location,
+          introduce: enriched.introduce,
+          fee_amount: enriched.fee_amount,
+          fee_label: enriched.fee_label,
         },
       });
     } catch (mailErr) {
       console.error("booking email failed (booking still saved):", mailErr);
+      emailStatus = {
+        configured: true,
+        adminNotified: false,
+        guestNotified: false,
+        error: mailErr instanceof Error ? mailErr.message : "send_failed",
+      };
     }
 
     return {
       ok: true,
       booking,
       profile: { name: guestName, email: guestEmail, contactPhone: guestPhone },
+      emailStatus,
     };
   } catch (e) {
     return {

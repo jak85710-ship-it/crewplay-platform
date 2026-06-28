@@ -71,12 +71,22 @@ export async function POST(req: Request) {
     );
   }
 
+  const mailFlag = result.emailStatus.guestNotified
+    ? "sent"
+    : result.emailStatus.configured
+      ? "fail"
+      : "off";
+  const resultQ = new URLSearchParams({
+    status: "ok",
+    id: result.booking.id,
+    team: teamId,
+    email: result.profile.email,
+    mail: mailFlag,
+  });
+
   const res = formMode
-    ? NextResponse.redirect(
-        `${site}/book/result?status=ok&id=${result.booking.id}&team=${teamId}`,
-        303
-      )
-    : NextResponse.json({ booking: result.booking });
+    ? NextResponse.redirect(`${site}/book/result?${resultQ.toString()}`, 303)
+    : NextResponse.json({ booking: result.booking, emailStatus: result.emailStatus });
 
   applyMemberProfileToCookieStore(res.cookies, result.profile);
   return res;

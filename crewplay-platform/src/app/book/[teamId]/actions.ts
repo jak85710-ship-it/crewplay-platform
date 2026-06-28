@@ -38,5 +38,18 @@ export async function submitBookingAction(
   }
 
   applyMemberProfileToCookieStore(cookieStore, result.profile);
-  redirect(`/book/result?status=ok&id=${result.booking.id}&team=${teamId}`);
+
+  const mailFlag = result.emailStatus.guestNotified
+    ? "sent"
+    : result.emailStatus.configured
+      ? "fail"
+      : "off";
+  const q = new URLSearchParams({
+    status: "ok",
+    id: result.booking.id,
+    team: teamId,
+    email: result.profile.email,
+    mail: mailFlag,
+  });
+  redirect(`/book/result?${q.toString()}`);
 }

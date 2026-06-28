@@ -7,7 +7,13 @@ import { use, useEffect, useState } from "react";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 interface Props {
-  searchParams: Promise<{ status?: string; id?: string; team?: string }>;
+  searchParams: Promise<{
+    status?: string;
+    id?: string;
+    team?: string;
+    email?: string;
+    mail?: string;
+  }>;
 }
 
 type TeamInfo = {
@@ -33,6 +39,9 @@ export default function BookResultPage({ searchParams }: Props) {
   }, [params.team]);
 
   const ok = params.status === "ok";
+  const bookingRef = params.id?.slice(0, 8) ?? "";
+  const guestEmail = params.email ?? "";
+  const mailStatus = params.mail ?? "";
   const timeText = team ? parseIntroField(team.introduce, "時間") : "";
   const placeText = team
     ? parseIntroField(team.introduce, "地點") || team.location
@@ -58,10 +67,26 @@ export default function BookResultPage({ searchParams }: Props) {
         )}
         <h1 className="mt-6 text-2xl font-bold text-slate-900">{ok ? "報名成功！" : "報名未完成"}</h1>
         {team && <p className="mt-2 text-slate-600">{team.arena_name}</p>}
-        {ok && (
-          <p className="mt-2 text-sm text-green-700">名額已保留，團主可透過您留的手機與 Email 聯絡。</p>
+        {ok && bookingRef && (
+          <p className="mt-1 text-xs text-slate-500">報名編號 {bookingRef}</p>
         )}
       </div>
+
+      {ok && mailStatus === "sent" && guestEmail && (
+        <p className="mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900">
+          確認信已寄至 <span className="font-semibold">{guestEmail}</span>，請查收（含垃圾郵件匣）。
+        </p>
+      )}
+      {ok && mailStatus === "off" && (
+        <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          報名已保留，但 Email 通知尚未設定。如需確認信請聯絡 crew.matchplay@gmail.com。
+        </p>
+      )}
+      {ok && mailStatus === "fail" && (
+        <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          報名已成功，但確認信寄送失敗。您的名額仍已保留，請至「我的預約」查看。
+        </p>
+      )}
 
       {ok ? (
         <ol className="mt-8 space-y-3">
@@ -69,7 +94,11 @@ export default function BookResultPage({ searchParams }: Props) {
             <span className="font-bold text-green-700">1</span>
             <div>
               <p className="font-semibold text-green-900">已為你保留名額</p>
-              <p className="mt-1 text-green-800">確認信已寄至你的 Email。</p>
+              <p className="mt-1 text-green-800">
+                {mailStatus === "sent"
+                  ? "Email 確認信已寄出。"
+                  : "團主可透過您留的手機與 Email 聯絡。"}
+              </p>
             </div>
           </li>
           <li className="flex gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm">

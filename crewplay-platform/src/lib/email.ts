@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 
+import { feeSummary, parseIntroField } from "@/lib/utils";
+
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
 
 type MailConfig = {
@@ -20,6 +22,13 @@ function getMailConfig(): MailConfig | null {
     pass,
     notifyTo: process.env.GMAIL_NOTIFY_TO || user,
   };
+}
+
+function notifyRecipients(notifyTo: string): string[] {
+  return notifyTo
+    .split(/[,;]/)
+    .map((s) => s.trim())
+    .filter((s) => s.includes("@"));
 }
 
 function getTransporter(): Transporter {
@@ -238,7 +247,17 @@ export type BookingMailContext = {
     sport: string;
     region: string;
     location: string;
+    introduce?: string;
+    fee_amount?: number | null;
+    fee_label?: string;
   };
+};
+
+export type BookingEmailResult = {
+  configured: boolean;
+  adminNotified: boolean;
+  guestNotified: boolean;
+  error?: string;
 };
 
 function bookingLines(ctx: BookingMailContext, includeContact = true): string {
@@ -260,46 +279,84 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
   return lines(rows);
 }
 
-/** 新預約（報名）：通知您 + 回覆報名者（無線上金流） */
-export async function sendBookingSubmittedEmails(ctx: BookingMailContext) {
+/** 新預約（報名）：通知平台 + 回覆報名者（現場付費） */
+export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promise<BookingEmailResult> {
   const cfg = getMailConfig();
   if (!cfg) {
     console.warn("Gmail not configured; skipping booking submitted emails");
-    return;
+    return { configured: false, adminNotified: false, guestNotified: false, error: "email_not_configured" };
   }
 
   const ref = ctx.booking.id.slice(0, 8);
+  const timeText = parseIntroField(ctx.team.introduce ?? "", "時間");
+  const placeText =
+    parseIntroField(ctx.team.introduce ?? "", "地點") || ctx.team.location || "—";
+  const feeText = feeSummary({
+    fee_amount: ctx.team.fee_amount ?? null,
+    fee_label: ctx.team.fee_label ?? "",
+    introduce: ctx.team.introduce ?? "",
+  });
 
-  await sendMail({
-    to: cfg.notifyTo,
-    subject: `[揪團預約] ${ctx.team.arena_name}（${ref}）`,
-    text: [
-      "【揪團查詢】新預約報名",
+  try {
+    const adminBody = [
+      "【揪團查詢】新預約報名（現場付費）",
       `提交時間：${ctx.booking.created_at ?? new Date().toISOString()}`,
+      `報名編號：${ref}`,
       "",
       bookingLines(ctx),
       "",
-      "團費請報名者依團主規定現場繳交，平台不代收揪團費用。",
-    ].join("\n"),
-    replyTo: ctx.booking.guest_email || undefined,
-  });
+      timeText ? `時間：${timeText}` : "",
+      placeText ? `地點：${placeText}` : "",
+      "",
+      "團費請報名者到場向團主繳交，平台不代收揪團費用。",
+    ]
+      .filter(Boolean)
+      .join("\n");
 
-  if (ctx.booking.guest_email) {
-    await sendMail({
-      to: ctx.booking.guest_email,
-      subject: `[CrewPlay] 預約已送出（${ref}）`,
-      text: [
-        `${ctx.booking.guest_name} 您好，`,
-        "",
-        "您已在 CrewPlay運動媒合平台提交揪團預約：",
-        "",
-        bookingLines(ctx, false),
-        "",
-        "團主將與您聯繫確認細節；團費請依揪團說明向團主繳交。",
-        "",
-        "CrewPlay運動媒合平台",
-      ].join("\n"),
-    });
+    for (const to of notifyRecipients(cfg.notifyTo)) {
+      await sendMail({
+        to,
+        subject: `[揪團預約] ${ctx.team.arena_name}（${ref}）`,
+        text: adminBody,
+        replyTo: ctx.booking.guest_email || undefined,
+      });
+    }
+
+    let guestNotified = false;
+    if (ctx.booking.guest_email) {
+      await sendMail({
+        to: ctx.booking.guest_email,
+        subject: `[CrewPlay] 報名成功 — ${ctx.team.arena_name}`,
+        text: [
+          `${ctx.booking.guest_name} 您好，`,
+          "",
+          "您已在 CrewPlay 運動媒合平台完成揪團報名，名額已為您保留。",
+          "",
+          "【報名資訊】",
+          bookingLines(ctx, false),
+          "",
+          "【下一步】",
+          "1. 已為您保留名額",
+          timeText ? `2. 請準時到場：${timeText}` : "2. 請準時到場（時間請見揪團說明）",
+          placeText ? `   地點：${placeText}` : "",
+          feeText ? `3. 到場向團主付費（免預付）：${feeText}` : "3. 到場向團主付費（免預付）",
+          "",
+          "團主將透過您留的手機與 Email 聯絡。如有問題請致電 07-552-2092 或回信本信箱。",
+          "",
+          "CrewPlay 運動媒合平台",
+          "crew.matchplay@gmail.com",
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      });
+      guestNotified = true;
+    }
+
+    return { configured: true, adminNotified: true, guestNotified };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "send_failed";
+    console.error("booking email failed:", message);
+    return { configured: true, adminNotified: false, guestNotified: false, error: message };
   }
 }
 
