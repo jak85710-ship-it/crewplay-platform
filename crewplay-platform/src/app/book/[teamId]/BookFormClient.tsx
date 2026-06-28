@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
-
-import { submitBookingAction, type BookFormState } from "./actions";
+import { useSearchParams } from "next/navigation";
+import { useFormStatus } from "react-dom";
 
 type Props = {
   teamId: string;
@@ -27,11 +26,22 @@ type Props = {
   } | null;
 };
 
-const initialState: BookFormState = {};
+function SubmitButton({ disabled }: { disabled: boolean }) {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending || disabled}
+      className="w-full rounded-xl bg-brand-600 py-3.5 text-base font-bold text-white hover:bg-brand-700 disabled:opacity-50"
+    >
+      {pending ? "送出中…" : "快速報名（現場付費）"}
+    </button>
+  );
+}
 
 export function BookFormClient({ teamId, team, feeLabel, unitPrice, member, credit }: Props) {
-  const [state, formAction, pending] = useActionState(submitBookingAction, initialState);
-
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get("error");
   const defaultSlots = 1;
   const total = unitPrice * defaultSlots;
 
@@ -63,7 +73,11 @@ export function BookFormClient({ teamId, team, feeLabel, unitPrice, member, cred
         </p>
       )}
 
-      <form action={formAction} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form
+        action="/api/bookings/create"
+        method="POST"
+        className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
         <input type="hidden" name="team_id" value={teamId} />
         <input type="hidden" name="amount" value={total} />
 
@@ -141,19 +155,13 @@ export function BookFormClient({ teamId, team, feeLabel, unitPrice, member, cred
           </p>
         </div>
 
-        {state.error && (
+        {urlError && (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-            <p>{state.error}</p>
+            <p>{urlError}</p>
           </div>
         )}
 
-        <button
-          type="submit"
-          disabled={pending || (credit != null && !credit.can_book)}
-          className="w-full rounded-xl bg-brand-600 py-3.5 text-base font-bold text-white hover:bg-brand-700 disabled:opacity-50"
-        >
-          {pending ? "送出中…" : "快速報名（現場付費）"}
-        </button>
+        <SubmitButton disabled={credit != null && !credit.can_book} />
 
         <p className="text-center text-xs text-slate-500">
           報名即表示同意留名額；未到場可能影響後續預約權益。

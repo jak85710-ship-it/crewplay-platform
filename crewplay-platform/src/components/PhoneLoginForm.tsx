@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 import { trackAction } from "@/lib/analytics";
@@ -10,11 +10,11 @@ type Props = { lineEnabled: boolean };
 type LoginMode = "line" | "email" | "phone";
 
 export function PhoneLoginForm({ lineEnabled }: Props) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/my/bookings";
   const lineStatus = searchParams.get("line");
-  const sessionExpired = searchParams.get("reason") === "session_expired";
+  const sessionExpired =
+    searchParams.get("reason") === "session_expired" && searchParams.get("line") !== "ok";
 
   const [mode, setMode] = useState<LoginMode>(lineEnabled ? "line" : "email");
   const [email, setEmail] = useState("");
@@ -103,7 +103,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
       }
       trackAction("email_login_success");
       sessionStorage.setItem("crewplay_auth_return", "1");
-      router.replace(redirect.startsWith("/") ? redirect : "/my/bookings");
+      window.location.assign(redirect.startsWith("/") ? redirect : "/my/bookings");
     } finally {
       setLoading(false);
     }
@@ -156,7 +156,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
       }
       trackAction("phone_login_success");
       sessionStorage.setItem("crewplay_auth_return", "1");
-      router.replace(redirect.startsWith("/") ? redirect : "/my/bookings");
+      window.location.assign(redirect.startsWith("/") ? redirect : "/my/bookings");
     } finally {
       setLoading(false);
     }
@@ -168,7 +168,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
     <>
       {sessionExpired && (
         <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          登入狀態已過期，請重新 LINE 登入後再送出報名。
+          登入狀態已過期，請重新登入後再送出報名。
         </p>
       )}
 

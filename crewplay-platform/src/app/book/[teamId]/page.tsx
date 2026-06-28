@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
@@ -11,15 +12,19 @@ import { BookFormClient } from "./BookFormClient";
 
 interface Props {
   params: Promise<{ teamId: string }>;
+  searchParams: Promise<{ relogin?: string }>;
 }
 
-export default async function BookPage({ params }: Props) {
+export default async function BookPage({ params, searchParams }: Props) {
   const { teamId } = await params;
+  const sp = await searchParams;
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
 
   if (!member.isLoggedIn) {
-    redirect(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`);
+    const loginQ = new URLSearchParams({ redirect: `/book/${teamId}` });
+    if (sp.relogin === "1") loginQ.set("reason", "session_expired");
+    redirect(`/login?${loginQ.toString()}`);
   }
 
   const teamRaw = await getTeamById(teamId);
@@ -30,7 +35,8 @@ export default async function BookPage({ params }: Props) {
   const credit = memberKey ? await checkMemberCanBook(memberKey) : null;
 
   return (
-    <BookFormClient
+    <Suspense fallback={<p className="mx-auto max-w-lg px-4 py-10 text-center text-slate-500">載入報名表…</p>}>
+      <BookFormClient
       teamId={teamId}
       team={{
         arena_name: team.arena_name,
@@ -55,5 +61,6 @@ export default async function BookPage({ params }: Props) {
           : null
       }
     />
+    </Suspense>
   );
 }

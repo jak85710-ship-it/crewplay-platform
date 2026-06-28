@@ -46,8 +46,14 @@ export async function POST(req: Request) {
 
   if (!result.ok) {
     if (formMode) {
+      if (result.code === "login_required") {
+        const loginQ = new URLSearchParams({
+          redirect: `/book/${teamId}`,
+          reason: "session_expired",
+        });
+        return NextResponse.redirect(`${site}/login?${loginQ.toString()}`, 303);
+      }
       const q = new URLSearchParams({ error: result.error });
-      if (result.code === "login_required") q.set("relogin", "1");
       return NextResponse.redirect(`${site}/book/${teamId}?${q.toString()}`, 303);
     }
 

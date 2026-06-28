@@ -16,13 +16,12 @@ export function LoginAutoRedirect() {
     const redirect = searchParams.get("redirect") || "/my/bookings";
     const target = redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "/my/bookings";
     const sessionExpired = searchParams.get("reason") === "session_expired";
-
-    if (sessionExpired) return;
+    const lineOk = searchParams.get("line") === "ok";
 
     fetch("/api/member/me", { credentials: "same-origin" })
       .then((r) => r.json())
       .then((data) => {
-        if (data.isLoggedIn) {
+        if (data.isLoggedIn && (!sessionExpired || lineOk)) {
           router.replace(target);
         }
       })

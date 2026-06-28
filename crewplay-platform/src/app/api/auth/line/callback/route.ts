@@ -51,7 +51,9 @@ export async function GET(req: Request) {
   }
 
   const res = NextResponse.redirect(`${site}${target}`);
-  const cookieOpts = authCookieOptions(86400 * 30);
+  const requestHost =
+    req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  const cookieOpts = authCookieOptions(86400 * 30, requestHost);
   if (profile?.userId) {
     res.cookies.set("line_uid", profile.userId, { ...cookieOpts, httpOnly: true });
     res.cookies.set("line_name", profile.displayName ?? "", cookieOpts);
