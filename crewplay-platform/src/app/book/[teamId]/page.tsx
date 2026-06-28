@@ -1,11 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { use, useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, use, useEffect, useRef, useState } from "react";
 
-import { trackAction } from "@/lib/analytics";
 import { normalizePhone } from "@/lib/phone-auth";
 import { feeSummary } from "@/lib/utils";
 
@@ -37,20 +35,36 @@ type TeamInfo = {
 };
 
 async function fetchMemberProfile(): Promise<MemberProfile> {
-  const res = await fetch("/api/member/me", { credentials: "same-origin", cache: "no-store" });
+  const res = await fetch("/api/member/me", { credentials: "include", cache: "no-store" });
   return res.json();
 }
 
-export default function BookPage({ params }: Props) {
+export default function BookPage(props: Props) {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-lg px-4 py-16 text-center text-sm text-slate-500">
+          載入報名表…
+        </div>
+      }
+    >
+      <BookPageInner {...props} />
+    </Suspense>
+  );
+}
+
+function BookPageInner({ params }: Props) {
   const { teamId } = use(params);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sessionReadyRef = useRef(false);
   const redirectingRef = useRef(false);
 
   const [team, setTeam] = useState<TeamInfo | null>(null);
   const [member, setMember] = useState<MemberProfile | null>(null);
   const [credit, setCredit] = useState<CreditInfo | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     guest_name: "",
@@ -61,13 +75,25 @@ export default function BookPage({ params }: Props) {
   });
 
   useEffect(() => {
+    const urlError = searchParams.get("error");
+    const needsRelogin = searchParams.get("relogin") === "1";
+    if (urlError) {
+      setError(decodeURIComponent(urlError));
+      if (typeof window !== "undefined" && window.location.search) {
+        window.history.replaceState({}, "", `/book/${teamId}`);
+      }
+    }
+    if (needsRelogin) {
+      setError((prev) => prev || "登入已過期，請重新登入後再送出報名");
+    }
+  }, [searchParams, teamId]);
+
+  useEffect(() => {
+    if (sessionReadyRef.current) return;
+
     let cancelled = false;
-    redirectingRef.current = false;
 
     async function loadSession() {
-      setAuthChecked(false);
-      setError("");
-
       const loginReturn =
         typeof window !== "undefined" &&
         (new URLSearchParams(window.location.search).has("line") ||
@@ -76,7 +102,7 @@ export default function BookPage({ params }: Props) {
       let memberData = await fetchMemberProfile();
 
       if (!memberData.isLoggedIn && loginReturn) {
-        await new Promise((r) => setTimeout(r, 350));
+        await new Promise((r) => setTimeout(r, 400));
         memberData = await fetchMemberProfile();
       }
 
@@ -90,13 +116,15 @@ export default function BookPage({ params }: Props) {
         return;
       }
 
+      sessionReadyRef.current = true;
       sessionStorage.removeItem("crewplay_auth_return");
-      if (typeof window !== "undefined" && window.location.search) {
-        router.replace(`/book/${teamId}`, { scroll: false });
+
+      if (typeof window !== "undefined" && window.location.search.includes("line=")) {
+        window.history.replaceState({}, "", `/book/${teamId}`);
       }
 
       const [creditRes, teamRes] = await Promise.all([
-        fetch("/api/member/credit", { credentials: "same-origin", cache: "no-store" }).then((r) =>
+        fetch("/api/member/credit", { credentials: "include", cache: "no-store" }).then((r) =>
           r.ok ? r.json() : null
         ),
         fetch(`/api/teams/${teamId}`, { cache: "no-store" }).then((r) => r.json()),
@@ -133,58 +161,25 @@ export default function BookPage({ params }: Props) {
   const total = unitPrice * form.slots;
   const feeLabel = team ? feeSummary(team) : "";
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     const phone = normalizePhone(form.guest_phone);
     if (!phone) {
+      e.preventDefault();
       setError("請填寫有效的手機號碼（09 開頭，10 碼），方便團主聯絡");
-      setLoading(false);
       return;
     }
-
-    try {
-      const res = await fetch("/api/bookings/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          team_id: teamId,
-          guest_name: form.guest_name,
-          guest_email: form.guest_email,
-          guest_phone: phone,
-          slots: form.slots,
-          note: form.note,
-          amount: total,
-        }),
-      });
-      const data = await res.json();
-      if (res.status === 401) {
-        sessionStorage.setItem("crewplay_auth_return", "1");
-        router.replace(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`);
-        return;
-      }
-      if (res.status === 403 && data.error === "credit_blocked") {
-        setError(data.message || "信用分不足，暫時無法報名");
-        setCredit({
-          credit_score: data.credit_score ?? 0,
-          no_show_count: data.no_show_count ?? 0,
-          can_book: false,
-          min_score: 40,
-        });
-        return;
-      }
-      if (!res.ok) throw new Error(data.error || data.message || "建立預約失敗");
-
-      trackAction("booking_submitted", { team_id: teamId });
-      router.push(`/book/result?status=ok&id=${data.booking.id}&team=${teamId}`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "錯誤");
-    } finally {
-      setLoading(false);
+    if (!form.guest_name.trim()) {
+      e.preventDefault();
+      setError("請填寫姓名");
+      return;
     }
+    if (!form.guest_email.trim() || !form.guest_email.includes("@")) {
+      e.preventDefault();
+      setError("請填寫有效的 Email");
+      return;
+    }
+    setError("");
+    setSubmitting(true);
   }
 
   if (!authChecked) {
@@ -223,11 +218,20 @@ export default function BookPage({ params }: Props) {
         </p>
       )}
 
-      <form onSubmit={onSubmit} className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form
+        action="/api/bookings/create"
+        method="POST"
+        onSubmit={onSubmit}
+        className="mt-8 space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
+        <input type="hidden" name="team_id" value={teamId} />
+        <input type="hidden" name="amount" value={total} />
+
         <label className="block text-sm">
           <span className="font-medium text-slate-700">姓名</span>
           <input
             required
+            name="guest_name"
             value={form.guest_name}
             onChange={(e) => setForm({ ...form, guest_name: e.target.value })}
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5"
@@ -240,6 +244,7 @@ export default function BookPage({ params }: Props) {
             <input
               required
               type="email"
+              name="guest_email"
               value={form.guest_email}
               onChange={(e) => setForm({ ...form, guest_email: e.target.value })}
               placeholder="you@example.com"
@@ -247,10 +252,13 @@ export default function BookPage({ params }: Props) {
             />
           </label>
         ) : (
-          <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
-            <span className="font-medium text-slate-700">Email</span>
-            <p className="mt-1">{form.guest_email}</p>
-          </div>
+          <>
+            <input type="hidden" name="guest_email" value={form.guest_email} />
+            <div className="rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-600">
+              <span className="font-medium text-slate-700">Email</span>
+              <p className="mt-1">{form.guest_email}</p>
+            </div>
+          </>
         )}
 
         <label className="block text-sm">
@@ -258,6 +266,7 @@ export default function BookPage({ params }: Props) {
           <input
             type="tel"
             required
+            name="guest_phone"
             inputMode="tel"
             autoComplete="tel"
             value={form.guest_phone}
@@ -271,6 +280,7 @@ export default function BookPage({ params }: Props) {
           <span className="font-medium text-slate-700">人數</span>
           <input
             type="number"
+            name="slots"
             min={1}
             max={10}
             value={form.slots}
@@ -282,6 +292,7 @@ export default function BookPage({ params }: Props) {
         <label className="block text-sm">
           <span className="font-medium text-slate-700">備註（選填）</span>
           <textarea
+            name="note"
             rows={2}
             value={form.note}
             onChange={(e) => setForm({ ...form, note: e.target.value })}
@@ -296,14 +307,26 @@ export default function BookPage({ params }: Props) {
           </p>
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            <p>{error}</p>
+            {error.includes("登入") && (
+              <Link
+                href={`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`}
+                className="mt-2 inline-block font-semibold underline"
+              >
+                重新登入
+              </Link>
+            )}
+          </div>
+        )}
 
         <button
           type="submit"
-          disabled={loading || !teamId || (credit != null && !credit.can_book)}
+          disabled={submitting || !teamId || (credit != null && !credit.can_book)}
           className="w-full rounded-xl bg-brand-600 py-3.5 text-base font-bold text-white hover:bg-brand-700 disabled:opacity-50"
         >
-          {loading ? "處理中…" : "快速報名（現場付費）"}
+          {submitting ? "送出中…" : "快速報名（現場付費）"}
         </button>
 
         <p className="text-center text-xs text-slate-500">

@@ -1,114 +1,83 @@
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-import { createBooking } from "@/lib/bookings";
-import { sendBookingSubmittedEmails } from "@/lib/email";
-import { checkMemberCanBook, MIN_BOOKING_SCORE, touchMemberProfile } from "@/lib/member-credit";
-import { getMemberKeyFromSession } from "@/lib/member-key";
-import { getMemberSession, setMemberProfileCookies } from "@/lib/member-session";
-import { normalizePhone } from "@/lib/phone-auth";
-import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
+import { processMemberBooking, siteUrlFromRequest, type BookingInput } from "@/lib/create-member-booking";
+import { setMemberProfileCookies } from "@/lib/member-session";
+
+function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingInput {
+  return {
+    team_id: String(raw.team_id ?? ""),
+    guest_name: String(raw.guest_name ?? ""),
+    guest_email: String(raw.guest_email ?? ""),
+    guest_phone: String(raw.guest_phone ?? ""),
+    slots: parseInt(String(raw.slots ?? "1"), 10) || 1,
+    note: String(raw.note ?? ""),
+    amount: parseInt(String(raw.amount ?? "0"), 10) || 0,
+  };
+}
+
+function isFormRequest(req: Request): boolean {
+  const type = req.headers.get("content-type") ?? "";
+  return type.includes("application/x-www-form-urlencoded") || type.includes("multipart/form-data");
+}
 
 export async function POST(req: Request) {
+  const formMode = isFormRequest(req);
+  let input: BookingInput;
+
   try {
-    const body = await req.json();
-    const cookieStore = await cookies();
-    const member = getMemberSession(cookieStore);
+    if (formMode) {
+      const fd = await req.formData();
+      input = parseBody(Object.fromEntries(fd.entries()));
+    } else {
+      input = parseBody(await req.json());
+    }
+  } catch {
+    if (formMode) {
+      return NextResponse.redirect(`${siteUrlFromRequest(req)}/teams?error=invalid_form`, 303);
+    }
+    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  }
 
-    if (!member.isLoggedIn) {
-      return NextResponse.json({ error: "login_required", message: "請先登入再報名" }, { status: 401 });
+  const cookieStore = await cookies();
+  const result = await processMemberBooking(input, cookieStore);
+  const site = siteUrlFromRequest(req);
+  const teamId = input.team_id;
+
+  if (!result.ok) {
+    if (formMode) {
+      const q = new URLSearchParams({ error: result.error });
+      if (result.code === "login_required") q.set("relogin", "1");
+      return NextResponse.redirect(`${site}/book/${teamId}?${q.toString()}`, 303);
     }
 
-    const teamId = String(body.team_id ?? "");
-    const guestName = String(body.guest_name ?? member.name ?? member.displayName ?? "").trim();
-    const guestEmail = String(body.guest_email ?? member.email ?? "").trim();
-    const guestPhoneRaw = String(body.guest_phone ?? member.contactPhone ?? member.phone ?? "").trim();
-    const guestPhone = normalizePhone(guestPhoneRaw);
-    if (!guestPhone) {
-      return NextResponse.json(
-        { error: "請填寫有效的手機號碼（09 開頭，10 碼），方便團主聯絡" },
-        { status: 400 }
-      );
-    }
+    const status =
+      result.code === "login_required"
+        ? 401
+        : result.code === "credit_blocked"
+          ? 403
+          : result.code === "not_found"
+            ? 404
+            : 400;
 
-    if (!guestName) {
-      return NextResponse.json({ error: "請填寫姓名" }, { status: 400 });
-    }
-    if (!guestEmail || !guestEmail.includes("@")) {
-      return NextResponse.json(
-        { error: "請綁定有效的 Email（用於報名通知與帳號識別）" },
-        { status: 400 }
-      );
-    }
-
-    const memberKey = getMemberKeyFromSession(member);
-    if (!memberKey) {
-      return NextResponse.json({ error: "無法識別會員身分，請重新登入" }, { status: 400 });
-    }
-
-    const creditCheck = await checkMemberCanBook(memberKey);
-    if (!creditCheck.allowed) {
-      return NextResponse.json(
-        {
-          error: "credit_blocked",
-          message: `信用分不足（${creditCheck.credit_score} / 最低 ${MIN_BOOKING_SCORE}），暫時無法報名。若有疑問請聯絡客服。`,
-          credit_score: creditCheck.credit_score,
-          no_show_count: creditCheck.no_show_count,
-        },
-        { status: 403 }
-      );
-    }
-
-    const team = await getTeamById(teamId);
-    if (!team) return NextResponse.json({ error: "找不到揪團" }, { status: 404 });
-
-    const enriched = enrichTeamFromIntro(team);
-    const slots = Math.min(10, Math.max(1, parseInt(String(body.slots ?? 1), 10)));
-    const unit = enriched.fee_amount ?? 200;
-    const amount = body.amount ? parseInt(String(body.amount), 10) : unit * slots;
-
-    const booking = await createBooking({
-      team_id: team.id,
-      guest_name: guestName,
-      guest_phone: guestPhone,
-      guest_email: guestEmail,
-      slots,
-      amount,
-      note: String(body.note ?? ""),
-      member_key: memberKey,
-      line_uid: member.method === "line" ? member.lineUid : null,
-      apple_uid: member.method === "apple" ? member.appleUid : null,
-    });
-
-    await touchMemberProfile(memberKey, {
-      displayName: guestName,
-      email: guestEmail,
-      lineUid: member.lineUid,
-      appleUid: member.appleUid,
-      phone: guestPhone || member.phone,
-    });
-
-    await sendBookingSubmittedEmails({
-      booking,
-      team: {
-        arena_name: enriched.arena_name,
-        sport: enriched.sport,
-        region: enriched.region,
-        location: enriched.location,
-      },
-    });
-
-    const res = NextResponse.json({ booking });
-    setMemberProfileCookies(res, {
-      name: guestName,
-      email: guestEmail,
-      contactPhone: guestPhone || undefined,
-    });
-    return res;
-  } catch (e) {
     return NextResponse.json(
-      { error: e instanceof Error ? e.message : "建立失敗" },
-      { status: 500 }
+      {
+        error: result.code === "credit_blocked" ? "credit_blocked" : result.error,
+        message: result.error,
+        credit_score: result.credit_score,
+        no_show_count: result.no_show_count,
+      },
+      { status }
     );
   }
+
+  const res = formMode
+    ? NextResponse.redirect(
+        `${site}/book/result?status=ok&id=${result.booking.id}&team=${teamId}`,
+        303
+      )
+    : NextResponse.json({ booking: result.booking });
+
+  setMemberProfileCookies(res, result.profile);
+  return res;
 }

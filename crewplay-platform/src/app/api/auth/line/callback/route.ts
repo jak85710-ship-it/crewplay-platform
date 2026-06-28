@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { authCookieOptions } from "@/lib/auth-cookies";
 import { getLineCallbackUrl, getLineSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
 
 export async function GET(req: Request) {
@@ -50,9 +51,10 @@ export async function GET(req: Request) {
   }
 
   const res = NextResponse.redirect(`${site}${target}`);
+  const cookieOpts = authCookieOptions(86400 * 30);
   if (profile?.userId) {
-    res.cookies.set("line_uid", profile.userId, { httpOnly: true, maxAge: 86400 * 30, path: "/" });
-    res.cookies.set("line_name", profile.displayName ?? "", { maxAge: 86400 * 30, path: "/" });
+    res.cookies.set("line_uid", profile.userId, { ...cookieOpts, httpOnly: true });
+    res.cookies.set("line_name", profile.displayName ?? "", cookieOpts);
   }
   return res;
 }

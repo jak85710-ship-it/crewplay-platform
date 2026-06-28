@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 
+import { authCookieOptions } from "@/lib/auth-cookies";
 import { maskPhone, normalizePhone } from "@/lib/phone-auth";
 
 export type MemberSession = {
@@ -15,9 +16,7 @@ export type MemberSession = {
 };
 
 const PROFILE_COOKIE_OPTS = {
-  maxAge: 86400 * 365,
-  path: "/",
-  sameSite: "lax" as const,
+  ...authCookieOptions(86400 * 365),
 };
 
 export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>>): MemberSession {
@@ -92,17 +91,9 @@ export function setMemberCookies(
   phone: string
 ) {
   const normalized = normalizePhone(phone) ?? phone;
-  res.cookies.set("member_phone", normalized, {
-    httpOnly: true,
-    maxAge: 86400 * 30,
-    path: "/",
-    sameSite: "lax",
-  });
-  res.cookies.set("member_phone_display", maskPhone(normalized), {
-    maxAge: 86400 * 30,
-    path: "/",
-    sameSite: "lax",
-  });
+  const opts = authCookieOptions(86400 * 30);
+  res.cookies.set("member_phone", normalized, { ...opts, httpOnly: true });
+  res.cookies.set("member_phone_display", maskPhone(normalized), opts);
 }
 
 export function setMemberEmailLogin(
@@ -110,12 +101,8 @@ export function setMemberEmailLogin(
   email: string
 ) {
   const normalized = email.trim().toLowerCase();
-  res.cookies.set("member_login_email", normalized, {
-    httpOnly: true,
-    maxAge: 86400 * 30,
-    path: "/",
-    sameSite: "lax",
-  });
+  const opts = authCookieOptions(86400 * 30);
+  res.cookies.set("member_login_email", normalized, { ...opts, httpOnly: true });
   setMemberProfileCookies(res, { email: normalized });
 }
 
@@ -143,6 +130,7 @@ export function setMemberProfileCookies(
 export function clearMemberCookies(res: {
   cookies: { set: (name: string, value: string, opts?: object) => void };
 }) {
+  const clearOpts = { ...authCookieOptions(0), maxAge: 0 };
   for (const key of [
     "member_phone",
     "member_phone_display",
@@ -155,6 +143,6 @@ export function clearMemberCookies(res: {
     "apple_uid",
     "apple_name",
   ]) {
-    res.cookies.set(key, "", { maxAge: 0, path: "/" });
+    res.cookies.set(key, "", clearOpts);
   }
 }
