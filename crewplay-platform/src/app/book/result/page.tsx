@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 
+import { BookingSuccessIllustration } from "@/components/BookingSuccessIllustration";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 interface Props {
@@ -52,14 +52,7 @@ export default function BookResultPage({ searchParams }: Props) {
     <div className="mx-auto max-w-lg px-4 py-16">
       <div className="text-center">
         {ok ? (
-          <Image
-            src="/images/booking-success.svg"
-            alt="報名成功"
-            width={320}
-            height={240}
-            priority
-            className="mx-auto h-auto w-full max-w-xs"
-          />
+          <BookingSuccessIllustration className="mx-auto h-auto w-full max-w-xs" />
         ) : (
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-2xl text-red-700">
             !

@@ -1,0 +1,27 @@
+export function BookingSuccessIllustration({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 320 240"
+      fill="none"
+      role="img"
+      aria-label="報名成功"
+      className={className}
+    >
+      <rect width="320" height="240" rx="24" fill="#F0FDF4" />
+      <circle cx="160" cy="96" r="52" fill="#DCFCE7" stroke="#22C55E" strokeWidth="4" />
+      <path
+        d="M136 96l16 16 32-32"
+        stroke="#16A34A"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <rect x="72" y="168" width="176" height="16" rx="8" fill="#BBF7D0" />
+      <rect x="96" y="192" width="128" height="12" rx="6" fill="#DCFCE7" />
+      <circle cx="56" cy="64" r="8" fill="#FDE68A" />
+      <circle cx="264" cy="72" r="6" fill="#BFDBFE" />
+      <circle cx="248" cy="148" r="10" fill="#FBCFE8" />
+    </svg>
+  );
+}
