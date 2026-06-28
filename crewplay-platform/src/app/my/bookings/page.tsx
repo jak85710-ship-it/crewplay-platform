@@ -39,7 +39,9 @@ export default async function MyBookingsPage() {
               已登入：{member.displayName}
               {member.method === "phone"
                 ? "（手機）"
-                : member.method === "line"
+                : member.method === "email"
+                  ? "（Email）"
+                  : member.method === "line"
                   ? "（LINE）"
                   : member.method === "apple"
                     ? "（Apple）"

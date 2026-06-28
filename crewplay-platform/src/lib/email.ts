@@ -193,6 +193,33 @@ export function isEmailConfigured(): boolean {
   return getMailConfig() !== null;
 }
 
+export async function sendLoginOtpEmail(
+  to: string,
+  code: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    const cfg = getMailConfig();
+    if (!cfg) return { ok: false, error: "email_not_configured" };
+    const transport = getTransporter();
+    await transport.sendMail({
+      from: `CrewPlay <${cfg.user}>`,
+      to,
+      subject: `CrewPlay 登入驗證碼 ${code}`,
+      text: [
+        "您的 CrewPlay 登入驗證碼",
+        "",
+        code,
+        "",
+        "此驗證碼 5 分鐘內有效。",
+        "如非本人操作，請忽略此信。",
+      ].join("\n"),
+    });
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "send_failed" };
+  }
+}
+
 export type BookingMailContext = {
   booking: {
     id: string;

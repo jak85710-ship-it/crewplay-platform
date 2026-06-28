@@ -11,7 +11,7 @@ export type MemberSession = {
   phone?: string;
   lineUid?: string;
   appleUid?: string;
-  method?: "phone" | "line" | "apple";
+  method?: "phone" | "line" | "apple" | "email";
 };
 
 const PROFILE_COOKIE_OPTS = {
@@ -26,21 +26,6 @@ export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>
   const contactPhoneRaw = cookieStore.get("member_contact_phone")?.value?.trim();
   const contactPhone = contactPhoneRaw ? (normalizePhone(contactPhoneRaw) ?? contactPhoneRaw) : undefined;
 
-  const memberPhone = cookieStore.get("member_phone")?.value;
-  if (memberPhone) {
-    const phone = normalizePhone(memberPhone) ?? memberPhone;
-    const name = profileName || undefined;
-    return {
-      isLoggedIn: true,
-      displayName: name || maskPhone(phone),
-      name,
-      email: profileEmail,
-      contactPhone: contactPhone || phone,
-      phone,
-      method: "phone",
-    };
-  }
-
   const lineUid = cookieStore.get("line_uid")?.value;
   const lineName = cookieStore.get("line_name")?.value;
   if (lineUid) {
@@ -53,6 +38,34 @@ export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>
       contactPhone,
       lineUid,
       method: "line",
+    };
+  }
+
+  const loginEmail = cookieStore.get("member_login_email")?.value?.trim().toLowerCase();
+  if (loginEmail) {
+    const name = profileName || loginEmail.split("@")[0];
+    return {
+      isLoggedIn: true,
+      displayName: name,
+      name: profileName || undefined,
+      email: loginEmail,
+      contactPhone,
+      method: "email",
+    };
+  }
+
+  const memberPhone = cookieStore.get("member_phone")?.value;
+  if (memberPhone) {
+    const phone = normalizePhone(memberPhone) ?? memberPhone;
+    const name = profileName || undefined;
+    return {
+      isLoggedIn: true,
+      displayName: name || maskPhone(phone),
+      name,
+      email: profileEmail,
+      contactPhone: contactPhone || phone,
+      phone,
+      method: "phone",
     };
   }
 
@@ -92,6 +105,20 @@ export function setMemberCookies(
   });
 }
 
+export function setMemberEmailLogin(
+  res: { cookies: { set: (name: string, value: string, opts?: object) => void } },
+  email: string
+) {
+  const normalized = email.trim().toLowerCase();
+  res.cookies.set("member_login_email", normalized, {
+    httpOnly: true,
+    maxAge: 86400 * 30,
+    path: "/",
+    sameSite: "lax",
+  });
+  setMemberProfileCookies(res, { email: normalized });
+}
+
 export function setMemberProfileCookies(
   res: { cookies: { set: (name: string, value: string, opts?: object) => void } },
   profile: { name?: string; email?: string; contactPhone?: string }
@@ -122,6 +149,7 @@ export function clearMemberCookies(res: {
     "member_name",
     "member_email",
     "member_contact_phone",
+    "member_login_email",
     "line_uid",
     "line_name",
     "apple_uid",
