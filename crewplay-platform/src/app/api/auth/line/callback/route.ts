@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
 import { authCookieOptions } from "@/lib/auth-cookies";
-import { getLineCallbackUrl, getLineSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
+import { getLineCallbackUrl, getPublicSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
 
 export async function GET(req: Request) {
-  const site = getLineSiteUrl();
+  const site = getPublicSiteUrl();
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
 
@@ -25,7 +25,7 @@ export async function GET(req: Request) {
     body: new URLSearchParams({
       grant_type: "authorization_code",
       code,
-      redirect_uri: getLineCallbackUrl(site),
+      redirect_uri: getLineCallbackUrl(),
       client_id: channelId,
       client_secret: secret,
     }),

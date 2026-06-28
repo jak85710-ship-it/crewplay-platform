@@ -26,6 +26,7 @@ export async function submitBookingAction(
       slots: parseInt(String(formData.get("slots") ?? "1"), 10) || 1,
       note: String(formData.get("note") ?? ""),
       amount: parseInt(String(formData.get("amount") ?? "0"), 10) || 0,
+      booking_auth: String(formData.get("booking_auth") ?? ""),
     },
     cookieStore
   );

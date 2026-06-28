@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { cookieReaderFromHeader, mergeCookieReaders } from "@/lib/cookie-reader";
 import { processMemberBooking, siteUrlFromRequest, type BookingInput } from "@/lib/create-member-booking";
 import { applyMemberProfileToCookieStore } from "@/lib/member-session";
 
@@ -13,6 +14,7 @@ function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingIn
     slots: parseInt(String(raw.slots ?? "1"), 10) || 1,
     note: String(raw.note ?? ""),
     amount: parseInt(String(raw.amount ?? "0"), 10) || 0,
+    booking_auth: String(raw.booking_auth ?? ""),
   };
 }
 
@@ -39,7 +41,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  const cookieStore = await cookies();
+  const cookieStore = mergeCookieReaders(
+    cookieReaderFromHeader(req.headers.get("cookie")),
+    await cookies()
+  );
   const result = await processMemberBooking(input, cookieStore);
   const site = siteUrlFromRequest(req);
   const teamId = input.team_id;

@@ -1,10 +1,10 @@
-import type { cookies } from "next/headers";
-
 import { createBooking } from "@/lib/bookings";
+import { memberSessionFromBookingToken } from "@/lib/booking-auth-token";
+import type { CookieReader } from "@/lib/cookie-reader";
 import { sendBookingSubmittedEmails } from "@/lib/email";
 import { checkMemberCanBook, MIN_BOOKING_SCORE, touchMemberProfile } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
-import { getMemberSession } from "@/lib/member-session";
+import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
 import { normalizePhone } from "@/lib/phone-auth";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 
@@ -16,7 +16,19 @@ export type BookingInput = {
   slots: number;
   note?: string;
   amount: number;
+  booking_auth?: string;
 };
+
+function resolveMemberSession(
+  cookieStore: CookieReader,
+  teamId: string,
+  bookingAuth?: string | null
+): MemberSession {
+  const fromCookies = getMemberSessionFromReader(cookieStore);
+  if (fromCookies.isLoggedIn) return fromCookies;
+  const fromToken = memberSessionFromBookingToken(bookingAuth, teamId);
+  return fromToken ?? { isLoggedIn: false };
+}
 
 export type BookingSubmitResult =
   | {
@@ -35,9 +47,10 @@ export type BookingSubmitResult =
 
 export async function processMemberBooking(
   raw: BookingInput,
-  cookieStore: Awaited<ReturnType<typeof cookies>>
+  cookieStore: CookieReader
 ): Promise<BookingSubmitResult> {
-  const member = getMemberSession(cookieStore);
+  const teamId = String(raw.team_id ?? "").trim();
+  const member = resolveMemberSession(cookieStore, teamId, raw.booking_auth);
 
   if (!member.isLoggedIn) {
     return {
@@ -47,7 +60,6 @@ export async function processMemberBooking(
     };
   }
 
-  const teamId = String(raw.team_id ?? "").trim();
   const guestName = String(raw.guest_name ?? member.name ?? member.displayName ?? "").trim();
   const guestEmail = String(raw.guest_email ?? member.email ?? "").trim();
   const guestPhone = normalizePhone(String(raw.guest_phone ?? member.contactPhone ?? member.phone ?? ""));
@@ -162,9 +174,16 @@ export async function processMemberBooking(
 }
 
 export function siteUrlFromRequest(req: Request): string {
+  const hostRaw = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
+  const host = hostRaw.split(",")[0]?.trim();
+  if (host && (host === "crewplay.tw" || host.endsWith(".crewplay.tw"))) {
+    const proto = req.headers.get("x-forwarded-proto") ?? "https";
+    return `${proto}://${host}`;
+  }
+
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   if (configured) return configured;
-  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "localhost:3000";
-  const proto = req.headers.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
-  return `${proto}://${host}`;
+  const fallbackHost = host || "localhost:3000";
+  const proto = req.headers.get("x-forwarded-proto") ?? (fallbackHost.includes("localhost") ? "http" : "https");
+  return `${proto}://${fallbackHost}`;
 }

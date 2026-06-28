@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { getLineCallbackUrl, getLineSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
+import { getLineCallbackUrl, getPublicSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
 
 export async function GET(req: Request) {
-  const site = getLineSiteUrl();
+  const site = getPublicSiteUrl();
   if (!isLineLoginConfigured()) {
     return NextResponse.redirect(`${site}/login?line=not_configured`);
   }
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   const params = new URLSearchParams({
     response_type: "code",
     client_id: channelId,
-    redirect_uri: getLineCallbackUrl(site),
+    redirect_uri: getLineCallbackUrl(),
     scope: "profile openid",
     state,
   });

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
-import { authCookieOptions } from "@/lib/auth-cookies";
+import { authCookieOptions, clearAuthCookieOptions } from "@/lib/auth-cookies";
+import type { CookieReader } from "@/lib/cookie-reader";
 import { maskPhone, normalizePhone } from "@/lib/phone-auth";
 
 export type MemberSession = {
@@ -19,7 +20,7 @@ const PROFILE_COOKIE_OPTS = {
   ...authCookieOptions(86400 * 365),
 };
 
-export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>>): MemberSession {
+export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSession {
   const profileName = cookieStore.get("member_name")?.value?.trim();
   const profileEmail = cookieStore.get("member_email")?.value?.trim();
   const contactPhoneRaw = cookieStore.get("member_contact_phone")?.value?.trim();
@@ -86,6 +87,10 @@ export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>
   return { isLoggedIn: false };
 }
 
+export function getMemberSession(cookieStore: Awaited<ReturnType<typeof cookies>>): MemberSession {
+  return getMemberSessionFromReader(cookieStore);
+}
+
 export function setMemberCookies(
   res: { cookies: { set: (name: string, value: string, opts?: object) => void } },
   phone: string
@@ -141,7 +146,7 @@ export function applyMemberProfileToCookieStore(
 export function clearMemberCookies(res: {
   cookies: { set: (name: string, value: string, opts?: object) => void };
 }) {
-  const clearOpts = { ...authCookieOptions(0), maxAge: 0 };
+  const clearOpts = clearAuthCookieOptions();
   for (const key of [
     "member_phone",
     "member_phone_display",

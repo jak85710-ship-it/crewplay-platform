@@ -1,17 +1,23 @@
 import { NextResponse } from "next/server";
 
-import { getLineCallbackUrl, getLineSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
+import {
+  getLineCallbackUrl,
+  getLineOAuthOrigin,
+  getPublicSiteUrl,
+  isLineLoginConfigured,
+} from "@/lib/line-auth";
 
 /** 公开诊断：显示 LINE Login 需在 Developers Console 登记的 Callback URL */
 export async function GET() {
-  const site = getLineSiteUrl();
-  const callbackUrl = getLineCallbackUrl(site);
+  const site = getPublicSiteUrl();
+  const callbackUrl = getLineCallbackUrl();
   const channelId = process.env.LINE_CHANNEL_ID?.trim() || null;
 
   return NextResponse.json({
     configured: isLineLoginConfigured(),
     channelId,
     siteUrl: site,
+    oauthOrigin: getLineOAuthOrigin(),
     callbackUrl,
     registerAt: channelId
       ? `https://developers.line.biz/console/channel/${channelId}/line-login`

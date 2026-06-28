@@ -6,6 +6,7 @@ import { useFormStatus } from "react-dom";
 
 type Props = {
   teamId: string;
+  bookingAuth: string;
   team: {
     arena_name: string;
     fee_label: string;
@@ -39,7 +40,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
   );
 }
 
-export function BookFormClient({ teamId, team, feeLabel, unitPrice, member, credit }: Props) {
+export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice, member, credit }: Props) {
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
   const defaultSlots = 1;
@@ -80,6 +81,7 @@ export function BookFormClient({ teamId, team, feeLabel, unitPrice, member, cred
       >
         <input type="hidden" name="team_id" value={teamId} />
         <input type="hidden" name="amount" value={total} />
+        {bookingAuth ? <input type="hidden" name="booking_auth" value={bookingAuth} /> : null}
 
         <label className="block text-sm">
           <span className="font-medium text-slate-700">姓名</span>

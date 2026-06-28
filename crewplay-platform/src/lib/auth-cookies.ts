@@ -1,33 +1,10 @@
 /** Production cookie options shared across www / apex hostnames */
 
-function crewPlayCookieDomain(): string | undefined {
-  if (process.env.NODE_ENV !== "production") return undefined;
-
-  const candidates = [
-    process.env.NEXT_PUBLIC_SITE_URL ?? "",
-    process.env.URL ?? "",
-    process.env.DEPLOY_PRIME_URL ?? "",
-    process.env.DEPLOY_URL ?? "",
-  ];
-
-  for (const url of candidates) {
-    if (!url) continue;
-    try {
-      const host = new URL(url.startsWith("http") ? url : `https://${url}`).hostname;
-      if (host === "crewplay.tw" || host.endsWith(".crewplay.tw")) {
-        return ".crewplay.tw";
-      }
-    } catch {
-      /* ignore malformed env */
-    }
-  }
-
-  return undefined;
-}
+const CREWPLAY_COOKIE_DOMAIN = ".crewplay.tw";
 
 export function authCookieOptions(
   maxAge: number,
-  requestHost?: string | null
+  _requestHost?: string | null
 ): {
   maxAge: number;
   path: string;
@@ -37,9 +14,6 @@ export function authCookieOptions(
 } {
   const isProd = process.env.NODE_ENV === "production";
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  const host = (requestHost ?? "").split(":")[0].toLowerCase();
-  const hostIsCrewPlay =
-    host === "crewplay.tw" || host.endsWith(".crewplay.tw");
 
   const opts = {
     maxAge,
@@ -48,9 +22,14 @@ export function authCookieOptions(
     secure: isProd || site.startsWith("https://"),
   };
 
-  const domain = hostIsCrewPlay ? ".crewplay.tw" : crewPlayCookieDomain();
-  if (domain) {
-    return { ...opts, domain };
+  // 正式站一律用 .crewplay.tw，避免 www / 裸網域 cookie 互不相通
+  if (isProd) {
+    return { ...opts, domain: CREWPLAY_COOKIE_DOMAIN };
   }
+
   return opts;
+}
+
+export function clearAuthCookieOptions(): ReturnType<typeof authCookieOptions> {
+  return { ...authCookieOptions(0), maxAge: 0 };
 }

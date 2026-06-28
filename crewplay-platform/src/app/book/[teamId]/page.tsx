@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { checkMemberCanBook } from "@/lib/member-credit";
+import { issueBookingAuthToken } from "@/lib/booking-auth-token";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSession } from "@/lib/member-session";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
@@ -33,11 +34,13 @@ export default async function BookPage({ params, searchParams }: Props) {
   const team = enrichTeamFromIntro(teamRaw);
   const memberKey = getMemberKeyFromSession(member);
   const credit = memberKey ? await checkMemberCanBook(memberKey) : null;
+  const bookingAuth = issueBookingAuthToken(member, teamId);
 
   return (
     <Suspense fallback={<p className="mx-auto max-w-lg px-4 py-10 text-center text-slate-500">載入報名表…</p>}>
       <BookFormClient
       teamId={teamId}
+      bookingAuth={bookingAuth}
       team={{
         arena_name: team.arena_name,
         fee_label: team.fee_label,
