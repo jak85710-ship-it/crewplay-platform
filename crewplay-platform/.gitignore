@@ -3,4 +3,6 @@ node_modules
 .env
 .env.local
 .data
+data-export
+public/data/submission-images
 *.log

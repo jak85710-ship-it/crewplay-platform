@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import {
   CheckboxField,
   FormSection,
+  ImageUploadField,
   JoinFormHero,
   MultiSelectDropdown,
   SelectField,
@@ -18,6 +19,8 @@ export default function HostJoinPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [platformFee, setPlatformFee] = useState(500);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [form, setForm] = useState({
     sport: "",
     location: "",
@@ -54,13 +57,27 @@ export default function HostJoinPage() {
       setError("請同意團主資訊用途規範");
       return;
     }
+    if (!imageFile) {
+      setError("請上傳團隊照片");
+      return;
+    }
 
     setLoading(true);
     try {
+      const uploadData = new FormData();
+      uploadData.append("file", imageFile);
+      uploadData.append("kind", "host");
+      const uploadRes = await fetch("/api/forms/upload-image", {
+        method: "POST",
+        body: uploadData,
+      });
+      const uploadJson = await uploadRes.json();
+      if (!uploadRes.ok) throw new Error(uploadJson.error || "圖片上傳失敗");
+
       const res = await fetch("/api/forms/host", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, trust_image_id: uploadJson.id }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "提交失敗");
@@ -152,6 +169,24 @@ export default function HostJoinPage() {
             required
             value={form.balls}
             onChange={(balls) => setForm({ ...form, balls })}
+          />
+        </FormSection>
+
+        <FormSection
+          title="團隊照片"
+          description="上傳一張能代表你們團隊或活動氛圍的照片，讓球友更快建立信任感"
+        >
+          <ImageUploadField
+            label="團隊／活動照片"
+            name="trust_image"
+            required
+            file={imageFile}
+            previewUrl={imagePreview}
+            onFileChange={(file, previewUrl) => {
+              setImageFile(file);
+              setImagePreview(previewUrl);
+            }}
+            hint="例如：團隊合照、固定開團場地、歡迎新手說明截圖等"
           />
         </FormSection>
 

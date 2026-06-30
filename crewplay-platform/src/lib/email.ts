@@ -4,6 +4,7 @@ import type { Transporter } from "nodemailer";
 import { bookingReference } from "@/lib/booking-ref";
 import { checkInUrl } from "@/lib/check-in-url";
 import { issueCheckInToken } from "@/lib/check-in-token";
+import { submissionImagePublicUrl } from "@/lib/submission-images";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
@@ -67,6 +68,7 @@ export type HostSubmission = {
   balls: string;
   phone: string;
   email: string;
+  trust_image_id?: string;
 };
 
 export type VenueSubmission = {
@@ -80,15 +82,16 @@ export type VenueSubmission = {
   capacity: string;
   court_count: string;
   time_slots: string[];
+  trust_image_id?: string;
 };
 
+function trustImageLine(data: { trust_image_id?: string }): [string, string] | null {
+  if (!data.trust_image_id) return null;
+  return ["團隊／場地照片", submissionImagePublicUrl(data.trust_image_id)];
+}
+
 function hostInternalBody(data: HostSubmission): string {
-  return [
-    "【團主開團】新申請",
-    `申請編號：${data.id}`,
-    `提交時間：${data.submitted_at}`,
-    "",
-    lines([
+  const rows: [string, string][] = [
       ["從事的運動項目", data.sport],
       ["想揪團運動的地點", data.location],
       ["每周固定約運動的時間", data.weekday],
@@ -100,7 +103,16 @@ function hostInternalBody(data: HostSubmission): string {
       ["提供用球為", data.balls],
       ["電話號碼", data.phone],
       ["電子郵件", data.email],
-    ]),
+    ];
+  const imageLine = trustImageLine(data);
+  if (imageLine) rows.push(imageLine);
+
+  return [
+    "【團主開團】新申請",
+    `申請編號：${data.id}`,
+    `提交時間：${data.submitted_at}`,
+    "",
+    lines(rows),
   ].join("\n");
 }
 
@@ -134,12 +146,7 @@ function hostCustomerBody(data: HostSubmission): string {
 }
 
 function venueInternalBody(data: VenueSubmission): string {
-  return [
-    "【場主刊登】新申請",
-    `申請編號：${data.id}`,
-    `提交時間：${data.submitted_at}`,
-    "",
-    lines([
+  const rows: [string, string][] = [
       ["場館名稱", data.venue_name],
       ["場館地址", data.address],
       ["場租價格", data.price],
@@ -148,7 +155,16 @@ function venueInternalBody(data: VenueSubmission): string {
       ["場館預計單一時段租借多少人次", data.capacity],
       ["場地預計出借幾塊場地", data.court_count],
       ["場館開放預約時間", data.time_slots.join("、")],
-    ]),
+    ];
+  const imageLine = trustImageLine(data);
+  if (imageLine) rows.push(imageLine);
+
+  return [
+    "【場主刊登】新申請",
+    `申請編號：${data.id}`,
+    `提交時間：${data.submitted_at}`,
+    "",
+    lines(rows),
     "",
     "（此表單未填 Email，請以電話或 LINE 聯繫場主）",
   ].join("\n");

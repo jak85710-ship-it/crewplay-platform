@@ -51,6 +51,7 @@ async function notifyHostPaid(tradeNo: string) {
     balls: paid.balls,
     phone: paid.phone,
     email: paid.email,
+    trust_image_id: paid.trust_image_id,
   });
 }
 
@@ -72,6 +73,7 @@ async function notifyVenuePaid(tradeNo: string) {
     capacity: paid.capacity,
     court_count: paid.court_count,
     time_slots: paid.time_slots,
+    trust_image_id: paid.trust_image_id,
   });
 }
 

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { type VenueSubmission } from "@/lib/email";
 import { getJoinVenueFee } from "@/lib/join-fees";
 import { getListingPaymentUrl } from "@/lib/listing-payment";
+import { hasSubmissionImage } from "@/lib/submission-images";
 import { createTradeNo, saveVenueSubmission } from "@/lib/submissions";
 
 function missing(body: Record<string, unknown>, keys: string[]) {
@@ -31,6 +32,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: `請填寫：${absent.join("、")}` }, { status: 400 });
     }
 
+    const trustImageId = String(body.trust_image_id ?? "").trim();
+    if (!trustImageId) {
+      return NextResponse.json({ error: "請上傳場地照片" }, { status: 400 });
+    }
+    if (!(await hasSubmissionImage(trustImageId))) {
+      return NextResponse.json({ error: "場地照片無效，請重新上傳" }, { status: 400 });
+    }
+
     const platformFee = getJoinVenueFee();
     const merchantTradeNo = createTradeNo("CV");
     const paymentUrl = getListingPaymentUrl();
@@ -46,6 +55,7 @@ export async function POST(req: Request) {
       capacity: String(body.capacity).trim(),
       court_count: String(body.court_count).trim(),
       time_slots: body.time_slots as string[],
+      trust_image_id: trustImageId,
     };
 
     try {

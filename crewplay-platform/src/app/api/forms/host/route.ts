@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { type HostSubmission } from "@/lib/email";
 import { getJoinHostFee } from "@/lib/join-fees";
 import { getListingPaymentUrl } from "@/lib/listing-payment";
+import { hasSubmissionImage } from "@/lib/submission-images";
 import { createTradeNo, saveHostSubmission } from "@/lib/submissions";
 
 function missing(body: Record<string, unknown>, keys: string[]) {
@@ -37,6 +38,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "請同意團主資訊用途規範" }, { status: 400 });
     }
 
+    const trustImageId = String(body.trust_image_id ?? "").trim();
+    if (!trustImageId) {
+      return NextResponse.json({ error: "請上傳團隊照片" }, { status: 400 });
+    }
+    if (!(await hasSubmissionImage(trustImageId))) {
+      return NextResponse.json({ error: "團隊照片無效，請重新上傳" }, { status: 400 });
+    }
+
     const platformFee = getJoinHostFee();
     const merchantTradeNo = createTradeNo("CH");
     const paymentUrl = getListingPaymentUrl();
@@ -55,6 +64,7 @@ export async function POST(req: Request) {
       balls: String(body.balls).trim(),
       phone: String(body.phone).trim(),
       email: String(body.email).trim(),
+      trust_image_id: trustImageId,
     };
 
     try {

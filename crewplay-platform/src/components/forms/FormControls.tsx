@@ -235,6 +235,88 @@ export function MultiSelectDropdown({
   );
 }
 
+export function ImageUploadField({
+  label,
+  name,
+  required,
+  file,
+  previewUrl,
+  onFileChange,
+  hint,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  file: File | null;
+  previewUrl: string;
+  onFileChange: (file: File | null, previewUrl: string) => void;
+  hint?: string;
+}) {
+  const id = useId();
+  const [localError, setLocalError] = useState("");
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const next = e.target.files?.[0] ?? null;
+    if (previewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(previewUrl);
+    }
+    if (!next) {
+      onFileChange(null, "");
+      setLocalError("");
+      return;
+    }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(next.type)) {
+      onFileChange(null, "");
+      e.target.value = "";
+      setLocalError("僅支援 JPG、PNG、WebP 格式");
+      return;
+    }
+    if (next.size > 4 * 1024 * 1024) {
+      onFileChange(null, "");
+      e.target.value = "";
+      setLocalError("圖片大小請在 4MB 以內");
+      return;
+    }
+    setLocalError("");
+    onFileChange(next, URL.createObjectURL(next));
+  }
+
+  return (
+    <div className="sm:col-span-2">
+      <span className="block text-sm font-medium text-slate-700">
+        {label}
+        {required && <span className="text-brand-500"> *</span>}
+      </span>
+      {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
+      <div className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-start">
+        <label
+          htmlFor={id}
+          className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-dashed border-brand-300 bg-brand-50 px-4 py-3 text-sm font-medium text-brand-800 hover:bg-brand-100"
+        >
+          {file ? "重新選擇圖片" : "選擇圖片"}
+          <input
+            id={id}
+            name={name}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            required={required && !file}
+            onChange={handleChange}
+            className="sr-only"
+          />
+        </label>
+        {previewUrl && (
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={previewUrl} alt="預覽" className="max-h-48 w-auto max-w-full object-contain" />
+          </div>
+        )}
+      </div>
+      <p className="mt-2 text-xs text-slate-400">JPG / PNG / WebP，4MB 以內。建議上傳團隊合照、場地實景或活動照片。</p>
+      {localError && <p className="mt-2 text-xs text-red-600">{localError}</p>}
+    </div>
+  );
+}
+
 export function CheckboxField({
   label,
   name,

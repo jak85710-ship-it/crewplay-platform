@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   FormSection,
+  ImageUploadField,
   JoinFormHero,
   MultiSelectDropdown,
   TextField,
@@ -15,6 +16,8 @@ export default function VenueJoinPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [platformFee, setPlatformFee] = useState(500);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [form, setForm] = useState({
     venue_name: "",
     address: "",
@@ -43,13 +46,27 @@ export default function VenueJoinPage() {
       setError("請至少選擇一個場館開放預約時間");
       return;
     }
+    if (!imageFile) {
+      setError("請上傳場地照片");
+      return;
+    }
 
     setLoading(true);
     try {
+      const uploadData = new FormData();
+      uploadData.append("file", imageFile);
+      uploadData.append("kind", "venue");
+      const uploadRes = await fetch("/api/forms/upload-image", {
+        method: "POST",
+        body: uploadData,
+      });
+      const uploadJson = await uploadRes.json();
+      if (!uploadRes.ok) throw new Error(uploadJson.error || "圖片上傳失敗");
+
       const res = await fetch("/api/forms/venue", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, trust_image_id: uploadJson.id }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "提交失敗");
@@ -92,6 +109,24 @@ export default function VenueJoinPage() {
             value={form.price}
             onChange={(price) => setForm({ ...form, price })}
             hint="您出租給球友的場租，非平台刊登費"
+          />
+        </FormSection>
+
+        <FormSection
+          title="場地照片"
+          description="上傳場館外觀、球場實景或設施照片，讓球友更放心預約"
+        >
+          <ImageUploadField
+            label="場館／球場照片"
+            name="trust_image"
+            required
+            file={imageFile}
+            previewUrl={imagePreview}
+            onFileChange={(file, previewUrl) => {
+              setImageFile(file);
+              setImagePreview(previewUrl);
+            }}
+            hint="例如：球場全景、入口、更衣室或停車場等"
           />
         </FormSection>
 
