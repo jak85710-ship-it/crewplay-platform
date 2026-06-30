@@ -4,6 +4,7 @@ import Link from "next/link";
 import { use, useEffect, useState } from "react";
 
 import { BookingSuccessIllustration } from "@/components/BookingSuccessIllustration";
+import { bookingReference } from "@/lib/booking-ref";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 interface Props {
@@ -39,7 +40,7 @@ export default function BookResultPage({ searchParams }: Props) {
   }, [params.team]);
 
   const ok = params.status === "ok";
-  const bookingRef = params.id?.slice(0, 8) ?? "";
+  const bookingRef = params.id ? bookingReference({ id: params.id, merchant_trade_no: null }) : "";
   const guestEmail = params.email ?? "";
   const mailStatus = params.mail ?? "";
   const timeText = team ? parseIntroField(team.introduce, "時間") : "";

@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 
+import { bookingReference } from "@/lib/booking-ref";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
@@ -262,7 +263,9 @@ export type BookingEmailResult = {
 };
 
 function bookingLines(ctx: BookingMailContext, includeContact = true): string {
+  const ref = bookingReference(ctx.booking);
   const rows: [string, string][] = [
+    ["報名編號", ref],
     ["揪團名稱", ctx.team.arena_name],
     ["運動項目", ctx.team.sport],
     ["地區", ctx.team.region],
@@ -271,10 +274,9 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
     ["手機", ctx.booking.guest_phone],
     ["人數", String(ctx.booking.slots)],
     ["金額", `NT$ ${ctx.booking.amount}`],
-    ["訂單編號", ctx.booking.merchant_trade_no || "—"],
   ];
   if (includeContact && ctx.booking.guest_email) {
-    rows.splice(6, 0, ["Email", ctx.booking.guest_email]);
+    rows.splice(7, 0, ["Email", ctx.booking.guest_email]);
   }
   if (ctx.booking.note) rows.push(["備註", ctx.booking.note]);
   return lines(rows);
@@ -288,7 +290,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
     return { configured: false, adminNotified: false, guestNotified: false, error: "email_not_configured" };
   }
 
-  const ref = ctx.booking.id.slice(0, 8);
+  const ref = bookingReference(ctx.booking);
   const timeText = parseIntroField(ctx.team.introduce ?? "", "時間");
   const placeText =
     parseIntroField(ctx.team.introduce ?? "", "地點") || ctx.team.location || "—";
@@ -302,7 +304,6 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
     const adminBody = [
       "【揪團查詢】新預約報名（現場付費）",
       `提交時間：${ctx.booking.created_at ?? new Date().toISOString()}`,
-      `報名編號：${ref}`,
       "",
       bookingLines(ctx),
       "",
@@ -327,14 +328,15 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
     if (ctx.booking.guest_email) {
       await sendMail({
         to: ctx.booking.guest_email,
-        subject: `[CrewPlay] 報名成功 — ${ctx.team.arena_name}`,
+        subject: `[CrewPlay] 報名成功 — ${ctx.team.arena_name}（${ref}）`,
         text: [
           `${ctx.booking.guest_name} 您好，`,
           "",
           "您已在 CrewPlay 運動媒合平台完成揪團報名，名額已為您保留。",
+          `您的報名編號：${ref}（洽詢客服或查詢預約時請提供此編號）`,
           "",
           "【報名資訊】",
-          bookingLines(ctx, false),
+          bookingLines(ctx, true),
           "",
           "【下一步】",
           "1. 已為您保留名額",
@@ -349,6 +351,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
         ]
           .filter(Boolean)
           .join("\n"),
+        replyTo: cfg.user,
       });
       guestNotified = true;
     }
@@ -374,11 +377,11 @@ export async function sendBookingPaidEmails(ctx: BookingMailContext) {
     return;
   }
 
-  const trade = ctx.booking.merchant_trade_no?.slice(0, 12) ?? ctx.booking.id.slice(0, 8);
+  const ref = bookingReference(ctx.booking);
 
   await sendMail({
     to: cfg.notifyTo,
-    subject: `[揪團預約·已付款] ${ctx.team.arena_name}（${trade}）`,
+    subject: `[揪團預約·已付款] ${ctx.team.arena_name}（${ref}）`,
     text: ["【揪團查詢】預約已付款", "", bookingLines(ctx)].join("\n"),
     replyTo: ctx.booking.guest_email || undefined,
   });
@@ -386,18 +389,20 @@ export async function sendBookingPaidEmails(ctx: BookingMailContext) {
   if (ctx.booking.guest_email) {
     await sendMail({
       to: ctx.booking.guest_email,
-      subject: `[CrewPlay] 付款成功，預約已確認（${trade}）`,
+      subject: `[CrewPlay] 付款成功，預約已確認（${ref}）`,
       text: [
         `${ctx.booking.guest_name} 您好，`,
         "",
         "您的揪團預約已付款成功：",
+        `您的報名編號：${ref}`,
         "",
-        bookingLines(ctx, false),
+        bookingLines(ctx, true),
         "",
         "團主將與您聯繫確認細節。如有問題請致電 07-552-2092。",
         "",
         "CrewPlay運動媒合平台",
       ].join("\n"),
+      replyTo: cfg.user,
     });
   }
 }
