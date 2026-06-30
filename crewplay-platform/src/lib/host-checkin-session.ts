@@ -5,7 +5,7 @@ const SESSION_TTL_MS = 4 * 60 * 60 * 1000;
 
 export type HostCheckInSession = {
   teamId: string;
-  phone: string;
+  lineUid: string;
   exp: number;
 };
 
@@ -58,10 +58,10 @@ function readSessionCookie(cookieHeader: string | null): HostCheckInSession | nu
   return payload;
 }
 
-export function buildHostSessionCookie(teamId: string, phone: string): string {
+export function buildHostSessionCookie(teamId: string, lineUid: string): string {
   const payload: HostCheckInSession = {
     teamId,
-    phone,
+    lineUid,
     exp: Date.now() + SESSION_TTL_MS,
   };
   const token = signSession(payload);

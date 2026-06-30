@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     const session = verifyHostCheckInSession(req, portal.teamId);
     if (!session) {
-      return NextResponse.json({ error: "請先以手機驗證碼登入" }, { status: 401 });
+      return NextResponse.json({ error: "請先使用 LINE 登入" }, { status: 401 });
     }
 
     const payload = verifyCheckInToken(guestToken);
