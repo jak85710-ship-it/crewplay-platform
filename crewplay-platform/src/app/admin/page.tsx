@@ -1,6 +1,6 @@
 import { listBookings } from "@/lib/bookings";
-import { checkInUrl } from "@/lib/check-in-url";
-import { issueCheckInToken } from "@/lib/check-in-token";
+import { hostCheckInPortalUrl } from "@/lib/check-in-url";
+import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { getAllTeams } from "@/lib/teams";
 
 import { AdminBookingsTable } from "@/components/AdminBookingsTable";
@@ -11,8 +11,8 @@ export default async function AdminPage() {
   const sports = [...new Set(teams.map((t) => t.sport))];
   const scanUrls = Object.fromEntries(
     bookings.map((b) => {
-      const token = issueCheckInToken(b);
-      return [b.id, token ? checkInUrl(token) : ""];
+      const token = issueHostPortalToken(b.team_id);
+      return [b.id, token ? hostCheckInPortalUrl(token) : ""];
     })
   );
 

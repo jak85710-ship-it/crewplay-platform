@@ -2,8 +2,8 @@ import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 
 import { bookingReference } from "@/lib/booking-ref";
-import { checkInUrl } from "@/lib/check-in-url";
-import { issueCheckInToken } from "@/lib/check-in-token";
+import { hostCheckInPortalUrl } from "@/lib/check-in-url";
+import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { submissionImagePublicUrl } from "@/lib/submission-images";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
@@ -263,6 +263,7 @@ export type BookingMailContext = {
     status?: string;
   };
   team: {
+    id?: string;
     arena_name: string;
     sport: string;
     region: string;
@@ -300,6 +301,14 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
   return lines(rows);
 }
 
+function findContactEmail(text: string | undefined): string | null {
+  if (!text) return null;
+  const labeled = text.match(/(?:Email|email|信箱|聯絡)[：:\s]*([^\s@]+@[^\s@]+\.[^\s@]+)/i);
+  if (labeled?.[1]) return labeled[1].trim();
+  const any = text.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i);
+  return any ? any[0].trim() : null;
+}
+
 /** 新預約（報名）：通知平台 + 回覆報名者（現場付費） */
 export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promise<BookingEmailResult> {
   const cfg = getMailConfig();
@@ -309,8 +318,9 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
   }
 
   const ref = bookingReference(ctx.booking);
-  const checkinToken = issueCheckInToken(ctx.booking);
-  const passLink = checkinToken ? checkInUrl(checkinToken) : "";
+  const hostPortalToken = ctx.team.id ? issueHostPortalToken(ctx.team.id) : "";
+  const hostPortalLink = hostPortalToken ? hostCheckInPortalUrl(hostPortalToken) : "";
+  const hostEmail = findContactEmail(ctx.team.introduce);
   const timeText = parseIntroField(ctx.team.introduce ?? "", "時間");
   const placeText =
     parseIntroField(ctx.team.introduce ?? "", "地點") || ctx.team.location || "—";
@@ -329,6 +339,8 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
       "",
       timeText ? `時間：${timeText}` : "",
       placeText ? `地點：${placeText}` : "",
+      "",
+      hostPortalLink ? `團主進場核銷（掃碼）：${hostPortalLink}` : "",
       "",
       "團費請報名者到場向團主繳交，平台不代收揪團費用。",
     ]
@@ -354,9 +366,8 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
           "",
           "您已在 CrewPlay 運動媒合平台完成揪團報名，名額已為您保留。",
           `您的報名編號：${ref}（洽詢客服或查詢預約時請提供此編號）`,
-          passLink
-            ? `進場 QR Code 連結（到場出示給團主掃描）：${passLink}`
-            : "",
+          "",
+          "到場請開啟「我的預約」出示 QR Code 給團主掃描，無需自行操作核銷。",
           "",
           "【報名資訊】",
           bookingLines(ctx, true),
@@ -377,6 +388,36 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
         replyTo: cfg.user,
       });
       guestNotified = true;
+    }
+
+    if (hostPortalLink) {
+      const hostBody = [
+        "【團主進場核銷】有新球友報名",
+        "",
+        `揪團：${ctx.team.arena_name}`,
+        `報名編號：${ref}`,
+        `報名者：${ctx.booking.guest_name} · ${ctx.booking.guest_phone}`,
+        ctx.booking.guest_email ? `Email：${ctx.booking.guest_email}` : "",
+        timeText ? `時間：${timeText}` : "",
+        placeText ? `地點：${placeText}` : "",
+        "",
+        "請使用手機開啟以下連結，以您的手機號碼登入後掃描球友 QR Code 完成進場核銷：",
+        hostPortalLink,
+        "",
+        "球友會在「我的預約」出示 QR Code，請在現場掃描即可。",
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const hostRecipients = hostEmail ? [hostEmail] : notifyRecipients(cfg.notifyTo);
+      for (const to of hostRecipients) {
+        await sendMail({
+          to,
+          subject: `[CrewPlay 進場核銷] ${ctx.team.arena_name} 新報名（${ref}）`,
+          text: hostBody,
+          replyTo: cfg.user,
+        });
+      }
     }
 
     return { configured: true, adminNotified: true, guestNotified };

@@ -139,6 +139,7 @@ export async function processMemberBooking(
       emailStatus = await sendBookingSubmittedEmails({
         booking,
         team: {
+          id: enriched.id,
           arena_name: enriched.arena_name,
           sport: enriched.sport,
           region: enriched.region,

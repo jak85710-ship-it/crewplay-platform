@@ -2,7 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react";
 
-import { checkInUrl } from "@/lib/check-in-url";
+import { checkInPassUrl } from "@/lib/check-in-url";
 
 type Props = {
   token: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export function BookingCheckInQr({ token, reference, compact = false }: Props) {
-  const url = checkInUrl(token);
+  const url = checkInPassUrl(token);
 
   return (
     <div
