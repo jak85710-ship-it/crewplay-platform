@@ -1,30 +1,12 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 
+import { MyBookingCard } from "@/components/MyBookingCard";
 import { listBookings } from "@/lib/bookings";
 import { checkMemberCanBook, MIN_BOOKING_SCORE } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { emptyBookingsMessage, filterBookingsForMember } from "@/lib/member-bookings";
 import { getMemberSession } from "@/lib/member-session";
-
-function bookingStatusLabel(status: string): string {
-  switch (status) {
-    case "submitted":
-      return "已送出";
-    case "pending_payment":
-      return "待付款";
-    case "paid":
-      return "已確認";
-    case "cancelled":
-      return "已取消";
-    case "refunded":
-      return "已退款";
-    case "no_show":
-      return "爽約";
-    default:
-      return status;
-  }
-}
 
 export default async function MyBookingsPage() {
   const cookieStore = await cookies();
@@ -110,28 +92,7 @@ export default async function MyBookingsPage() {
       ) : member.isLoggedIn ? (
         <ul className="mt-8 space-y-4">
           {mine.map((b) => (
-            <li key={b.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-semibold">{b.guest_name}</span>
-                <span
-                  className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    b.status === "paid"
-                      ? "bg-green-100 text-green-800"
-                      : b.status === "no_show"
-                        ? "bg-red-100 text-red-800"
-                      : b.status === "pending_payment"
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-brand-100 text-brand-800"
-                  }`}
-                >
-                  {bookingStatusLabel(b.status)}
-                </span>
-              </div>
-              <p className="mt-2 text-sm text-slate-600">
-                {b.slots} 人 · 參考團費 NT$ {b.amount}
-              </p>
-              <p className="mt-1 text-xs text-slate-400">{b.created_at}</p>
-            </li>
+            <MyBookingCard key={b.id} booking={b} />
           ))}
         </ul>
       ) : null}

@@ -50,6 +50,7 @@ export interface Booking {
   note: string;
   paid_at?: string | null;
   no_show_at?: string | null;
+  checked_in_at?: string | null;
   created_at?: string;
   team?: Team;
 }

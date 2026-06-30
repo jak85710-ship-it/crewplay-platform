@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { bookingReference } from "@/lib/booking-ref";
 import { NO_SHOW_PENALTY } from "@/lib/member-credit-constants";
 import type { Booking } from "@/types";
 
@@ -26,9 +27,10 @@ function statusLabel(status: string): string {
 
 type Props = {
   bookings: Booking[];
+  scanUrls: Record<string, string>;
 };
 
-export function AdminBookingsTable({ bookings }: Props) {
+export function AdminBookingsTable({ bookings, scanUrls }: Props) {
   const [adminKey, setAdminKey] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
@@ -84,7 +86,7 @@ export function AdminBookingsTable({ bookings }: Props) {
           className="mt-2 w-full max-w-md rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm"
         />
         <p className="mt-2 text-xs text-amber-800">
-          標記爽約後，會員信用分 -20（低於 40 分將無法再報名）。
+          標記爽約後，會員信用分 -20（低於 40 分將無法再報名）。進場核銷請掃球友 QR Code，或點「進場核銷」後輸入 ADMIN_API_KEY。
         </p>
       </div>
 
@@ -95,6 +97,7 @@ export function AdminBookingsTable({ bookings }: Props) {
           <thead className="border-b bg-slate-50 text-slate-600">
             <tr>
               <th className="px-4 py-3">時間</th>
+              <th className="px-4 py-3">編號</th>
               <th className="px-4 py-3">姓名</th>
               <th className="px-4 py-3">Email</th>
               <th className="px-4 py-3">會員鍵</th>
@@ -103,30 +106,46 @@ export function AdminBookingsTable({ bookings }: Props) {
             </tr>
           </thead>
           <tbody>
-            {recent.map((b) => (
+            {recent.map((b) => {
+              const ref = bookingReference(b);
+              const scanUrl = scanUrls[b.id] || "";
+              return (
               <tr key={b.id} className="border-b last:border-0">
                 <td className="px-4 py-3 text-xs text-slate-500">
                   {b.created_at ? new Date(b.created_at).toLocaleString("zh-TW") : "—"}
                 </td>
+                <td className="px-4 py-3 font-mono text-xs">{ref}</td>
                 <td className="px-4 py-3">{b.guest_name}</td>
                 <td className="px-4 py-3 text-xs">{b.guest_email || "—"}</td>
                 <td className="px-4 py-3 font-mono text-xs text-slate-500">{b.member_key || "—"}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                      b.status === "no_show"
+                      b.checked_in_at
+                        ? "bg-green-100 text-green-800"
+                        : b.status === "no_show"
                         ? "bg-red-100 text-red-800"
                         : b.status === "paid"
                           ? "bg-green-100 text-green-800"
                           : "bg-brand-100 text-brand-800"
                     }`}
                   >
-                    {statusLabel(b.status)}
+                    {b.checked_in_at ? "已進場" : statusLabel(b.status)}
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 space-y-1">
+                  {scanUrl && !b.checked_in_at && (
+                    <a
+                      href={scanUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-xs font-medium text-brand-700 hover:underline"
+                    >
+                      進場核銷
+                    </a>
+                  )}
                   {b.status === "no_show" ? (
-                    <span className="text-xs text-slate-400">已標記</span>
+                    <span className="text-xs text-slate-400">已標記爽約</span>
                   ) : (
                     <button
                       type="button"
@@ -139,7 +158,8 @@ export function AdminBookingsTable({ bookings }: Props) {
                   )}
                 </td>
               </tr>
-            ))}
+            );
+            })}
           </tbody>
         </table>
       </div>

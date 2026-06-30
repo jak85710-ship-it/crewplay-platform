@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { cookieReaderFromHeader, mergeCookieReaders } from "@/lib/cookie-reader";
 import { processMemberBooking, siteUrlFromRequest, type BookingInput } from "@/lib/create-member-booking";
+import { issueCheckInToken } from "@/lib/check-in-token";
 import { applyMemberProfileToCookieStore } from "@/lib/member-session";
 
 function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingInput {
@@ -94,6 +95,8 @@ export async function POST(req: Request) {
     email: result.profile.email,
     mail: mailFlag,
   });
+  const checkinToken = issueCheckInToken(result.booking);
+  if (checkinToken) resultQ.set("checkin", checkinToken);
 
   const res = formMode
     ? NextResponse.redirect(`${site}/book/result?${resultQ.toString()}`, 303)

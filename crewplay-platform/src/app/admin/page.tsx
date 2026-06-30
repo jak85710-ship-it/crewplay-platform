@@ -1,4 +1,6 @@
 import { listBookings } from "@/lib/bookings";
+import { checkInUrl } from "@/lib/check-in-url";
+import { issueCheckInToken } from "@/lib/check-in-token";
 import { getAllTeams } from "@/lib/teams";
 
 import { AdminBookingsTable } from "@/components/AdminBookingsTable";
@@ -7,6 +9,12 @@ export default async function AdminPage() {
   const teams = await getAllTeams();
   const bookings = await listBookings();
   const sports = [...new Set(teams.map((t) => t.sport))];
+  const scanUrls = Object.fromEntries(
+    bookings.map((b) => {
+      const token = issueCheckInToken(b);
+      return [b.id, token ? checkInUrl(token) : ""];
+    })
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -21,7 +29,7 @@ export default async function AdminPage() {
 
       <section className="mt-10">
         <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
-        <AdminBookingsTable bookings={bookings} />
+        <AdminBookingsTable bookings={bookings} scanUrls={scanUrls} />
       </section>
 
       <section className="mt-10 rounded-xl border border-brand-200 bg-brand-50 p-5 text-sm text-brand-900">

@@ -84,6 +84,11 @@ export async function listBookings(): Promise<Booking[]> {
   );
 }
 
+export async function getBookingById(id: string): Promise<Booking | null> {
+  const list = await listBookings();
+  return list.find((b) => b.id === id) ?? null;
+}
+
 export async function getBookingByTradeNo(tradeNo: string): Promise<Booking | null> {
   const list = await listBookings();
   return list.find((b) => b.merchant_trade_no === tradeNo) ?? null;
@@ -212,4 +217,46 @@ export async function markBookingNoShow(bookingId: string): Promise<{
   const memberKey = getMemberKeyFromBooking(list[idx]);
   if (memberKey) await applyNoShowPenalty(memberKey);
   return { booking: list[idx], memberKey, alreadyMarked: false };
+}
+
+export async function markBookingCheckedIn(bookingId: string): Promise<{
+  booking: Booking | null;
+  alreadyCheckedIn: boolean;
+}> {
+  const { getSupabaseAdmin } = await import("./teams");
+  const supabase = getSupabaseAdmin();
+  const now = new Date().toISOString();
+
+  if (supabase) {
+    const { data: existing } = await supabase
+      .from("bookings")
+      .select("*")
+      .eq("id", bookingId)
+      .maybeSingle();
+    if (!existing) return { booking: null, alreadyCheckedIn: false };
+    const booking = existing as Booking;
+    if (booking.checked_in_at) {
+      return { booking, alreadyCheckedIn: true };
+    }
+    const { data } = await supabase
+      .from("bookings")
+      .update({ checked_in_at: now })
+      .eq("id", bookingId)
+      .select()
+      .maybeSingle();
+    return { booking: (data as Booking) ?? null, alreadyCheckedIn: false };
+  }
+
+  const list = await loadBookings();
+  const idx = list.findIndex((b) => b.id === bookingId);
+  if (idx < 0) return { booking: null, alreadyCheckedIn: false };
+
+  const existing = list[idx];
+  if (existing.checked_in_at) {
+    return { booking: existing, alreadyCheckedIn: true };
+  }
+
+  list[idx] = { ...existing, checked_in_at: now };
+  await saveBookings(list);
+  return { booking: list[idx], alreadyCheckedIn: false };
 }

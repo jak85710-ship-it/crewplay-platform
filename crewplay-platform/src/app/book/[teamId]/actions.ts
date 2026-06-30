@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { processMemberBooking } from "@/lib/create-member-booking";
+import { issueCheckInToken } from "@/lib/check-in-token";
 import { applyMemberProfileToCookieStore } from "@/lib/member-session";
 
 export type BookFormState = {
@@ -52,5 +53,7 @@ export async function submitBookingAction(
     email: result.profile.email,
     mail: mailFlag,
   });
+  const checkinToken = issueCheckInToken(result.booking);
+  if (checkinToken) q.set("checkin", checkinToken);
   redirect(`/book/result?${q.toString()}`);
 }

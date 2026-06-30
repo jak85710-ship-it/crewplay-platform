@@ -2,6 +2,8 @@ import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 
 import { bookingReference } from "@/lib/booking-ref";
+import { checkInUrl } from "@/lib/check-in-url";
+import { issueCheckInToken } from "@/lib/check-in-token";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
@@ -291,6 +293,8 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
   }
 
   const ref = bookingReference(ctx.booking);
+  const checkinToken = issueCheckInToken(ctx.booking);
+  const passLink = checkinToken ? checkInUrl(checkinToken) : "";
   const timeText = parseIntroField(ctx.team.introduce ?? "", "時間");
   const placeText =
     parseIntroField(ctx.team.introduce ?? "", "地點") || ctx.team.location || "—";
@@ -334,6 +338,9 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
           "",
           "您已在 CrewPlay 運動媒合平台完成揪團報名，名額已為您保留。",
           `您的報名編號：${ref}（洽詢客服或查詢預約時請提供此編號）`,
+          passLink
+            ? `進場 QR Code 連結（到場出示給團主掃描）：${passLink}`
+            : "",
           "",
           "【報名資訊】",
           bookingLines(ctx, true),
