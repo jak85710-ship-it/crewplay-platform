@@ -1,5 +1,6 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import type { Team, TeamsManifest } from "@/types";
+import { filterListedTeams, isDelistedTeam } from "@/lib/delisted-teams";
 import { regionsMatch } from "@/lib/region";
 import { parseFee } from "./utils";
 import fs from "fs";
@@ -59,7 +60,7 @@ export async function getAllTeams(): Promise<Team[]> {
   const useSupabase = process.env.TEAMS_DATA_SOURCE === "supabase";
 
   if (!useSupabase && manifest?.teams?.length) {
-    return manifest.teams.filter((t) => t.status !== "hidden");
+    return filterListedTeams(manifest.teams);
   }
 
   const supabase = getSupabasePublic();
@@ -70,12 +71,12 @@ export async function getAllTeams(): Promise<Team[]> {
       .eq("status", "published")
       .order("sheet_row", { ascending: true });
     if (!error && data?.length) {
-      return data.map((r) => mapRow(r as Record<string, unknown>));
+      return filterListedTeams(data.map((r) => mapRow(r as Record<string, unknown>)));
     }
   }
 
   if (manifest?.teams?.length) {
-    return manifest.teams.filter((t) => t.status !== "hidden");
+    return filterListedTeams(manifest.teams);
   }
 
   return [];
@@ -85,7 +86,10 @@ export async function getTeamById(id: string): Promise<Team | null> {
   const supabase = getSupabasePublic();
   if (supabase && !id.startsWith("row-")) {
     const { data } = await supabase.from("teams").select("*").eq("id", id).maybeSingle();
-    if (data) return mapRow(data as Record<string, unknown>);
+    if (data) {
+      const team = mapRow(data as Record<string, unknown>);
+      return isDelistedTeam(team) ? null : team;
+    }
   }
 
   const rowMatch = id.match(/^row-(\d+)$/);

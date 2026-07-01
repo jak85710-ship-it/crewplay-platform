@@ -869,20 +869,6 @@
       "status": "published"
     },
     {
-      "id": "7bee2a67-2f70-4eb5-981e-9fa9a1d40c74",
-      "sheet_row": 64,
-      "sport": "排球",
-      "arena_name": "小咘排球館",
-      "introduce": "時間：(每週二)18:00-22:00時\n地點：小咘排球館\n網高：男網男排\n用球：團主決定\n程度：參考注意事項\n費用：MVP折價30元\n注意事項：\n程度：非新手場（對非新手友善程度S）\n大砲：接發穩定、no摳有得分能力、穩定度佳\n攔中：接發穩定、2號、A快都能打、穩定度佳\n舉對：接發穩定、no摳有得分能力、穩定度佳",
-      "photo": "https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg",
-      "assign_url": "",
-      "region": "高雄市",
-      "location": "高雄市仁武區仁武里八德一路85-6號",
-      "fee_amount": null,
-      "fee_label": "",
-      "status": "published"
-    },
-    {
       "id": "bbd6a17c-c3c7-4194-a03b-ed88964d21b1",
       "sheet_row": 65,
       "sport": "排球",
@@ -3879,6 +3865,6 @@
       "status": "published"
     }
   ],
-  "exportedAt": "2026-06-23T15:12:53.926Z",
-  "count": 277
+  "exportedAt": "2026-07-01T11:56:54.372Z",
+  "count": 276
 }

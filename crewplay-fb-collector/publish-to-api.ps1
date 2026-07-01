@@ -13,6 +13,30 @@ $PlatformConfigPath = Join-Path $Root 'config.platform.json'
 $DefaultPhoto = 'https://storage.googleapis.com/crewplay-arena-storage/photo/a1.jpg'
 $OutDir = Join-Path (Split-Path $Root -Parent) 'crewplay-platform\public\data'
 $OutFile = Join-Path $OutDir 'teams.json'
+$DelistedPath = Join-Path $OutDir 'delisted-teams.json'
+
+function Read-DelistedConfig {
+    $rows = New-Object 'System.Collections.Generic.List[int]'
+    $names = New-Object 'System.Collections.Generic.List[string]'
+    $ids = New-Object 'System.Collections.Generic.List[string]'
+    if (-not (Test-Path $DelistedPath)) {
+        return @{ rows = $rows; names = $names; ids = $ids }
+    }
+    $delisted = Get-Content $DelistedPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    foreach ($r in @($delisted.sheet_rows)) { $rows.Add([int]$r) }
+    foreach ($n in @($delisted.arena_names)) { $names.Add([string]$n) }
+    foreach ($id in @($delisted.team_ids)) { $ids.Add([string]$id) }
+    return @{ rows = $rows; names = $names; ids = $ids }
+}
+
+function Test-TeamDelisted([int]$sheetRow, [string]$arenaName, $delisted) {
+    if ($delisted.rows -contains $sheetRow) { return $true }
+    $arena = [string]$arenaName
+    foreach ($name in $delisted.names) {
+        if ($arena -eq [string]$name) { return $true }
+    }
+    return $false
+}
 
 function Read-Config {
     if (-not (Test-Path $ConfigPath)) { throw 'config.json not found.' }
@@ -108,6 +132,7 @@ function Write-Utf8NoBom([string]$Path, [string]$Content) {
 
 $config = Read-Config
 $platform = Read-PlatformConfig
+$delisted = Read-DelistedConfig
 $token = Get-AccessToken $config
 $sheetName = if ($config.sheet_name) { [string]$config.sheet_name } else { '工作表1' }
 
@@ -131,6 +156,13 @@ if ($mainData.values) {
         while ($row.Count -lt 7) { $row += '' }
         $arena = [string]$row[1]
         if ([string]::IsNullOrWhiteSpace($arena)) {
+            $rowIndex++
+            continue
+        }
+        if (Test-TeamDelisted $rowIndex $arena $delisted) {
+            $rowKey = [string]$rowIndex
+            if ($idMap.ContainsKey($rowKey)) { $idMap.Remove($rowKey) | Out-Null }
+            Write-Host ('  skip delisted row ' + $rowIndex + ': ' + $arena)
             $rowIndex++
             continue
         }
@@ -213,6 +245,18 @@ if (-not $JsonOnly -and $supabaseUrl -and $supabaseKey) {
         Write-Host ('  batch ' + ($i + 1) + '-' + ($end + 1))
     }
     Write-Host 'Supabase upsert done.'
+
+    foreach ($id in $delisted.ids) {
+        if ([string]::IsNullOrWhiteSpace($id)) { continue }
+        $deleteUri = ($supabaseUrl.TrimEnd('/') + '/rest/v1/teams?id=eq.' + [uri]::EscapeDataString([string]$id))
+        Invoke-RestMethod -Uri $deleteUri -Method Delete -Headers $headers | Out-Null
+        Write-Host ('  deleted team id ' + $id)
+    }
+    foreach ($sheetRow in $delisted.rows) {
+        $deleteUri = ($supabaseUrl.TrimEnd('/') + '/rest/v1/teams?sheet_row=eq.' + $sheetRow)
+        Invoke-RestMethod -Uri $deleteUri -Method Delete -Headers $headers | Out-Null
+        Write-Host ('  deleted sheet_row ' + $sheetRow)
+    }
 } elseif (-not $JsonOnly) {
     Write-Host 'Supabase skipped (copy config.platform.example.json to config.platform.json)'
 }
