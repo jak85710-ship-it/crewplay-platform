@@ -35,6 +35,12 @@ export function HostCheckInPortal({ portalToken, team }: Props) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [lookup, setLookup] = useState<LookupResult | null>(null);
+  const [scanKey, setScanKey] = useState(0);
+
+  function resetScanner() {
+    setLookup(null);
+    setScanKey((k) => k + 1);
+  }
 
   const handleScan = useCallback(
     async (text: string) => {
@@ -82,8 +88,8 @@ export function HostCheckInPortal({ portalToken, team }: Props) {
             portalToken={portalToken}
             booking={lookup.booking}
             team={lookup.team}
-            onDone={() => setLookup(null)}
-            onCancel={() => setLookup(null)}
+            onDone={resetScanner}
+            onCancel={resetScanner}
           />
         </div>
       ) : (
@@ -91,7 +97,7 @@ export function HostCheckInPortal({ portalToken, team }: Props) {
           <p className="text-sm text-slate-600">
             請對準球友「我的預約」中的 QR Code 掃描。此連結僅供團主使用，請勿公開分享。
           </p>
-          <QrScanner onScan={handleScan} />
+          <QrScanner key={scanKey} onScan={handleScan} />
           {busy && <p className="text-center text-sm text-slate-500">處理中…</p>}
         </div>
       )}
