@@ -43,11 +43,11 @@ export function HostCheckInPortal({ portalToken, team }: Props) {
   }
 
   const handleScan = useCallback(
-    async (text: string) => {
+    async (text: string): Promise<boolean> => {
       const guestToken = parseGuestCheckInToken(text);
       if (!guestToken) {
         setMessage("無法辨識此 QR Code，請掃描球友的進場條碼");
-        return;
+        return false;
       }
 
       setBusy(true);
@@ -61,11 +61,13 @@ export function HostCheckInPortal({ portalToken, team }: Props) {
         const data = await res.json();
         if (!res.ok) {
           setMessage(data.error || "查詢失敗");
-          return;
+          return false;
         }
         setLookup(data as LookupResult);
+        return true;
       } catch {
         setMessage("連線失敗，請稍後再試");
+        return false;
       } finally {
         setBusy(false);
       }
