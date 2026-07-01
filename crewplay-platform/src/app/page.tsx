@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { BrandLogo } from "@/components/BrandLogo";
@@ -6,7 +7,19 @@ import { FeaturedTeamsCarousel } from "@/components/FeaturedTeamsCarousel";
 import { HomeExploreCard, HomeSearch } from "@/components/HomeSearch";
 import { NearbyTeamsSection } from "@/components/NearbyTeamsSection";
 import { pickPopularTeams, pickRecommendedTeams } from "@/lib/featured-teams";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/lib/site-seo";
 import { getAllTeams } from "@/lib/teams";
+
+export const metadata: Metadata = {
+  title: { absolute: SITE_TITLE },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "https://www.crewplay.tw" },
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "https://www.crewplay.tw",
+  },
+};
 
 function countByField(values: string[]) {
   const map = new Map<string, number>();
@@ -50,14 +63,12 @@ export default async function HomePage() {
           <BrandLogo href="" showWordmark={false} size="lg" />
         </div>
         <div className="mx-auto flex max-w-6xl flex-col items-center px-4 py-12 text-center sm:py-16">
-          <p className="text-3xl font-bold tracking-wide text-white sm:text-4xl">CrewPlay</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-200">CrewPlay 運動媒合平台</p>
           <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-brand-200">Find Your Play</p>
           <h1 className="mt-3 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-            找到你的運動夥伴，隨時開打
+            找球友、揪團、預約
           </h1>
-          <p className="mt-4 max-w-xl text-base text-brand-100/95 sm:text-lg">
-            輸入關鍵字或點選快速項目，立刻找到適合的揪團並線上預約。
-          </p>
+          <p className="mt-4 max-w-2xl text-base text-brand-100/95 sm:text-lg">{SITE_DESCRIPTION}</p>
 
           <HomeSearch sports={sports} regions={regions} exploreCards={exploreCards} />
 
@@ -85,8 +96,8 @@ export default async function HomePage() {
       <NearbyTeamsSection teams={teams} excludeIds={featuredIds} />
 
       <section className="mx-auto max-w-6xl px-4 py-16">
-        <h2 className="text-2xl font-bold text-brand-900">我們在做的事很簡單</h2>
-        <p className="mt-2 text-slate-600">讓運動更容易成團</p>
+        <h2 className="text-2xl font-bold text-brand-900">平台特色</h2>
+        <p className="mt-2 text-slate-600">一鍵瀏覽揪團、線上預約，讓運動更容易成團</p>
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
             "一鍵瀏覽附近揪團，想動就動",

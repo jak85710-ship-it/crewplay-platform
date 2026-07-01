@@ -1,14 +1,14 @@
-const SITE_URL = "https://www.crewplay.tw";
+import { SITE_DESCRIPTION, SITE_OG_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/site-seo";
 
 export function OrganizationJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "CrewPlay 運動媒合平台",
+    name: SITE_TITLE,
     alternateName: "CrewPlay",
     url: SITE_URL,
     logo: `${SITE_URL}/brand/logo.png`,
-    description: "瀏覽全台揪團場地，線上預約羽球、桌球、排球等運動團。Find Your Play.",
+    description: SITE_DESCRIPTION,
     sameAs: [],
   };
 

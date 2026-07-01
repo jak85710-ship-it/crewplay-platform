@@ -1,7 +1,7 @@
 {
   "name": "CrewPlay 運動媒合平台",
   "short_name": "CrewPlay",
-  "description": "瀏覽全台揪團場地，線上預約羽球、桌球、排球等運動團。",
+  "description": "找球友、揪團、線上預約報名。依運動、縣市、團名搜尋羽球、桌球、排球等場次。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f4f8fb",
