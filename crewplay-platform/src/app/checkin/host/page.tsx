@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 
 import { HostCheckInPortal } from "@/components/HostCheckInPortal";
-import { isLineLoginConfigured } from "@/lib/line-auth";
 import { verifyHostPortalToken } from "@/lib/host-portal-token";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 
@@ -21,7 +20,6 @@ export default async function CheckInHostPage({ searchParams }: Props) {
   return (
     <HostCheckInPortal
       portalToken={t ?? ""}
-      lineEnabled={isLineLoginConfigured()}
       team={{
         id: team.id,
         arena_name: team.arena_name,

@@ -401,7 +401,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
         timeText ? `時間：${timeText}` : "",
         placeText ? `地點：${placeText}` : "",
         "",
-        "請使用手機開啟以下連結，以 LINE 登入後掃描球友 QR Code 完成進場核銷：",
+        "請使用手機開啟以下連結，直接掃描球友 QR Code 完成進場核銷：",
         hostPortalLink,
         "",
         "球友會在「我的預約」出示 QR Code，請在現場掃描即可。",

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 import { getBookingById } from "@/lib/bookings";
 import { verifyCheckInToken } from "@/lib/check-in-token";
-import { verifyHostCheckInSession } from "@/lib/host-checkin-session";
 import { verifyHostPortalToken } from "@/lib/host-portal-token";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 
@@ -15,11 +14,6 @@ export async function POST(req: Request) {
     const portal = verifyHostPortalToken(portalToken);
     if (!portal) {
       return NextResponse.json({ error: "核銷連結無效或已過期" }, { status: 400 });
-    }
-
-    const session = verifyHostCheckInSession(req, portal.teamId);
-    if (!session) {
-      return NextResponse.json({ error: "請先使用 LINE 登入" }, { status: 401 });
     }
 
     const payload = verifyCheckInToken(guestToken);

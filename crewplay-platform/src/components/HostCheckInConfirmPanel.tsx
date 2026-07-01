@@ -14,13 +14,21 @@ type TeamInfo = {
 
 type Props = {
   token: string;
+  portalToken: string;
   booking: Booking;
   team: TeamInfo | null;
   onDone: () => void;
   onCancel: () => void;
 };
 
-export function HostCheckInConfirmPanel({ token, booking, team, onDone, onCancel }: Props) {
+export function HostCheckInConfirmPanel({
+  token,
+  portalToken,
+  booking,
+  team,
+  onDone,
+  onCancel,
+}: Props) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const ref = bookingReference(booking);
@@ -34,7 +42,7 @@ export function HostCheckInConfirmPanel({ token, booking, team, onDone, onCancel
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "same-origin",
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token, portalToken }),
       });
       const data = await res.json();
       if (!res.ok) {
