@@ -15,7 +15,7 @@ export function MatchCheckInQr({ url, matchId, compact = false }: Props) {
         compact ? "p-4" : "p-6 shadow-sm"
       }`}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">1VS1 到場條碼</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">1V1 到場條碼</p>
       <p className="mt-1 font-mono text-sm font-bold text-slate-900">{matchId.slice(0, 8).toUpperCase()}</p>
       <div className="mx-auto mt-4 inline-block rounded-xl border border-slate-100 bg-white p-3">
         <QRCodeSVG value={url} size={compact ? 160 : 200} level="M" includeMargin />

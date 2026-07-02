@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       ok: true,
       review: result.review,
-      message: "已核實缺席，對方信用分已扣除且 1VS1 功能停用 90 日。",
+      message: "已核實缺席，對方信用分已扣除且 1V1 功能停用 90 日。",
     });
   } catch (e) {
     return NextResponse.json(

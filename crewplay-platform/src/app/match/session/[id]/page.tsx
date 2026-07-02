@@ -12,7 +12,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  return { title: `1VS1 對局 ${id.slice(0, 8)}` };
+  return { title: `1V1 對局 ${id.slice(0, 8)}` };
 }
 
 export default async function MatchSessionPage({ params }: Props) {
@@ -33,7 +33,7 @@ export default async function MatchSessionPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
       <Link href="/match" className="text-sm text-brand-600 hover:underline">
-        ← 返回 1VS1
+        ← 返回 1V1
       </Link>
       <h1 className="mt-4 text-2xl font-bold text-slate-900">對局詳情</h1>
       {!member.isLoggedIn && (

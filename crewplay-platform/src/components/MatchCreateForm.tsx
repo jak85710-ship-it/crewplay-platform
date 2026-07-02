@@ -53,10 +53,6 @@ export function MatchCreateForm() {
 
   return (
     <form onSubmit={submit} className="space-y-5">
-      <div className="rounded-xl border border-brand-100 bg-brand-50 p-4 text-sm text-brand-900">
-        試營運場館：<strong>{PILOT_MATCH_VENUE_NAME}</strong>（桌球）· 雙方到場須掃描核銷
-      </div>
-
       <label className="block text-sm">
         <span className="font-medium text-slate-700">運動程度</span>
         <select
@@ -72,27 +68,42 @@ export function MatchCreateForm() {
         </select>
       </label>
 
-      <label className="block text-sm">
-        <span className="font-medium text-slate-700">開始時間</span>
-        <input
-          type="datetime-local"
-          value={scheduledStart}
-          onChange={(e) => setScheduledStart(e.target.value)}
-          required
-          className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5"
-        />
-      </label>
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 className="text-sm font-bold text-slate-800">預約資訊</h2>
+        <p className="mt-1 text-xs text-slate-500">雙方到場須掃描核銷</p>
 
-      <label className="block text-sm">
-        <span className="font-medium text-slate-700">結束時間</span>
-        <input
-          type="datetime-local"
-          value={scheduledEnd}
-          onChange={(e) => setScheduledEnd(e.target.value)}
-          required
-          className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5"
-        />
-      </label>
+        <label className="mt-4 block text-sm">
+          <span className="font-medium text-slate-700">預約場館</span>
+          <input
+            type="text"
+            readOnly
+            value={`${PILOT_MATCH_VENUE_NAME}（桌球）`}
+            className="mt-1.5 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-slate-700"
+          />
+        </label>
+
+        <label className="mt-4 block text-sm">
+          <span className="font-medium text-slate-700">開始時間</span>
+          <input
+            type="datetime-local"
+            value={scheduledStart}
+            onChange={(e) => setScheduledStart(e.target.value)}
+            required
+            className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5"
+          />
+        </label>
+
+        <label className="mt-4 block text-sm">
+          <span className="font-medium text-slate-700">結束時間</span>
+          <input
+            type="datetime-local"
+            value={scheduledEnd}
+            onChange={(e) => setScheduledEnd(e.target.value)}
+            required
+            className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5"
+          />
+        </label>
+      </section>
 
       {message && <p className="text-sm text-red-700">{message}</p>}
 
@@ -101,7 +112,7 @@ export function MatchCreateForm() {
         disabled={busy}
         className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
       >
-        {busy ? "建立中…" : "發起 1VS1 對局"}
+        {busy ? "建立中…" : "發起 1V1 對局"}
       </button>
     </form>
   );

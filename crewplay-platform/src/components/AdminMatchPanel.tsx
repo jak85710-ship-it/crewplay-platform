@@ -88,7 +88,7 @@ export function AdminMatchPanel({ adminKey }: Props) {
   );
 
   async function verifyNoShow(reviewId: string) {
-    if (!window.confirm("確認核實缺席？將扣信用分並停用 1VS1 功能 90 日。")) return;
+    if (!window.confirm("確認核實缺席？將扣信用分並停用 1V1 功能 90 日。")) return;
 
     setVerifyBusy(reviewId);
     setMessage("");
@@ -111,8 +111,8 @@ export function AdminMatchPanel({ adminKey }: Props) {
 
   return (
     <section className="mt-10">
-      <h2 className="font-bold text-slate-800">1VS1 到場核銷</h2>
-      <p className="mt-1 text-sm text-slate-500">掃描球友 1VS1 到場 QR Code 完成核銷。</p>
+      <h2 className="font-bold text-slate-800">1V1 到場核銷</h2>
+      <p className="mt-1 text-sm text-slate-500">掃描球友 1V1 到場 QR Code 完成核銷。</p>
 
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
         <QrScanner key={scanKey} onScan={handleScan} />

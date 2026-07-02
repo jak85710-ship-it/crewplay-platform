@@ -26,7 +26,7 @@ export function AdminDashboard({ bookings, scanUrls }: Props) {
           className="mt-2 w-full max-w-md rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm"
         />
         <p className="mt-2 text-xs text-amber-800">
-          用於爽約管理、1VS1 實名審核、到場核銷與缺席核實。
+          用於爽約管理、1V1 實名審核、到場核銷與缺席核實。
         </p>
       </div>
 

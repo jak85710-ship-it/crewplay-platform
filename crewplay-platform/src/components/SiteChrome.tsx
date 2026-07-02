@@ -29,7 +29,7 @@ export async function SiteHeader() {
               場主刊登
             </Link>
             <Link href="/match" className={navLink}>
-              1VS1
+              1V1
             </Link>
             <Link href="/my/bookings" className={`${navLink} hidden sm:inline-flex`}>
               我的預約

@@ -8,9 +8,10 @@ import { VERIFICATION_CONSENT_TEXT } from "@/lib/legal-entity";
 type Props = {
   initialStatus: string;
   rejectionReason?: string | null;
+  redirectAfter?: string | null;
 };
 
-export function MatchVerifyForm({ initialStatus, rejectionReason }: Props) {
+export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter }: Props) {
   const [status, setStatus] = useState(initialStatus);
   const [file, setFile] = useState<File | null>(null);
   const [agreed, setAgreed] = useState(false);
@@ -21,9 +22,12 @@ export function MatchVerifyForm({ initialStatus, rejectionReason }: Props) {
     return (
       <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900">
         <p className="font-semibold">實名認證已通過</p>
-        <p className="mt-2">您可以使用 1VS1 盲盒匹配功能。</p>
-        <Link href="/match" className="mt-4 inline-block font-semibold text-brand-700 underline">
-          返回 1VS1 首頁
+        <p className="mt-2">您可以使用 1V1 盲盒匹配功能。</p>
+        <Link
+          href={redirectAfter || "/match"}
+          className="mt-4 inline-block font-semibold text-brand-700 underline"
+        >
+          {redirectAfter ? "繼續使用 1V1" : "返回 1V1 首頁"}
         </Link>
       </div>
     );
@@ -33,7 +37,7 @@ export function MatchVerifyForm({ initialStatus, rejectionReason }: Props) {
     return (
       <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
         <p className="font-semibold">實名認證審核中</p>
-        <p className="mt-2">人工審核約 1–3 個工作天，通過後即可使用 1VS1 匹配。</p>
+        <p className="mt-2">人工審核約 1–3 個工作天，通過後即可使用 1V1 匹配。</p>
       </div>
     );
   }

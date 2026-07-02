@@ -195,8 +195,8 @@ export async function checkMemberCanMatch(memberKey: string): Promise<{
       match_locked_until,
       block_reason:
         verification_status === "pending"
-          ? "實名認證審核中，通過後即可使用 1VS1 匹配。"
-          : "請先完成實名認證後再使用 1VS1 匹配。",
+          ? "實名認證審核中，通過後即可使用 1V1 匹配。"
+          : "請先完成實名認證後再使用 1V1 匹配。",
     };
   }
 
@@ -208,7 +208,7 @@ export async function checkMemberCanMatch(memberKey: string): Promise<{
       min_score: MIN_MATCH_SCORE,
       verification_status,
       match_locked_until,
-      block_reason: `您曾因 1VS1 對局缺席，此功能已暫停至 ${new Date(match_locked_until!).toLocaleDateString("zh-TW")}。`,
+      block_reason: `您曾因 1V1 對局缺席，此功能已暫停至 ${new Date(match_locked_until!).toLocaleDateString("zh-TW")}。`,
     };
   }
 
@@ -220,7 +220,7 @@ export async function checkMemberCanMatch(memberKey: string): Promise<{
       min_score: MIN_MATCH_SCORE,
       verification_status,
       match_locked_until,
-      block_reason: `信用分不足（${profile.credit_score} / 最低 ${MIN_MATCH_SCORE}），暫時無法使用 1VS1 匹配。`,
+      block_reason: `信用分不足（${profile.credit_score} / 最低 ${MIN_MATCH_SCORE}），暫時無法使用 1V1 匹配。`,
     };
   }
 
@@ -248,7 +248,7 @@ export async function applyNoShowPenalty(memberKey: string): Promise<MemberCredi
   return profile;
 }
 
-/** 1VS1 缺席核實：扣信用分並停用匹配 90 日（不影響一般報名門檻邏輯，除非分數低於 40） */
+/** 1V1 缺席核實：扣信用分並停用匹配 90 日（不影響一般報名門檻邏輯，除非分數低於 40） */
 export async function applyMatchNoShowPenalty(memberKey: string): Promise<MemberCreditProfile> {
   const manifest = await loadManifest();
   const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);

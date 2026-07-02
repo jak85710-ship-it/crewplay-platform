@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   const gate = await checkMemberCanMatch(auth.memberKey);
   if (!gate.allowed) {
-    return NextResponse.json({ error: gate.block_reason ?? "無法使用 1VS1 匹配" }, { status: 403 });
+    return NextResponse.json({ error: gate.block_reason ?? "無法使用 1V1 匹配" }, { status: 403 });
   }
 
   try {

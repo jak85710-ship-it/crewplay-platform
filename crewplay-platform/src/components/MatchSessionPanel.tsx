@@ -208,7 +208,7 @@ export function MatchSessionPanel({ matchId, initialMatch, role }: Props) {
             <input type="checkbox" checked={isNoShow} onChange={(e) => setIsNoShow(e.target.checked)} />
             對方未到場（缺席）
           </label>
-          <p className="mt-2 text-xs text-slate-500">缺席申訴須經管理員核實後，才會扣信用分並停用 1VS1 功能 90 日。</p>
+          <p className="mt-2 text-xs text-slate-500">缺席申訴須經管理員核實後，才會扣信用分並停用 1V1 功能 90 日。</p>
           <button
             type="submit"
             disabled={reviewBusy}

@@ -78,7 +78,7 @@ export function AdminVerificationPanel({ adminKey }: Props) {
 
   return (
     <section className="mt-10">
-      <h2 className="font-bold text-slate-800">1VS1 實名認證審核</h2>
+      <h2 className="font-bold text-slate-800">1V1 實名認證審核</h2>
       <p className="mt-1 text-sm text-slate-500">使用上方同一組管理金鑰載入待審項目。</p>
 
       <button

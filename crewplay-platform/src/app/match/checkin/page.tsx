@@ -10,7 +10,7 @@ export default async function MatchCheckInPassPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16 text-center">
-      <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">CrewPlay 1VS1</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">CrewPlay 1V1</p>
       <h1 className="mt-2 text-xl font-bold text-slate-900">到場核銷條碼</h1>
       {!payload || !session ? (
         <p className="mt-4 text-sm text-red-700">條碼無效或已過期，請向球友重新索取 QR Code。</p>
