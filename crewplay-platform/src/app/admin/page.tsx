@@ -3,7 +3,7 @@ import { hostCheckInPortalUrl } from "@/lib/check-in-url";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { getAllTeams } from "@/lib/teams";
 
-import { AdminBookingsTable } from "@/components/AdminBookingsTable";
+import { AdminDashboard } from "@/components/AdminDashboard";
 
 export default async function AdminPage() {
   const teams = await getAllTeams();
@@ -27,10 +27,7 @@ export default async function AdminPage() {
         <Stat label="預約筆數" value={String(bookings.length)} />
       </div>
 
-      <section className="mt-10">
-        <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
-        <AdminBookingsTable bookings={bookings} scanUrls={scanUrls} />
-      </section>
+      <AdminDashboard bookings={bookings} scanUrls={scanUrls} />
 
       <section className="mt-10 rounded-xl border border-brand-200 bg-brand-50 p-5 text-sm text-brand-900">
         <p className="font-semibold">同步試算表到網站</p>

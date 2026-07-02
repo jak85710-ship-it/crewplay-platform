@@ -273,3 +273,55 @@ export async function listMemberProfiles(): Promise<MemberCreditProfile[]> {
     (a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
   );
 }
+
+export async function submitVerificationRequest(
+  memberKey: string,
+  imageId: string
+): Promise<MemberCreditProfile> {
+  const manifest = await loadManifest();
+  const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  if (existing.verification_status === "approved") {
+    return existing;
+  }
+  const profile: MemberCreditProfile = {
+    ...existing,
+    verification_status: "pending",
+    verification_image_id: imageId,
+    rejection_reason: undefined,
+    updated_at: new Date().toISOString(),
+  };
+  manifest.profiles[memberKey] = profile;
+  await saveManifest(manifest);
+  return profile;
+}
+
+export async function listPendingVerifications(): Promise<MemberCreditProfile[]> {
+  const profiles = await listMemberProfiles();
+  return profiles.filter((p) => p.verification_status === "pending");
+}
+
+export async function reviewVerification(
+  memberKey: string,
+  action: "approve" | "reject",
+  adminLabel: string,
+  rejectionReason?: string
+): Promise<MemberCreditProfile | null> {
+  const manifest = await loadManifest();
+  const existing = manifest.profiles[memberKey];
+  if (!existing || existing.verification_status !== "pending") {
+    return null;
+  }
+
+  const profile: MemberCreditProfile = {
+    ...existing,
+    verification_status: action === "approve" ? "approved" : "rejected",
+    verified_at: action === "approve" ? new Date().toISOString() : undefined,
+    verified_by_admin: adminLabel.slice(0, 80),
+    rejection_reason:
+      action === "reject" ? (rejectionReason?.trim().slice(0, 200) || "資料不符") : undefined,
+    updated_at: new Date().toISOString(),
+  };
+  manifest.profiles[memberKey] = profile;
+  await saveManifest(manifest);
+  return profile;
+}

@@ -28,10 +28,10 @@ function statusLabel(status: string): string {
 type Props = {
   bookings: Booking[];
   scanUrls: Record<string, string>;
+  adminKey: string;
 };
 
-export function AdminBookingsTable({ bookings, scanUrls }: Props) {
-  const [adminKey, setAdminKey] = useState("");
+export function AdminBookingsTable({ bookings, scanUrls, adminKey }: Props) {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [rows, setRows] = useState(bookings);
@@ -76,20 +76,6 @@ export function AdminBookingsTable({ bookings, scanUrls }: Props) {
 
   return (
     <div>
-      <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-        <label className="block font-semibold">管理金鑰（ADMIN_API_KEY）</label>
-        <input
-          type="password"
-          value={adminKey}
-          onChange={(e) => setAdminKey(e.target.value)}
-          placeholder="僅本機輸入，不會上傳到 Git"
-          className="mt-2 w-full max-w-md rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm"
-        />
-        <p className="mt-2 text-xs text-amber-800">
-          標記爽約後，會員信用分 -20（低於 40 分將無法再報名）。進場核銷由團主使用 Email 內連結直接掃描球友 QR Code。
-        </p>
-      </div>
-
       {message && <p className="mt-3 text-sm text-slate-700">{message}</p>}
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
