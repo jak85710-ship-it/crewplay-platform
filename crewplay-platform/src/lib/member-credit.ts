@@ -4,16 +4,32 @@ import { getStore } from "@netlify/blobs";
 
 import {
   DEFAULT_CREDIT_SCORE,
+  MATCH_NO_SHOW_LOCK_DAYS,
   MIN_BOOKING_SCORE,
+  MIN_MATCH_SCORE,
   NO_SHOW_PENALTY,
 } from "@/lib/member-credit-constants";
 
-export { DEFAULT_CREDIT_SCORE, MIN_BOOKING_SCORE, NO_SHOW_PENALTY };
+export {
+  DEFAULT_CREDIT_SCORE,
+  MATCH_NO_SHOW_LOCK_DAYS,
+  MIN_BOOKING_SCORE,
+  MIN_MATCH_SCORE,
+  NO_SHOW_PENALTY,
+};
+
+export type VerificationStatus = "none" | "pending" | "approved" | "rejected";
 
 export type MemberCreditProfile = {
   member_key: string;
   credit_score: number;
   no_show_count: number;
+  verification_status?: VerificationStatus;
+  verification_image_id?: string;
+  verified_at?: string;
+  verified_by_admin?: string;
+  rejection_reason?: string;
+  match_locked_until?: string | null;
   display_name?: string;
   email?: string;
   line_uid?: string;
@@ -87,8 +103,23 @@ function defaultProfile(memberKey: string): MemberCreditProfile {
     member_key: memberKey,
     credit_score: DEFAULT_CREDIT_SCORE,
     no_show_count: 0,
+    verification_status: "none",
+    match_locked_until: null,
     updated_at: new Date().toISOString(),
   };
+}
+
+export function isVerificationApproved(profile: MemberCreditProfile): boolean {
+  return profile.verification_status === "approved";
+}
+
+export function isMatchFeatureLocked(profile: MemberCreditProfile): boolean {
+  if (!profile.match_locked_until) return false;
+  return new Date(profile.match_locked_until) > new Date();
+}
+
+export function canMatchWithScore(score: number): boolean {
+  return score >= MIN_MATCH_SCORE;
 }
 
 export async function getMemberCredit(memberKey: string): Promise<MemberCreditProfile> {
@@ -141,6 +172,68 @@ export async function checkMemberCanBook(memberKey: string): Promise<{
   };
 }
 
+export async function checkMemberCanMatch(memberKey: string): Promise<{
+  allowed: boolean;
+  credit_score: number;
+  no_show_count: number;
+  min_score: number;
+  verification_status: VerificationStatus;
+  match_locked_until: string | null;
+  block_reason?: string;
+}> {
+  const profile = await getMemberCredit(memberKey);
+  const verification_status = profile.verification_status ?? "none";
+  const match_locked_until = profile.match_locked_until ?? null;
+
+  if (!isVerificationApproved(profile)) {
+    return {
+      allowed: false,
+      credit_score: profile.credit_score,
+      no_show_count: profile.no_show_count,
+      min_score: MIN_MATCH_SCORE,
+      verification_status,
+      match_locked_until,
+      block_reason:
+        verification_status === "pending"
+          ? "實名認證審核中，通過後即可使用 1VS1 匹配。"
+          : "請先完成實名認證後再使用 1VS1 匹配。",
+    };
+  }
+
+  if (isMatchFeatureLocked(profile)) {
+    return {
+      allowed: false,
+      credit_score: profile.credit_score,
+      no_show_count: profile.no_show_count,
+      min_score: MIN_MATCH_SCORE,
+      verification_status,
+      match_locked_until,
+      block_reason: `您曾因 1VS1 對局缺席，此功能已暫停至 ${new Date(match_locked_until!).toLocaleDateString("zh-TW")}。`,
+    };
+  }
+
+  if (!canMatchWithScore(profile.credit_score)) {
+    return {
+      allowed: false,
+      credit_score: profile.credit_score,
+      no_show_count: profile.no_show_count,
+      min_score: MIN_MATCH_SCORE,
+      verification_status,
+      match_locked_until,
+      block_reason: `信用分不足（${profile.credit_score} / 最低 ${MIN_MATCH_SCORE}），暫時無法使用 1VS1 匹配。`,
+    };
+  }
+
+  return {
+    allowed: true,
+    credit_score: profile.credit_score,
+    no_show_count: profile.no_show_count,
+    min_score: MIN_MATCH_SCORE,
+    verification_status,
+    match_locked_until,
+  };
+}
+
 export async function applyNoShowPenalty(memberKey: string): Promise<MemberCreditProfile> {
   const manifest = await loadManifest();
   const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
@@ -148,6 +241,25 @@ export async function applyNoShowPenalty(memberKey: string): Promise<MemberCredi
     ...existing,
     no_show_count: existing.no_show_count + 1,
     credit_score: Math.max(0, existing.credit_score - NO_SHOW_PENALTY),
+    updated_at: new Date().toISOString(),
+  };
+  manifest.profiles[memberKey] = profile;
+  await saveManifest(manifest);
+  return profile;
+}
+
+/** 1VS1 缺席核實：扣信用分並停用匹配 90 日（不影響一般報名門檻邏輯，除非分數低於 40） */
+export async function applyMatchNoShowPenalty(memberKey: string): Promise<MemberCreditProfile> {
+  const manifest = await loadManifest();
+  const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const lockUntil = new Date();
+  lockUntil.setDate(lockUntil.getDate() + MATCH_NO_SHOW_LOCK_DAYS);
+
+  const profile: MemberCreditProfile = {
+    ...existing,
+    no_show_count: existing.no_show_count + 1,
+    credit_score: Math.max(0, existing.credit_score - NO_SHOW_PENALTY),
+    match_locked_until: lockUntil.toISOString(),
     updated_at: new Date().toISOString(),
   };
   manifest.profiles[memberKey] = profile;
