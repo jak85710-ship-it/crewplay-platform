@@ -7,6 +7,7 @@ import { MatchVerifyForm } from "@/components/MatchVerifyForm";
 import { getMemberCredit, isVerificationApproved } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSession } from "@/lib/member-session";
+import { issueVerificationAuthToken } from "@/lib/verification-auth-token";
 
 export const metadata: Metadata = {
   title: "1V1 實名認證",
@@ -37,6 +38,7 @@ export default async function MatchVerifyPage({ searchParams }: Props) {
 
   const memberKey = getMemberKeyFromSession(member)!;
   const profile = await getMemberCredit(memberKey);
+  const verifyAuthToken = issueVerificationAuthToken(member);
 
   if (profile.verification_status === "pending") {
     const pendingQ = afterVerify ? `?redirect=${encodeURIComponent(afterVerify)}` : "";
@@ -77,6 +79,7 @@ export default async function MatchVerifyPage({ searchParams }: Props) {
           initialError={formError}
           memberEmail={member.email ?? profile.email ?? null}
           needsEmail={!member.email?.includes("@") && !profile.email?.includes("@")}
+          verifyAuthToken={verifyAuthToken}
         />
       </div>
     </div>

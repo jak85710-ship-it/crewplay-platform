@@ -43,6 +43,39 @@ export function validateVerificationImageFile(file: File | Blob, contentType: st
   return null;
 }
 
+export function validateVerificationImageContent(bytes: Buffer, contentType: string): string | null {
+  if (bytes.length < 12) {
+    return "圖片檔案格式無效，請重新上傳";
+  }
+
+  const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  const isPng =
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47 &&
+    bytes[4] === 0x0d &&
+    bytes[5] === 0x0a &&
+    bytes[6] === 0x1a &&
+    bytes[7] === 0x0a;
+  const isWebp =
+    bytes[0] === 0x52 &&
+    bytes[1] === 0x49 &&
+    bytes[2] === 0x46 &&
+    bytes[3] === 0x46 &&
+    bytes[8] === 0x57 &&
+    bytes[9] === 0x45 &&
+    bytes[10] === 0x42 &&
+    bytes[11] === 0x50;
+
+  if (contentType === "image/jpeg" && !isJpeg) return "檔案與副檔名不符，請重新上傳 JPG";
+  if (contentType === "image/png" && !isPng) return "檔案與副檔名不符，請重新上傳 PNG";
+  if (contentType === "image/webp" && !isWebp) return "檔案與副檔名不符，請重新上傳 WebP";
+  if (!isJpeg && !isPng && !isWebp) return "僅支援有效的 JPG、PNG、WebP 圖片";
+
+  return null;
+}
+
 export function isVerificationImageId(id: string): boolean {
   return /^verify-[0-9a-f-]{36}$/i.test(id);
 }

@@ -168,7 +168,7 @@ export function PhoneLoginForm({ lineEnabled }: Props) {
     <>
       {sessionExpired && (
         <p className="mt-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          登入狀態已過期，請重新登入後再送出報名。
+          登入狀態已過期，請重新登入後再繼續操作。
         </p>
       )}
 

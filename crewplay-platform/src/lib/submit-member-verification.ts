@@ -1,4 +1,5 @@
 import {
+  getMemberCredit,
   submitVerificationRequest,
   touchMemberProfile,
 } from "@/lib/member-credit";
@@ -6,6 +7,7 @@ import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
 import {
   saveVerificationImage,
+  validateVerificationImageContent,
   validateVerificationImageFile,
 } from "@/lib/verification-images";
 import type { CookieReader } from "@/lib/cookie-reader";
@@ -16,9 +18,10 @@ export type VerificationSubmitResult =
 
 export async function processVerificationSubmit(
   formData: FormData,
-  cookieStore: CookieReader
+  cookieStore: CookieReader,
+  memberOverride?: MemberSession | null
 ): Promise<VerificationSubmitResult> {
-  const member = getMemberSessionFromReader(cookieStore);
+  const member = memberOverride?.isLoggedIn ? memberOverride : getMemberSessionFromReader(cookieStore);
   const memberKey = getMemberKeyFromSession(member);
 
   if (!memberKey) {
@@ -55,9 +58,22 @@ export async function processVerificationSubmit(
   }
 
   try {
+    const current = await getMemberCredit(memberKey);
+    if (current.verification_status === "pending") {
+      return {
+        ok: true,
+        verification_status: "pending",
+        message: "您的實名認證已在審核中，請勿重複送出。",
+      };
+    }
+
     await touchMemberProfile(memberKey, hints);
 
     const bytes = Buffer.from(await file.arrayBuffer());
+    const contentValidationError = validateVerificationImageContent(bytes, contentType);
+    if (contentValidationError) {
+      return { ok: false, code: "validation", error: contentValidationError };
+    }
     const saved = await saveVerificationImage(bytes, contentType);
     const profile = await submitVerificationRequest(memberKey, saved.id);
 

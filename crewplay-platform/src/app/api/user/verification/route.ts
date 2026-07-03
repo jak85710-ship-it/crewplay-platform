@@ -8,6 +8,7 @@ import { checkMemberCanMatch, getMemberCredit } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { applyMemberProfileToCookieStore, getMemberSessionFromReader } from "@/lib/member-session";
 import { processVerificationSubmit } from "@/lib/submit-member-verification";
+import { memberSessionFromVerificationToken } from "@/lib/verification-auth-token";
 
 export const runtime = "nodejs";
 
@@ -64,7 +65,11 @@ export async function POST(req: Request) {
   const formMode = isFormRequest(req);
   const form = await req.formData();
   const cookieStore = await cookiesFromRequest(req);
-  const result = await processVerificationSubmit(form, cookieStore);
+  const memberFromCookie = getMemberSessionFromReader(cookieStore);
+  const token = String(form.get("verify_auth") ?? "").trim();
+  const memberFromToken = memberSessionFromVerificationToken(token);
+  const activeMember = memberFromCookie.isLoggedIn ? memberFromCookie : memberFromToken;
+  const result = await processVerificationSubmit(form, cookieStore, activeMember);
   const site = siteUrlFromRequest(req);
   const afterVerify = safeMatchRedirect(String(form.get("redirect_after") ?? "").trim());
 
@@ -90,13 +95,12 @@ export async function POST(req: Request) {
   }
 
   if (formMode) {
-    const member = getMemberSessionFromReader(cookieStore);
     const contactEmail = String(form.get("contact_email") ?? "").trim().toLowerCase();
     const res = NextResponse.redirect(`${site}${pendingPageUrl(afterVerify)}`, 303);
     applyMemberProfileToCookieStore(res.cookies, {
-      name: member.displayName,
-      email: contactEmail || member.email,
-      contactPhone: member.contactPhone ?? member.phone,
+      name: activeMember?.displayName,
+      email: contactEmail || activeMember?.email,
+      contactPhone: activeMember?.contactPhone ?? activeMember?.phone,
     });
     return res;
   }

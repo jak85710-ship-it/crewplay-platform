@@ -9,6 +9,7 @@ type Props = {
   initialError?: string | null;
   memberEmail?: string | null;
   needsEmail?: boolean;
+  verifyAuthToken?: string;
 };
 
 export function MatchVerifyForm({
@@ -18,6 +19,7 @@ export function MatchVerifyForm({
   initialError,
   memberEmail,
   needsEmail,
+  verifyAuthToken,
 }: Props) {
   const loginHref = `/login?redirect=${encodeURIComponent(
     redirectAfter
@@ -63,6 +65,7 @@ export function MatchVerifyForm({
       className="space-y-5"
     >
       {redirectAfter && <input type="hidden" name="redirect_after" value={redirectAfter} />}
+      {verifyAuthToken && <input type="hidden" name="verify_auth" value={verifyAuthToken} />}
 
       {initialStatus === "rejected" && rejectionReason && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
