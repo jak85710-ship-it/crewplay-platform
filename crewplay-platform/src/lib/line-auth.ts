@@ -2,19 +2,14 @@ export function isLineLoginConfigured(): boolean {
   return Boolean(process.env.LINE_CHANNEL_ID?.trim() && process.env.LINE_CHANNEL_SECRET?.trim());
 }
 
-/** 使用者瀏覽的正式站網址（裸網域） */
+/** 使用者瀏覽的正式站網址（以 NEXT_PUBLIC_SITE_URL 為準） */
 export function getPublicSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
   if (configured) {
-    try {
-      const u = new URL(configured);
-      if (u.hostname === "www.crewplay.tw") {
-        return "https://crewplay.tw";
-      }
-      return configured;
-    } catch {
-      return configured;
-    }
+    return configured;
+  }
+  if (process.env.NODE_ENV === "production") {
+    return "https://www.crewplay.tw";
   }
   return "http://localhost:3000";
 }
