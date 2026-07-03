@@ -70,7 +70,8 @@ export async function POST(req: Request) {
   const memberFromToken = memberSessionFromVerificationToken(token);
   const activeMember = memberFromCookie.isLoggedIn ? memberFromCookie : memberFromToken;
   const result = await processVerificationSubmit(form, cookieStore, activeMember);
-  const site = siteUrlFromRequest(req);
+  const configuredSite = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const site = configuredSite || siteUrlFromRequest(req);
   const afterVerify = safeMatchRedirect(String(form.get("redirect_after") ?? "").trim());
 
   if (!result.ok) {

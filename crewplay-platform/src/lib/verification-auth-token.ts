@@ -28,7 +28,7 @@ export function issueVerificationAuthToken(member: MemberSession): string {
   if (!secret || !member.isLoggedIn || !member.method) return "";
 
   const payload: VerificationTokenPayload = {
-    exp: Math.floor(Date.now() / 1000) + 60 * 20,
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 2,
     method: member.method,
     lineUid: member.lineUid,
     email: member.method === "email" ? member.email : undefined,
