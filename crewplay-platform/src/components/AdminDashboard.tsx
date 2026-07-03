@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AdminBookingsTable } from "@/components/AdminBookingsTable";
 import { AdminOneVsOneSection } from "@/components/AdminOneVsOneSection";
@@ -13,6 +13,17 @@ type Props = {
 
 export function AdminDashboard({ bookings, scanUrls }: Props) {
   const [adminKey, setAdminKey] = useState("");
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("admin_api_key");
+    if (saved) setAdminKey(saved);
+  }, []);
+
+  useEffect(() => {
+    if (adminKey.trim()) {
+      window.localStorage.setItem("admin_api_key", adminKey.trim());
+    }
+  }, [adminKey]);
 
   return (
     <>
@@ -35,7 +46,7 @@ export function AdminDashboard({ bookings, scanUrls }: Props) {
         <AdminBookingsTable bookings={bookings} scanUrls={scanUrls} adminKey={adminKey} />
       </section>
 
-      <AdminOneVsOneSection adminKey={adminKey} />
+      <AdminOneVsOneSection adminKey={adminKey} onAdminKeyChange={setAdminKey} />
     </>
   );
 }

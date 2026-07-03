@@ -13,9 +13,10 @@ type PendingItem = {
 
 type Props = {
   adminKey: string;
+  onAdminKeyChange: (value: string) => void;
 };
 
-export function AdminVerificationPanel({ adminKey }: Props) {
+export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
   const [pending, setPending] = useState<PendingItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [busyKey, setBusyKey] = useState<string | null>(null);
@@ -155,7 +156,18 @@ export function AdminVerificationPanel({ adminKey }: Props) {
   return (
     <section className="mt-10">
       <h2 className="font-bold text-slate-800">1V1 實名認證審核</h2>
-      <p className="mt-1 text-sm text-slate-500">使用上方同一組管理金鑰載入待審項目。</p>
+      <p className="mt-1 text-sm text-slate-500">可直接在此輸入管理金鑰後載入待審項目。</p>
+
+      <div className="mt-3 max-w-md">
+        <label className="block text-sm font-semibold text-slate-700">管理金鑰（ADMIN_API_KEY）</label>
+        <input
+          type="password"
+          value={adminKey}
+          onChange={(e) => onAdminKeyChange(e.target.value)}
+          placeholder="輸入後可直接按『載入待審證件』"
+          className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+        />
+      </div>
 
       <label className="mt-3 inline-flex items-center gap-2 text-sm text-slate-700">
         <input
