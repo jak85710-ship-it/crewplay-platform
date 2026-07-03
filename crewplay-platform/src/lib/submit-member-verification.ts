@@ -1,0 +1,73 @@
+import {
+  submitVerificationRequest,
+  touchMemberProfile,
+} from "@/lib/member-credit";
+import { getMemberKeyFromSession } from "@/lib/member-key";
+import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
+import {
+  saveVerificationImage,
+  validateVerificationImageFile,
+} from "@/lib/verification-images";
+import type { CookieReader } from "@/lib/cookie-reader";
+
+export type VerificationSubmitResult =
+  | { ok: true; verification_status: string; message: string }
+  | { ok: false; code: "login_required" | "validation" | "server"; error: string };
+
+export async function processVerificationSubmit(
+  formData: FormData,
+  cookieStore: CookieReader
+): Promise<VerificationSubmitResult> {
+  const member = getMemberSessionFromReader(cookieStore);
+  const memberKey = getMemberKeyFromSession(member);
+
+  if (!memberKey) {
+    return { ok: false, code: "login_required", error: "請先登入會員" };
+  }
+
+  const agreed = formData.get("agreed") === "true";
+  if (!agreed) {
+    return { ok: false, code: "validation", error: "請勾選實名認證同意事項" };
+  }
+
+  const file = formData.get("file");
+  if (!(file instanceof File)) {
+    return { ok: false, code: "validation", error: "請上傳證件影像" };
+  }
+
+  const contentType = file.type || "application/octet-stream";
+  const validationError = validateVerificationImageFile(file, contentType);
+  if (validationError) {
+    return { ok: false, code: "validation", error: validationError };
+  }
+
+  try {
+    await touchMemberProfile(memberKey, profileHints(member));
+
+    const bytes = Buffer.from(await file.arrayBuffer());
+    const saved = await saveVerificationImage(bytes, contentType);
+    const profile = await submitVerificationRequest(memberKey, saved.id);
+
+    return {
+      ok: true,
+      verification_status: profile.verification_status ?? "pending",
+      message: "已送出實名認證，人工審核約 1–2 個工作天。",
+    };
+  } catch (e) {
+    return {
+      ok: false,
+      code: "server",
+      error: e instanceof Error ? e.message : "上傳失敗",
+    };
+  }
+}
+
+function profileHints(member: MemberSession) {
+  return {
+    displayName: member.displayName,
+    email: member.email,
+    lineUid: member.lineUid,
+    appleUid: member.appleUid,
+    phone: member.phone ?? member.contactPhone,
+  };
+}

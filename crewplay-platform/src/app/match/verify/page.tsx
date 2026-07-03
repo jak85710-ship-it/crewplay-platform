@@ -35,6 +35,11 @@ export default async function MatchVerifyPage({ searchParams }: Props) {
   const memberKey = getMemberKeyFromSession(member)!;
   const profile = await getMemberCredit(memberKey);
 
+  if (profile.verification_status === "pending") {
+    const pendingQ = afterVerify ? `?redirect=${encodeURIComponent(afterVerify)}` : "";
+    redirect(`/match/verify/pending${pendingQ}`);
+  }
+
   if (isVerificationApproved(profile) && afterVerify) {
     redirect(afterVerify);
   }
