@@ -3,20 +3,26 @@ import path from "path";
 import { getStore } from "@netlify/blobs";
 
 import {
+  CANCEL_BOOKING_PENALTY,
   DEFAULT_CREDIT_SCORE,
   MATCH_NO_SHOW_LOCK_DAYS,
+  MAX_CREDIT_SCORE,
   MIN_BOOKING_SCORE,
   MIN_MATCH_SCORE,
   NO_SHOW_PENALTY,
 } from "@/lib/member-credit-constants";
+import { computeCreditRecovery, getCreditRecoveryInfo } from "@/lib/credit-recovery";
 
 export {
+  CANCEL_BOOKING_PENALTY,
   DEFAULT_CREDIT_SCORE,
   MATCH_NO_SHOW_LOCK_DAYS,
+  MAX_CREDIT_SCORE,
   MIN_BOOKING_SCORE,
   MIN_MATCH_SCORE,
   NO_SHOW_PENALTY,
-};
+} from "@/lib/member-credit-constants";
+export { getCreditRecoveryInfo } from "@/lib/credit-recovery";
 
 export type VerificationStatus = "none" | "pending" | "approved" | "rejected";
 
@@ -24,6 +30,8 @@ export type MemberCreditProfile = {
   member_key: string;
   credit_score: number;
   no_show_count: number;
+  cancel_count?: number;
+  last_credit_recovery_at?: string | null;
   verification_status?: VerificationStatus;
   verification_image_id?: string;
   verified_at?: string;
@@ -99,13 +107,51 @@ async function saveManifest(manifest: MembersManifest): Promise<void> {
 }
 
 function defaultProfile(memberKey: string): MemberCreditProfile {
+  const now = new Date().toISOString();
   return {
     member_key: memberKey,
     credit_score: DEFAULT_CREDIT_SCORE,
     no_show_count: 0,
+    cancel_count: 0,
+    last_credit_recovery_at: now,
     verification_status: "none",
     match_locked_until: null,
-    updated_at: new Date().toISOString(),
+    updated_at: now,
+  };
+}
+
+async function persistProfileIfChanged(
+  memberKey: string,
+  existing: MemberCreditProfile,
+  next: MemberCreditProfile
+): Promise<MemberCreditProfile> {
+  if (
+    next.credit_score === existing.credit_score &&
+    next.last_credit_recovery_at === existing.last_credit_recovery_at
+  ) {
+    return existing;
+  }
+  const manifest = await loadManifest();
+  manifest.profiles[memberKey] = next;
+  await saveManifest(manifest);
+  return next;
+}
+
+async function refreshCreditRecovery(memberKey: string): Promise<MemberCreditProfile> {
+  const manifest = await loadManifest();
+  const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const recovered = computeCreditRecovery(existing);
+  return persistProfileIfChanged(memberKey, existing, recovered);
+}
+
+function applyCreditDeduction(profile: MemberCreditProfile, amount: number): MemberCreditProfile {
+  const now = new Date().toISOString();
+  const wasMax = profile.credit_score >= MAX_CREDIT_SCORE;
+  return {
+    ...profile,
+    credit_score: Math.max(0, profile.credit_score - amount),
+    last_credit_recovery_at: wasMax ? now : profile.last_credit_recovery_at ?? now,
+    updated_at: now,
   };
 }
 
@@ -123,8 +169,7 @@ export function canMatchWithScore(score: number): boolean {
 }
 
 export async function getMemberCredit(memberKey: string): Promise<MemberCreditProfile> {
-  const manifest = await loadManifest();
-  return manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  return refreshCreditRecovery(memberKey);
 }
 
 export async function touchMemberProfile(
@@ -138,7 +183,7 @@ export async function touchMemberProfile(
   }
 ): Promise<MemberCreditProfile> {
   const manifest = await loadManifest();
-  const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const existing = computeCreditRecovery(manifest.profiles[memberKey] ?? defaultProfile(memberKey));
   const profile: MemberCreditProfile = {
     ...existing,
     updated_at: new Date().toISOString(),
@@ -161,14 +206,18 @@ export async function checkMemberCanBook(memberKey: string): Promise<{
   allowed: boolean;
   credit_score: number;
   no_show_count: number;
+  cancel_count: number;
   min_score: number;
+  recovery: ReturnType<typeof getCreditRecoveryInfo>;
 }> {
   const profile = await getMemberCredit(memberKey);
   return {
     allowed: canBookWithScore(profile.credit_score),
     credit_score: profile.credit_score,
     no_show_count: profile.no_show_count,
+    cancel_count: profile.cancel_count ?? 0,
     min_score: MIN_BOOKING_SCORE,
+    recovery: getCreditRecoveryInfo(profile),
   };
 }
 
@@ -237,11 +286,23 @@ export async function checkMemberCanMatch(memberKey: string): Promise<{
 export async function applyNoShowPenalty(memberKey: string): Promise<MemberCreditProfile> {
   const manifest = await loadManifest();
   const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const recovered = computeCreditRecovery(existing);
   const profile: MemberCreditProfile = {
-    ...existing,
-    no_show_count: existing.no_show_count + 1,
-    credit_score: Math.max(0, existing.credit_score - NO_SHOW_PENALTY),
-    updated_at: new Date().toISOString(),
+    ...applyCreditDeduction(recovered, NO_SHOW_PENALTY),
+    no_show_count: recovered.no_show_count + 1,
+  };
+  manifest.profiles[memberKey] = profile;
+  await saveManifest(manifest);
+  return profile;
+}
+
+export async function applyCancelPenalty(memberKey: string): Promise<MemberCreditProfile> {
+  const manifest = await loadManifest();
+  const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const recovered = computeCreditRecovery(existing);
+  const profile: MemberCreditProfile = {
+    ...applyCreditDeduction(recovered, CANCEL_BOOKING_PENALTY),
+    cancel_count: (recovered.cancel_count ?? 0) + 1,
   };
   manifest.profiles[memberKey] = profile;
   await saveManifest(manifest);
@@ -252,15 +313,14 @@ export async function applyNoShowPenalty(memberKey: string): Promise<MemberCredi
 export async function applyMatchNoShowPenalty(memberKey: string): Promise<MemberCreditProfile> {
   const manifest = await loadManifest();
   const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const recovered = computeCreditRecovery(existing);
   const lockUntil = new Date();
   lockUntil.setDate(lockUntil.getDate() + MATCH_NO_SHOW_LOCK_DAYS);
 
   const profile: MemberCreditProfile = {
-    ...existing,
-    no_show_count: existing.no_show_count + 1,
-    credit_score: Math.max(0, existing.credit_score - NO_SHOW_PENALTY),
+    ...applyCreditDeduction(recovered, NO_SHOW_PENALTY),
+    no_show_count: recovered.no_show_count + 1,
     match_locked_until: lockUntil.toISOString(),
-    updated_at: new Date().toISOString(),
   };
   manifest.profiles[memberKey] = profile;
   await saveManifest(manifest);

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { BookingCheckInQr } from "@/components/BookingCheckInQr";
+import { MyBookingCancelButton } from "@/components/MyBookingCancelButton";
 import { bookingReference } from "@/lib/booking-ref";
 import { issueCheckInToken } from "@/lib/check-in-token";
 import { getTeamById } from "@/lib/teams";
@@ -66,6 +67,13 @@ export async function MyBookingCard({ booking }: { booking: Booking }) {
           <BookingCheckInQr token={token} reference={ref} compact />
         </div>
       )}
+
+      {!checkedIn &&
+        booking.status !== "no_show" &&
+        booking.status !== "cancelled" &&
+        booking.status !== "refunded" && (
+          <MyBookingCancelButton bookingId={booking.id} reference={ref} />
+        )}
 
       {team && (
         <Link

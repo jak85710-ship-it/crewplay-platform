@@ -1,6 +1,6 @@
 import { Legal } from "@/components/Legal";
 import { LEGAL_ENTITY } from "@/lib/legal-entity";
-import { MIN_BOOKING_SCORE } from "@/lib/member-credit-constants";
+import { MIN_BOOKING_SCORE, CANCEL_BOOKING_PENALTY, CREDIT_RECOVERY_INTERVAL_DAYS, CREDIT_RECOVERY_POINTS } from "@/lib/member-credit-constants";
 
 export default function TermsPage() {
   return (
@@ -14,8 +14,9 @@ export default function TermsPage() {
         報名者之團費請依揪團說明向團主繳交，平台不代收揪團費用。團主開團、場主刊登之平台服務費，依各表單說明線上收取。
       </p>
       <p>
-        使用 1VS1 匹配前須完成實名認證；信用分須達 {MIN_BOOKING_SCORE}{" "}
-        分以上。若 1VS1 對局缺席經核實，平台得暫停 1VS1 功能，詳見{" "}
+        取消已報名之揪團將扣除信用分 {CANCEL_BOOKING_PENALTY} 分；信用分每 {CREDIT_RECOVERY_INTERVAL_DAYS} 天自動回補{" "}
+        {CREDIT_RECOVERY_POINTS} 分。使用 1V1 匹配前須完成實名認證；信用分須達 {MIN_BOOKING_SCORE}{" "}
+        分以上。若 1V1 對局缺席經核實，平台得暫停 1V1 功能，詳見{" "}
         <a href="/privacy" className="text-brand-600 underline">
           隱私權政策
         </a>

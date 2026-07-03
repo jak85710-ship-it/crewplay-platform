@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { checkMemberCanBook, getMemberCredit, MIN_BOOKING_SCORE } from "@/lib/member-credit";
+import { getCreditRecoveryInfo } from "@/lib/credit-recovery";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSession } from "@/lib/member-session";
 
@@ -26,7 +27,9 @@ export async function GET() {
     member_key: memberKey,
     credit_score: profile.credit_score,
     no_show_count: profile.no_show_count,
+    cancel_count: profile.cancel_count ?? 0,
     can_book: check.allowed,
     min_score: MIN_BOOKING_SCORE,
+    recovery: getCreditRecoveryInfo(profile),
   });
 }

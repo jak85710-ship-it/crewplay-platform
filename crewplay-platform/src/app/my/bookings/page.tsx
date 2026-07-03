@@ -2,8 +2,13 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { MyBookingCard } from "@/components/MyBookingCard";
+import { formatCreditRecoveryHint } from "@/lib/credit-recovery";
 import { listBookings } from "@/lib/bookings";
-import { checkMemberCanBook, MIN_BOOKING_SCORE } from "@/lib/member-credit";
+import {
+  CANCEL_BOOKING_PENALTY,
+  checkMemberCanBook,
+  MIN_BOOKING_SCORE,
+} from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { emptyBookingsMessage, filterBookingsForMember } from "@/lib/member-bookings";
 import { getMemberSession } from "@/lib/member-session";
@@ -74,10 +79,13 @@ export default async function MyBookingsPage() {
         >
           <p className="font-semibold">信用分 {credit.credit_score} / 100</p>
           <p className="mt-1">
-            爽約紀錄 {credit.no_show_count} 次
+            爽約 {credit.no_show_count} 次 · 取消 {credit.cancel_count} 次
             {credit.allowed
               ? ` · 低於 ${MIN_BOOKING_SCORE} 分將暫停報名`
               : ` · 已低於 ${MIN_BOOKING_SCORE} 分，暫時無法報名新團`}
+          </p>
+          <p className="mt-2 text-xs text-slate-500">
+            取消預約將扣 {CANCEL_BOOKING_PENALTY} 分，無法隨意退團。{formatCreditRecoveryHint(credit.recovery)}
           </p>
         </div>
       )}

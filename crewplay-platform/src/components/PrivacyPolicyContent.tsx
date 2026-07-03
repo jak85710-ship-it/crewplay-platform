@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { LEGAL_ENTITY, VERIFICATION_CONSENT_TEXT } from "@/lib/legal-entity";
-import { MATCH_NO_SHOW_LOCK_DAYS, MIN_MATCH_SCORE, PILOT_MATCH_VENUE_NAME } from "@/lib/member-credit-constants";
+import { MATCH_NO_SHOW_LOCK_DAYS, MIN_MATCH_SCORE, PILOT_MATCH_VENUE_NAME, CANCEL_BOOKING_PENALTY, CREDIT_RECOVERY_INTERVAL_DAYS, CREDIT_RECOVERY_POINTS } from "@/lib/member-credit-constants";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -83,10 +83,16 @@ export function PrivacyPolicyContent() {
         </p>
       </Section>
 
-      <Section title="五、信用分與 1VS1 停用規則">
+      <Section title="五、信用分、取消預約與 1V1 規則">
         <p>
-          1VS1 匹配與一般揪團報名共用信用分機制，最低使用門檻為 <strong>{MIN_MATCH_SCORE} 分</strong>
-          。若經互評與管理員核實為 1VS1 缺席，我們得扣減信用分，並自核實日起暫停 1VS1 匹配功能{" "}
+          1V1 匹配與一般揪團報名共用信用分機制，最低使用門檻為 <strong>{MIN_MATCH_SCORE} 分</strong>
+          。自行取消預約將扣 <strong>{CANCEL_BOOKING_PENALTY} 分</strong>（與爽約扣分相同），表示無法隨意退團。
+        </p>
+        <p>
+          信用分低於滿分時，每 <strong>{CREDIT_RECOVERY_INTERVAL_DAYS} 天</strong>自動回補{" "}
+          <strong>{CREDIT_RECOVERY_POINTS} 分</strong>（扣 {CANCEL_BOOKING_PENALTY} 分約需{" "}
+          {(CANCEL_BOOKING_PENALTY / CREDIT_RECOVERY_POINTS) * CREDIT_RECOVERY_INTERVAL_DAYS} 天補回）。
+          若經互評與管理員核實為 1V1 缺席，我們得扣減信用分，並自核實日起暫停 1V1 匹配功能{" "}
           <strong>{MATCH_NO_SHOW_LOCK_DAYS} 日</strong>。若信用分低於 {MIN_MATCH_SCORE}
           分，您亦可能無法使用一般揪團報名。
         </p>

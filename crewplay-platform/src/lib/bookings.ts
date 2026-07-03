@@ -260,3 +260,78 @@ export async function markBookingCheckedIn(bookingId: string): Promise<{
   await saveBookings(list);
   return { booking: list[idx], alreadyCheckedIn: false };
 }
+
+const CANCELLABLE_STATUSES = new Set<Booking["status"]>(["submitted", "pending_payment", "paid"]);
+
+export async function cancelBookingByMember(
+  bookingId: string,
+  memberKey: string
+): Promise<
+  | { ok: true; booking: Booking; credit_score: number; penalty: number }
+  | { ok: false; error: string; code?: string }
+> {
+  const { bookingBelongsToMemberKey } = await import("./member-key");
+  const { applyCancelPenalty, CANCEL_BOOKING_PENALTY } = await import("./member-credit");
+
+  const booking = await getBookingById(bookingId);
+  if (!booking) {
+    return { ok: false, error: "找不到預約", code: "not_found" };
+  }
+
+  if (!bookingBelongsToMemberKey(booking, memberKey)) {
+    return { ok: false, error: "您無法取消此預約", code: "forbidden" };
+  }
+
+  if (booking.checked_in_at) {
+    return { ok: false, error: "已進場的預約無法取消", code: "checked_in" };
+  }
+
+  if (booking.status === "cancelled") {
+    return { ok: false, error: "此預約已取消", code: "already_cancelled" };
+  }
+
+  if (booking.status === "no_show" || booking.status === "refunded") {
+    return { ok: false, error: "此預約狀態無法取消", code: "invalid_status" };
+  }
+
+  if (!CANCELLABLE_STATUSES.has(booking.status)) {
+    return { ok: false, error: "此預約狀態無法取消", code: "invalid_status" };
+  }
+
+  const now = new Date().toISOString();
+  const { getSupabaseAdmin } = await import("./teams");
+  const supabase = getSupabaseAdmin();
+
+  let updated: Booking;
+
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("bookings")
+      .update({ status: "cancelled", cancelled_at: now })
+      .eq("id", bookingId)
+      .select()
+      .maybeSingle();
+    if (error || !data) {
+      return { ok: false, error: error?.message || "取消失敗", code: "server" };
+    }
+    updated = data as Booking;
+  } else {
+    const list = await loadBookings();
+    const idx = list.findIndex((b) => b.id === bookingId);
+    if (idx < 0) {
+      return { ok: false, error: "找不到預約", code: "not_found" };
+    }
+    list[idx] = { ...list[idx], status: "cancelled", cancelled_at: now };
+    await saveBookings(list);
+    updated = list[idx];
+  }
+
+  const profile = await applyCancelPenalty(memberKey);
+
+  return {
+    ok: true,
+    booking: updated,
+    credit_score: profile.credit_score,
+    penalty: CANCEL_BOOKING_PENALTY,
+  };
+}

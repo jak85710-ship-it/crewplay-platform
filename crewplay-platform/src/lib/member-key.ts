@@ -22,3 +22,7 @@ export function getMemberKeyFromBooking(booking: Booking): string | null {
   if (phone) return `phone:${phone}`;
   return null;
 }
+
+export function bookingBelongsToMemberKey(booking: Booking, memberKey: string): boolean {
+  return getMemberKeyFromBooking(booking) === memberKey;
+}
