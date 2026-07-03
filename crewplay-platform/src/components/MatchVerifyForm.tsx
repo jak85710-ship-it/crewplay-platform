@@ -1,8 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
 
 import { VERIFICATION_CONSENT_TEXT } from "@/lib/legal-entity";
 
@@ -10,74 +6,24 @@ type Props = {
   initialStatus: string;
   rejectionReason?: string | null;
   redirectAfter?: string | null;
+  initialError?: string | null;
+  memberEmail?: string | null;
+  needsEmail?: boolean;
 };
 
-type SubmitError = {
-  message: string;
-  showLoginLink?: boolean;
-};
-
-export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter }: Props) {
-  const router = useRouter();
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<SubmitError | null>(null);
-
+export function MatchVerifyForm({
+  initialStatus,
+  rejectionReason,
+  redirectAfter,
+  initialError,
+  memberEmail,
+  needsEmail,
+}: Props) {
   const loginHref = `/login?redirect=${encodeURIComponent(
     redirectAfter
       ? `/match/verify?redirect=${encodeURIComponent(redirectAfter)}`
       : "/match/verify"
   )}`;
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-    setPending(true);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    try {
-      const res = await fetch("/api/user/verification", {
-        method: "POST",
-        body: formData,
-        credentials: "same-origin",
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        error?: string;
-        code?: string;
-        ok?: boolean;
-      };
-
-      if (!res.ok) {
-        if (data.code === "login_required") {
-          const me = await fetch("/api/member/me", { credentials: "same-origin" })
-            .then((r) => r.json())
-            .catch(() => ({ isLoggedIn: false }));
-
-          if (me.isLoggedIn) {
-            setError({
-              message: "上傳時未能讀取登入狀態，請重新整理頁面後再試一次。",
-            });
-          } else {
-            setError({
-              message: data.error || "請先登入會員",
-              showLoginLink: true,
-            });
-          }
-        } else {
-          setError({ message: data.error || "上傳失敗，請稍後再試" });
-        }
-        return;
-      }
-
-      const q = redirectAfter ? `?redirect=${encodeURIComponent(redirectAfter)}` : "";
-      router.replace(`/match/verify/pending${q}`);
-    } catch {
-      setError({ message: "連線失敗，請稍後再試" });
-    } finally {
-      setPending(false);
-    }
-  }
 
   if (initialStatus === "approved") {
     return (
@@ -110,13 +56,46 @@ export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form
+      action="/api/user/verification"
+      method="POST"
+      encType="multipart/form-data"
+      className="space-y-5"
+    >
+      {redirectAfter && <input type="hidden" name="redirect_after" value={redirectAfter} />}
+
       {initialStatus === "rejected" && rejectionReason && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
           <p className="font-semibold">上次審核未通過</p>
           <p className="mt-1">原因：{rejectionReason}</p>
           <p className="mt-2">請重新上傳清晰、完整的證件影像。</p>
         </div>
+      )}
+
+      {needsEmail ? (
+        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <label className="block text-sm font-medium text-slate-700">
+            Email（審核與通知用，與報名帳號相同格式）
+            <input
+              type="email"
+              name="contact_email"
+              autoComplete="email"
+              required
+              placeholder="you@example.com"
+              defaultValue={memberEmail ?? ""}
+              className="mt-2 block w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-100"
+            />
+          </label>
+        </div>
+      ) : (
+        memberEmail && (
+          <>
+            <input type="hidden" name="contact_email" value={memberEmail} />
+            <p className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">
+              審核資料將與 Email 帳號 <span className="font-semibold">{memberEmail}</span> 串聯。
+            </p>
+          </>
+        )
       )}
 
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -137,10 +116,10 @@ export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter 
         <span>{VERIFICATION_CONSENT_TEXT}</span>
       </label>
 
-      {error && (
+      {initialError && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
-          <p>{error.message}</p>
-          {error.showLoginLink && (
+          <p>{initialError}</p>
+          {initialError.includes("登入") && (
             <Link href={loginHref} className="mt-2 inline-block font-semibold underline">
               前往登入
             </Link>
@@ -150,10 +129,9 @@ export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter 
 
       <button
         type="submit"
-        disabled={pending}
-        className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
+        className="w-full rounded-xl bg-brand-600 px-4 py-3 text-sm font-semibold text-white"
       >
-        {pending ? "上傳中…" : "送出實名認證"}
+        送出實名認證
       </button>
     </form>
   );

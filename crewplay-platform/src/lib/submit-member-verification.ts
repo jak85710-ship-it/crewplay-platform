@@ -30,6 +30,19 @@ export async function processVerificationSubmit(
     return { ok: false, code: "validation", error: "請勾選實名認證同意事項" };
   }
 
+  const hints = profileHints(member);
+  const contactEmail = String(formData.get("contact_email") ?? "")
+    .trim()
+    .toLowerCase();
+  if (contactEmail) {
+    if (!contactEmail.includes("@")) {
+      return { ok: false, code: "validation", error: "請輸入有效的 Email" };
+    }
+    hints.email = contactEmail;
+  } else if (!hints.email?.includes("@")) {
+    return { ok: false, code: "validation", error: "請填寫 Email，以便審核與通知" };
+  }
+
   const file = formData.get("file");
   if (!(file instanceof File)) {
     return { ok: false, code: "validation", error: "請上傳證件影像" };
@@ -42,7 +55,7 @@ export async function processVerificationSubmit(
   }
 
   try {
-    await touchMemberProfile(memberKey, profileHints(member));
+    await touchMemberProfile(memberKey, hints);
 
     const bytes = Buffer.from(await file.arrayBuffer());
     const saved = await saveVerificationImage(bytes, contentType);

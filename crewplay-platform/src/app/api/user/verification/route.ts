@@ -1,17 +1,47 @@
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
+import { cookieReaderFromHeader, mergeCookieReaders } from "@/lib/cookie-reader";
+import { siteUrlFromRequest } from "@/lib/create-member-booking";
 import { VERIFICATION_CONSENT_TEXT } from "@/lib/legal-entity";
 import { checkMemberCanMatch, getMemberCredit } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
-import { getMemberSession } from "@/lib/member-session";
+import { applyMemberProfileToCookieStore, getMemberSessionFromReader } from "@/lib/member-session";
 import { processVerificationSubmit } from "@/lib/submit-member-verification";
 
 export const runtime = "nodejs";
 
-export async function GET() {
-  const cookieStore = await cookies();
-  const member = getMemberSession(cookieStore);
+async function cookiesFromRequest(req: Request) {
+  return mergeCookieReaders(
+    cookieReaderFromHeader(req.headers.get("cookie")),
+    await cookies()
+  );
+}
+
+function isFormRequest(req: Request): boolean {
+  const type = req.headers.get("content-type") ?? "";
+  return type.includes("multipart/form-data") || type.includes("application/x-www-form-urlencoded");
+}
+
+function safeMatchRedirect(path: string): string | null {
+  return path.startsWith("/match/") && !path.startsWith("//") ? path : null;
+}
+
+function verifyPageUrl(afterVerify: string | null, extra?: Record<string, string>): string {
+  const q = new URLSearchParams(extra);
+  if (afterVerify) q.set("redirect", afterVerify);
+  const qs = q.toString();
+  return qs ? `/match/verify?${qs}` : "/match/verify";
+}
+
+function pendingPageUrl(afterVerify: string | null): string {
+  if (!afterVerify) return "/match/verify/pending";
+  return `/match/verify/pending?redirect=${encodeURIComponent(afterVerify)}`;
+}
+
+export async function GET(req: Request) {
+  const cookieStore = await cookiesFromRequest(req);
+  const member = getMemberSessionFromReader(cookieStore);
   const memberKey = getMemberKeyFromSession(member);
   if (!memberKey) {
     return NextResponse.json({ error: "請先登入會員" }, { status: 401 });
@@ -31,14 +61,44 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const cookieStore = await cookies();
+  const formMode = isFormRequest(req);
   const form = await req.formData();
+  const cookieStore = await cookiesFromRequest(req);
   const result = await processVerificationSubmit(form, cookieStore);
+  const site = siteUrlFromRequest(req);
+  const afterVerify = safeMatchRedirect(String(form.get("redirect_after") ?? "").trim());
 
   if (!result.ok) {
+    if (formMode) {
+      if (result.code === "login_required") {
+        const loginRedirect = verifyPageUrl(afterVerify);
+        const loginQ = new URLSearchParams({
+          redirect: loginRedirect,
+          reason: "session_expired",
+        });
+        return NextResponse.redirect(`${site}/login?${loginQ.toString()}`, 303);
+      }
+      return NextResponse.redirect(
+        `${site}${verifyPageUrl(afterVerify, { error: result.error })}`,
+        303
+      );
+    }
+
     const status =
       result.code === "login_required" ? 401 : result.code === "validation" ? 400 : 500;
     return NextResponse.json({ error: result.error, code: result.code }, { status });
+  }
+
+  if (formMode) {
+    const member = getMemberSessionFromReader(cookieStore);
+    const contactEmail = String(form.get("contact_email") ?? "").trim().toLowerCase();
+    const res = NextResponse.redirect(`${site}${pendingPageUrl(afterVerify)}`, 303);
+    applyMemberProfileToCookieStore(res.cookies, {
+      name: member.displayName,
+      email: contactEmail || member.email,
+      contactPhone: member.contactPhone ?? member.phone,
+    });
+    return res;
   }
 
   return NextResponse.json({

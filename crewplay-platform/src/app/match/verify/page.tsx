@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-type Props = { searchParams: Promise<{ redirect?: string }> };
+type Props = { searchParams: Promise<{ redirect?: string; error?: string }> };
 
 function safeRedirect(path: string | undefined): string | null {
   if (!path?.startsWith("/match/")) return null;
@@ -22,8 +22,9 @@ function safeRedirect(path: string | undefined): string | null {
 }
 
 export default async function MatchVerifyPage({ searchParams }: Props) {
-  const { redirect: redirectParam } = await searchParams;
+  const { redirect: redirectParam, error: errorParam } = await searchParams;
   const afterVerify = safeRedirect(redirectParam);
+  const formError = errorParam?.trim().slice(0, 200) || null;
 
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
@@ -73,6 +74,9 @@ export default async function MatchVerifyPage({ searchParams }: Props) {
           initialStatus={profile.verification_status ?? "none"}
           rejectionReason={profile.rejection_reason}
           redirectAfter={afterVerify}
+          initialError={formError}
+          memberEmail={member.email ?? profile.email ?? null}
+          needsEmail={!member.email?.includes("@") && !profile.email?.includes("@")}
         />
       </div>
     </div>
