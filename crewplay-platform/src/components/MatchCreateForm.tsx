@@ -1,30 +1,55 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { MATCH_SKILL_LEVELS, type MatchSkillLevel } from "@/lib/match-skill-levels";
 import { PILOT_MATCH_VENUE_NAME } from "@/lib/member-credit-constants";
 
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+function toLocalDatetimeInput(d: Date): string {
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+}
+
 function defaultStart(): string {
   const d = new Date();
   d.setHours(d.getHours() + 2, 0, 0, 0);
-  return d.toISOString().slice(0, 16);
+  return toLocalDatetimeInput(d);
 }
 
 function defaultEnd(): string {
   const d = new Date();
   d.setHours(d.getHours() + 3, 0, 0, 0);
-  return d.toISOString().slice(0, 16);
+  return toLocalDatetimeInput(d);
 }
 
-export function MatchCreateForm() {
+type Props = {
+  blockedReason?: string | null;
+};
+
+export function MatchCreateForm({ blockedReason }: Props) {
   const router = useRouter();
   const [skillLevel, setSkillLevel] = useState<MatchSkillLevel>(MATCH_SKILL_LEVELS[1]);
   const [scheduledStart, setScheduledStart] = useState(defaultStart);
   const [scheduledEnd, setScheduledEnd] = useState(defaultEnd);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+
+  if (blockedReason) {
+    return (
+      <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+        <p className="font-semibold">目前無法發起對局</p>
+        <p className="mt-2">{blockedReason}</p>
+        <Link href="/match" className="mt-4 inline-block font-semibold text-brand-700 underline">
+          返回 1V1 首頁
+        </Link>
+      </div>
+    );
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,6 +59,7 @@ export function MatchCreateForm() {
       const res = await fetch("/api/match/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({
           skill_level: skillLevel,
           scheduled_start: new Date(scheduledStart).toISOString(),
@@ -100,6 +126,7 @@ export function MatchCreateForm() {
             value={scheduledEnd}
             onChange={(e) => setScheduledEnd(e.target.value)}
             required
+            min={scheduledStart}
             className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5"
           />
         </label>

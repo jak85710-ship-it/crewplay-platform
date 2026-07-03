@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { Suspense } from "react";
 
 import { BrandLogo } from "@/components/BrandLogo";
 import { MemberAuth } from "@/components/MemberAuth";
@@ -36,7 +37,18 @@ export async function SiteHeader() {
             </Link>
           </nav>
 
-          <MemberAuth displayName={member.displayName} isLoggedIn={member.isLoggedIn} />
+          <Suspense
+            fallback={
+              <Link
+                href="/login"
+                className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white"
+              >
+                登入
+              </Link>
+            }
+          >
+            <MemberAuth displayName={member.displayName} isLoggedIn={member.isLoggedIn} />
+          </Suspense>
         </div>
       </div>
     </header>

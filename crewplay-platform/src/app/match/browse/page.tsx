@@ -23,10 +23,11 @@ export default async function MatchBrowsePage() {
 
   const memberKey = getMemberKeyFromSession(member)!;
   const gate = await checkMemberCanMatch(memberKey);
-  const blocked = matchAccessRedirect(gate, "/match/browse");
-  if (blocked) redirect(blocked);
+  const verifyRedirect = matchAccessRedirect(gate, "/match/browse");
+  if (verifyRedirect) redirect(verifyRedirect);
 
-  const matches = await listWaitingMatches();
+  const blockedReason = gate.allowed ? null : gate.block_reason ?? "目前無法加入對局";
+  const matches = gate.allowed ? await listWaitingMatches() : [];
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
@@ -35,9 +36,17 @@ export default async function MatchBrowsePage() {
       </Link>
       <h1 className="mt-4 text-2xl font-bold text-slate-900">瀏覽對局</h1>
       <p className="mt-2 text-sm text-slate-600">選擇一場等待中的對局加入。加入後即鎖定配對。</p>
-      <div className="mt-8">
-        <MatchBrowseList initialMatches={matches} />
-      </div>
+
+      {blockedReason ? (
+        <div className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-900">
+          <p className="font-semibold">目前無法加入對局</p>
+          <p className="mt-2">{blockedReason}</p>
+        </div>
+      ) : (
+        <div className="mt-8">
+          <MatchBrowseList initialMatches={matches} />
+        </div>
+      )}
     </div>
   );
 }

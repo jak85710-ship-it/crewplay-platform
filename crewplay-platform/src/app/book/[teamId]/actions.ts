@@ -34,7 +34,7 @@ export async function submitBookingAction(
 
   if (!result.ok) {
     if (result.code === "login_required") {
-      redirect(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}&reason=session_expired`);
+      redirect(`/login?redirect=${encodeURIComponent(`/book/${teamId}`)}`);
     }
     return { error: result.error };
   }

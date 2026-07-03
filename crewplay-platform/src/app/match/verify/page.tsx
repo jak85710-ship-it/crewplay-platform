@@ -39,6 +39,8 @@ export default async function MatchVerifyPage({ searchParams }: Props) {
     redirect(afterVerify);
   }
 
+  const verified = isVerificationApproved(profile);
+
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
       <Link href="/match" className="text-sm text-brand-600 hover:underline">
@@ -46,8 +48,19 @@ export default async function MatchVerifyPage({ searchParams }: Props) {
       </Link>
       <h1 className="mt-4 text-2xl font-bold text-slate-900">實名認證</h1>
       <p className="mt-2 text-sm text-slate-600">
-        為保障線下見面安全，使用 1V1 匹配前須通過人工實名審核。完成認證後才能發起或加入對局。證件影像僅供審核，依隱私權政策保存與刪除。
+        為保障線下見面安全，使用 1V1 匹配前須通過人工實名審核。您已登入，完成認證後即可發起或加入對局（無需再次登入）。
       </p>
+      {verified && !afterVerify && (
+        <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+          實名認證已通過。
+          <Link href="/match/create" className="ml-2 font-semibold underline">
+            發起對局
+          </Link>
+          <Link href="/match/browse" className="ml-2 font-semibold underline">
+            瀏覽對局
+          </Link>
+        </div>
+      )}
       <div className="mt-8">
         <MatchVerifyForm
           initialStatus={profile.verification_status ?? "none"}

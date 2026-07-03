@@ -22,8 +22,10 @@ export default async function MatchCreatePage() {
 
   const memberKey = getMemberKeyFromSession(member)!;
   const gate = await checkMemberCanMatch(memberKey);
-  const blocked = matchAccessRedirect(gate, "/match/create");
-  if (blocked) redirect(blocked);
+  const verifyRedirect = matchAccessRedirect(gate, "/match/create");
+  if (verifyRedirect) redirect(verifyRedirect);
+
+  const blockedReason = gate.allowed ? null : gate.block_reason ?? "目前無法發起對局";
 
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
@@ -33,7 +35,7 @@ export default async function MatchCreatePage() {
       <h1 className="mt-4 text-2xl font-bold text-slate-900">發起 1V1 對局</h1>
       <p className="mt-2 text-sm text-slate-600">配對成功後，雙方須到場掃描核銷。請勿交換私人聯絡方式。</p>
       <div className="mt-8">
-        <MatchCreateForm />
+        <MatchCreateForm blockedReason={blockedReason} />
       </div>
     </div>
   );

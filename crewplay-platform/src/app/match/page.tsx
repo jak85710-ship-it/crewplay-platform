@@ -6,6 +6,7 @@ import { checkMemberCanMatch } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSession } from "@/lib/member-session";
 import { listMemberActiveMatches } from "@/lib/matches";
+import { matchActionHref } from "@/lib/match-gate";
 import { MIN_MATCH_SCORE } from "@/lib/member-credit-constants";
 
 export const metadata: Metadata = {
@@ -26,20 +27,21 @@ export default async function MatchHubPage() {
   const gate = memberKey ? await checkMemberCanMatch(memberKey) : null;
   const active = memberKey ? await listMemberActiveMatches(memberKey) : [];
 
-  const createHref = member.isLoggedIn ? "/match/create" : "/login?redirect=/match/create";
-  const browseHref = member.isLoggedIn ? "/match/browse" : "/login?redirect=/match/browse";
+  const createHref = matchActionHref(member.isLoggedIn, gate, "/match/create");
+  const browseHref = matchActionHref(member.isLoggedIn, gate, "/match/browse");
+  const loginHref = `/login?redirect=${encodeURIComponent("/match")}`;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="text-2xl font-bold text-slate-900">1V1 盲盒匹配</h1>
       <p className="mt-2 text-sm text-slate-600">
-        專為線下運動設計：實名認證、信用治理、場館核銷。
+        專為線下運動設計：實名認證、信用治理、場館核銷。登入一次即可使用全站功能。
       </p>
 
       {!member.isLoggedIn && (
         <div className="mt-6 rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">
-          請先登入並完成實名認證，才能發起或加入對局。
-          <Link href="/login?redirect=/match" className="ml-1 font-semibold underline">
+          請先登入，登入後若尚未實名認證，系統會引導您完成（不需再次登入）。
+          <Link href={loginHref} className="ml-1 font-semibold underline">
             前往登入
           </Link>
         </div>
@@ -47,6 +49,7 @@ export default async function MatchHubPage() {
 
       {member.isLoggedIn && gate && (
         <div
+          id="match-status"
           className={`mt-6 rounded-xl border px-4 py-3 text-sm ${
             gate.allowed
               ? "border-emerald-200 bg-emerald-50 text-emerald-900"

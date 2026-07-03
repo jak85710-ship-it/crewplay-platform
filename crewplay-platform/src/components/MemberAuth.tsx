@@ -1,13 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 
 type Props = {
   displayName?: string;
   isLoggedIn: boolean;
 };
 
+function loginHref(pathname: string, search: string): string {
+  const path = search ? `${pathname}?${search}` : pathname;
+  if (!path || path === "/login" || path.startsWith("/login?")) return "/login";
+  return `/login?redirect=${encodeURIComponent(path)}`;
+}
+
 export function MemberAuth({ displayName, isLoggedIn }: Props) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const search = searchParams.toString();
+
   if (isLoggedIn && displayName) {
     return (
       <div className="flex items-center gap-2">
@@ -30,7 +41,7 @@ export function MemberAuth({ displayName, isLoggedIn }: Props) {
 
   return (
     <Link
-      href="/login"
+      href={loginHref(pathname, search)}
       className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
     >
       登入

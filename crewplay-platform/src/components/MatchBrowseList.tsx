@@ -26,7 +26,10 @@ export function MatchBrowseList({ initialMatches }: Props) {
     setBusyId(matchId);
     setMessage("");
     try {
-      const res = await fetch(`/api/match/join/${matchId}`, { method: "POST" });
+      const res = await fetch(`/api/match/join/${matchId}`, {
+        method: "POST",
+        credentials: "same-origin",
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "加入失敗");
 

@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-/** 已登入時自動離開登入頁，避免登入 ↔ 報名來回跳轉 */
+/** 已登入時自動離開登入頁，回到原本要去的地方 */
 export function LoginAutoRedirect() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -15,13 +15,11 @@ export function LoginAutoRedirect() {
 
     const redirect = searchParams.get("redirect") || "/my/bookings";
     const target = redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "/my/bookings";
-    const sessionExpired = searchParams.get("reason") === "session_expired";
-    const lineOk = searchParams.get("line") === "ok";
 
     fetch("/api/member/me", { credentials: "same-origin" })
       .then((r) => r.json())
       .then((data) => {
-        if (data.isLoggedIn && (!sessionExpired || lineOk)) {
+        if (data.isLoggedIn) {
           router.replace(target);
         }
       })
