@@ -175,6 +175,11 @@ async function sendMail(opts: {
   subject: string;
   text: string;
   replyTo?: string;
+  attachments?: {
+    filename: string;
+    content: Buffer;
+    contentType?: string;
+  }[];
 }) {
   const cfg = getMailConfig();
   if (!cfg) throw new Error("Gmail 尚未設定：請在 .env.local 填入 GMAIL_APP_PASSWORD");
@@ -185,6 +190,7 @@ async function sendMail(opts: {
     replyTo: opts.replyTo || cfg.user,
     subject: opts.subject,
     text: opts.text,
+    attachments: opts.attachments,
   });
 }
 
@@ -468,5 +474,71 @@ export async function sendBookingPaidEmails(ctx: BookingMailContext) {
       ].join("\n"),
       replyTo: cfg.user,
     });
+  }
+}
+
+type VerificationMailInput = {
+  memberKey: string;
+  displayName?: string;
+  email?: string;
+  contactPhone?: string;
+  imageId: string;
+  imageBytes: Buffer;
+  contentType: string;
+};
+
+function extByType(contentType: string): string {
+  if (contentType === "image/png") return "png";
+  if (contentType === "image/webp") return "webp";
+  return "jpg";
+}
+
+export async function sendVerificationSubmissionEmail(input: VerificationMailInput): Promise<{
+  configured: boolean;
+  sent: boolean;
+  error?: string;
+}> {
+  const cfg = getMailConfig();
+  if (!cfg) {
+    return { configured: false, sent: false, error: "email_not_configured" };
+  }
+
+  const subject = `[1V1 實名認證] 新送審 ${input.memberKey}`;
+  const text = [
+    "【1V1 實名認證】新送審",
+    `送出時間：${new Date().toLocaleString("zh-TW")}`,
+    "",
+    `會員鍵：${input.memberKey}`,
+    `顯示名稱：${input.displayName || "未填寫"}`,
+    `Email：${input.email || "未填寫"}`,
+    `聯絡電話：${input.contactPhone || "未填寫"}`,
+    `影像ID：${input.imageId}`,
+    "",
+    "已附上證件照片檔，請至後台審核。",
+  ].join("\n");
+
+  try {
+    for (const to of notifyRecipients(cfg.notifyTo)) {
+      await sendMail({
+        to,
+        subject,
+        text,
+        replyTo: input.email || undefined,
+        attachments: [
+          {
+            filename: `verification-${input.imageId}.${extByType(input.contentType)}`,
+            content: input.imageBytes,
+            contentType: input.contentType,
+          },
+        ],
+      });
+    }
+    return { configured: true, sent: true };
+  } catch (err) {
+    return {
+      configured: true,
+      sent: false,
+      error: err instanceof Error ? err.message : "send_failed",
+    };
   }
 }

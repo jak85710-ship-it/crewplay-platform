@@ -11,6 +11,7 @@ import {
   validateVerificationImageFile,
 } from "@/lib/verification-images";
 import type { CookieReader } from "@/lib/cookie-reader";
+import { sendVerificationSubmissionEmail } from "@/lib/email";
 
 export type VerificationSubmitResult =
   | { ok: true; verification_status: string; message: string }
@@ -76,6 +77,18 @@ export async function processVerificationSubmit(
     }
     const saved = await saveVerificationImage(bytes, contentType);
     const profile = await submitVerificationRequest(memberKey, saved.id);
+    const mailResult = await sendVerificationSubmissionEmail({
+      memberKey,
+      displayName: hints.displayName,
+      email: hints.email,
+      contactPhone: hints.phone,
+      imageId: saved.id,
+      imageBytes: bytes,
+      contentType,
+    });
+    if (!mailResult.sent) {
+      console.warn("verification email notify failed:", mailResult.error ?? "unknown");
+    }
 
     return {
       ok: true,
