@@ -19,6 +19,7 @@ export function AdminVerificationPanel({ adminKey }: Props) {
   const [pending, setPending] = useState<PendingItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [batchBusy, setBatchBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [notifyMember, setNotifyMember] = useState(true);
 
@@ -96,6 +97,57 @@ export function AdminVerificationPanel({ adminKey }: Props) {
     }
   }
 
+  async function reviewAll(action: "approve" | "reject") {
+    if (pending.length === 0 || batchBusy) return;
+    const ok = window.confirm(
+      action === "approve"
+        ? `確定要一次通過全部 ${pending.length} 筆待審嗎？`
+        : `確定要一次拒絕全部 ${pending.length} 筆待審嗎？`
+    );
+    if (!ok) return;
+
+    const rejectReason =
+      action === "reject" ? window.prompt("批次拒絕原因（選填）") ?? "" : "";
+
+    setBatchBusy(true);
+    setMessage("");
+    let success = 0;
+    let fail = 0;
+    let sent = 0;
+    let mailFail = 0;
+
+    for (const item of [...pending]) {
+      try {
+        const res = await fetch("/api/admin/verification/review", {
+          method: "POST",
+          headers: headers(),
+          body: JSON.stringify({
+            member_key: item.member_key,
+            action,
+            reason: rejectReason,
+            notify_result_email: notifyMember,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "審核失敗");
+        success += 1;
+        if (notifyMember && data?.notify) {
+          if (data.notify.sent) sent += 1;
+          else if (!data.notify.skipped) mailFail += 1;
+        }
+      } catch {
+        fail += 1;
+      }
+    }
+
+    await load();
+    setBatchBusy(false);
+    setMessage(
+      `批次${action === "approve" ? "通過" : "拒絕"}完成：成功 ${success} 筆，失敗 ${fail} 筆` +
+        (notifyMember ? `；已寄送 ${sent} 封，寄信失敗 ${mailFail} 封` : "")
+    );
+  }
+
   function imageUrl(id: string) {
     return `/api/admin/verification/image/${encodeURIComponent(id)}?key=${encodeURIComponent(adminKey.trim())}`;
   }
@@ -117,10 +169,31 @@ export function AdminVerificationPanel({ adminKey }: Props) {
       <button
         type="button"
         onClick={load}
+        disabled={batchBusy}
         className="mt-4 rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold"
       >
         載入待審證件
       </button>
+      {loaded && pending.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button
+            type="button"
+            disabled={batchBusy}
+            onClick={() => reviewAll("approve")}
+            className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-60"
+          >
+            {batchBusy ? "處理中…" : `一鍵全部通過（${pending.length}）`}
+          </button>
+          <button
+            type="button"
+            disabled={batchBusy}
+            onClick={() => reviewAll("reject")}
+            className="rounded-lg border border-red-300 px-3 py-1.5 text-sm font-semibold text-red-700 disabled:opacity-60"
+          >
+            {batchBusy ? "處理中…" : `一鍵全部拒絕（${pending.length}）`}
+          </button>
+        </div>
+      )}
 
       {message && <p className="mt-3 text-sm text-slate-600">{message}</p>}
 
@@ -149,7 +222,7 @@ export function AdminVerificationPanel({ adminKey }: Props) {
             <div className="mt-3 flex gap-2">
               <button
                 type="button"
-                disabled={busyKey === item.member_key}
+                disabled={busyKey === item.member_key || batchBusy}
                 onClick={() => review(item.member_key, "approve")}
                 className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-60"
               >
@@ -157,7 +230,7 @@ export function AdminVerificationPanel({ adminKey }: Props) {
               </button>
               <button
                 type="button"
-                disabled={busyKey === item.member_key}
+                disabled={busyKey === item.member_key || batchBusy}
                 onClick={() => review(item.member_key, "reject")}
                 className="rounded-lg border border-red-300 px-3 py-1.5 text-sm font-semibold text-red-700 disabled:opacity-60"
               >
