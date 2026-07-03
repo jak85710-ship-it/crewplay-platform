@@ -88,14 +88,7 @@ export function MatchVerifyForm({
           </label>
         </div>
       ) : (
-        memberEmail && (
-          <>
-            <input type="hidden" name="contact_email" value={memberEmail} />
-            <p className="rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">
-              審核資料將與 Email 帳號 <span className="font-semibold">{memberEmail}</span> 串聯。
-            </p>
-          </>
-        )
+        memberEmail && <input type="hidden" name="contact_email" value={memberEmail} />
       )}
 
       <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
