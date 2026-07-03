@@ -22,7 +22,7 @@ export function MyBookingCancelButton({ bookingId, reference }: Props) {
   async function cancelBooking() {
     const confirmed = window.confirm(
       `確定取消報名 ${reference}？\n\n` +
-        `取消將扣除信用分 ${CANCEL_BOOKING_PENALTY} 分（無法隨意退團）。\n` +
+        `取消將扣除信用分 ${CANCEL_BOOKING_PENALTY} 分。\n` +
         `信用分每 ${CREDIT_RECOVERY_INTERVAL_DAYS} 天自動回補 ${CREDIT_RECOVERY_POINTS} 分，` +
         `扣 ${CANCEL_BOOKING_PENALTY} 分約需 ${(CANCEL_BOOKING_PENALTY / CREDIT_RECOVERY_POINTS) * CREDIT_RECOVERY_INTERVAL_DAYS} 天補回。`
     );

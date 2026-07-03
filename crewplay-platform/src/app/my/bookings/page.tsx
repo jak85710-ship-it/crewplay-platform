@@ -85,7 +85,7 @@ export default async function MyBookingsPage() {
               : ` · 已低於 ${MIN_BOOKING_SCORE} 分，暫時無法報名新團`}
           </p>
           <p className="mt-2 text-xs text-slate-500">
-            取消預約將扣 {CANCEL_BOOKING_PENALTY} 分，無法隨意退團。{formatCreditRecoveryHint(credit.recovery)}
+            取消預約將扣 {CANCEL_BOOKING_PENALTY} 分。{formatCreditRecoveryHint(credit.recovery)}
           </p>
         </div>
       )}

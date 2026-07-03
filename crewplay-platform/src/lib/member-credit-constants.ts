@@ -2,7 +2,7 @@ export const DEFAULT_CREDIT_SCORE = 100;
 export const MAX_CREDIT_SCORE = DEFAULT_CREDIT_SCORE;
 export const NO_SHOW_PENALTY = 20;
 
-/** 自行取消預約扣分（與爽約相同，不可隨意退團） */
+/** 自行取消預約扣分（與爽約相同） */
 export const CANCEL_BOOKING_PENALTY = NO_SHOW_PENALTY;
 
 /** 信用分自動回補：每 7 天 +10 分（扣 20 分需 14 天補回） */

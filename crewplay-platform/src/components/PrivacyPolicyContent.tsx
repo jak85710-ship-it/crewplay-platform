@@ -86,7 +86,7 @@ export function PrivacyPolicyContent() {
       <Section title="五、信用分、取消預約與 1V1 規則">
         <p>
           1V1 匹配與一般揪團報名共用信用分機制，最低使用門檻為 <strong>{MIN_MATCH_SCORE} 分</strong>
-          。自行取消預約將扣 <strong>{CANCEL_BOOKING_PENALTY} 分</strong>（與爽約扣分相同），表示無法隨意退團。
+          。自行取消預約將扣 <strong>{CANCEL_BOOKING_PENALTY} 分</strong>（與爽約扣分相同）。
         </p>
         <p>
           信用分低於滿分時，每 <strong>{CREDIT_RECOVERY_INTERVAL_DAYS} 天</strong>自動回補{" "}
