@@ -542,3 +542,70 @@ export async function sendVerificationSubmissionEmail(input: VerificationMailInp
     };
   }
 }
+
+type VerificationReviewMailInput = {
+  memberKey: string;
+  action: "approve" | "reject";
+  displayName?: string;
+  email?: string;
+  contactPhone?: string;
+  rejectionReason?: string;
+};
+
+export async function sendVerificationReviewResultEmail(
+  input: VerificationReviewMailInput
+): Promise<{ configured: boolean; sent: boolean; skipped?: boolean; error?: string }> {
+  const cfg = getMailConfig();
+  if (!cfg) {
+    return { configured: false, sent: false, error: "email_not_configured" };
+  }
+  if (!input.email || !input.email.includes("@")) {
+    return { configured: true, sent: false, skipped: true, error: "member_email_missing" };
+  }
+
+  const approved = input.action === "approve";
+  const subject = approved
+    ? "[CrewPlay] 1V1 實名認證審核通過"
+    : "[CrewPlay] 1V1 實名認證審核未通過";
+  const text = approved
+    ? [
+        `${input.displayName || "您好"}，`,
+        "",
+        "您的 1V1 實名認證已審核通過，現在可以使用 1V1 對局功能。",
+        "",
+        `會員識別：${input.memberKey}`,
+        input.contactPhone ? `聯絡電話：${input.contactPhone}` : "",
+        "",
+        "如有疑問請回覆此信件或聯絡客服。",
+        "CrewPlay 運動媒合平台",
+      ]
+        .filter(Boolean)
+        .join("\n")
+    : [
+        `${input.displayName || "您好"}，`,
+        "",
+        "您的 1V1 實名認證未通過，請依下列原因修正後重新送件。",
+        "",
+        `未通過原因：${input.rejectionReason?.trim() || "資料不符或影像不清晰"}`,
+        `會員識別：${input.memberKey}`,
+        "",
+        "請回到 1V1 → 實名認證 上傳正確資料。",
+        "CrewPlay 運動媒合平台",
+      ].join("\n");
+
+  try {
+    await sendMail({
+      to: input.email,
+      subject,
+      text,
+      replyTo: cfg.user,
+    });
+    return { configured: true, sent: true };
+  } catch (err) {
+    return {
+      configured: true,
+      sent: false,
+      error: err instanceof Error ? err.message : "send_failed",
+    };
+  }
+}

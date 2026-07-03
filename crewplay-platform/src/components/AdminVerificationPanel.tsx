@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type PendingItem = {
   member_key: string;
@@ -20,6 +20,16 @@ export function AdminVerificationPanel({ adminKey }: Props) {
   const [loaded, setLoaded] = useState(false);
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [notifyMember, setNotifyMember] = useState(true);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("admin_verify_notify_member");
+    if (saved === "0") setNotifyMember(false);
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("admin_verify_notify_member", notifyMember ? "1" : "0");
+  }, [notifyMember]);
 
   const headers = useCallback(
     () => ({
@@ -59,12 +69,26 @@ export function AdminVerificationPanel({ adminKey }: Props) {
       const res = await fetch("/api/admin/verification/review", {
         method: "POST",
         headers: headers(),
-        body: JSON.stringify({ member_key: memberKey, action, reason }),
+        body: JSON.stringify({
+          member_key: memberKey,
+          action,
+          reason,
+          notify_result_email: notifyMember,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "審核失敗");
       setPending((prev) => prev.filter((p) => p.member_key !== memberKey));
-      setMessage(action === "approve" ? "已通過實名認證" : "已拒絕");
+      const base = action === "approve" ? "已通過實名認證" : "已拒絕";
+      const notifyMsg =
+        notifyMember && data?.notify
+          ? data.notify.sent
+            ? "，已發送結果通知信"
+            : data.notify.skipped
+              ? "，未寄送（會員未填 Email）"
+              : "，寄信失敗"
+          : "";
+      setMessage(`${base}${notifyMsg}`);
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "審核失敗");
     } finally {
@@ -80,6 +104,15 @@ export function AdminVerificationPanel({ adminKey }: Props) {
     <section className="mt-10">
       <h2 className="font-bold text-slate-800">1V1 實名認證審核</h2>
       <p className="mt-1 text-sm text-slate-500">使用上方同一組管理金鑰載入待審項目。</p>
+
+      <label className="mt-3 inline-flex items-center gap-2 text-sm text-slate-700">
+        <input
+          type="checkbox"
+          checked={notifyMember}
+          onChange={(e) => setNotifyMember(e.target.checked)}
+        />
+        開啟「審核結果寄信通知會員」
+      </label>
 
       <button
         type="button"
@@ -102,6 +135,9 @@ export function AdminVerificationPanel({ adminKey }: Props) {
             <p className="mt-1 text-sm font-semibold">{item.display_name || "（未提供暱稱）"}</p>
             <p className="text-sm text-slate-600">
               {[item.email, item.phone].filter(Boolean).join(" · ") || "無聯絡資料"}
+            </p>
+            <p className="mt-1 text-xs text-slate-400">
+              送件時間：{new Date(item.updated_at).toLocaleString("zh-TW")}
             </p>
             {item.verification_image_id && adminKey.trim() && (
               <img
