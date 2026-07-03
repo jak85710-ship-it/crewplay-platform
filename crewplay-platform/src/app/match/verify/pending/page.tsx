@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   title: "實名認證審核中",
 };
 
+export const dynamic = "force-dynamic";
+
 type Props = { searchParams: Promise<{ redirect?: string }> };
 
 function safeRedirect(path: string | undefined): string | null {

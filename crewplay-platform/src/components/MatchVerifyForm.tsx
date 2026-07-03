@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useRef } from "react";
+import { FormEvent, useState } from "react";
 
 import { VERIFICATION_CONSENT_TEXT } from "@/lib/legal-entity";
-
-import { submitVerificationAction, type VerifySubmitState } from "@/app/match/verify/actions";
 
 type Props = {
   initialStatus: string;
@@ -14,19 +12,72 @@ type Props = {
   redirectAfter?: string | null;
 };
 
-const initialActionState: VerifySubmitState = {};
+type SubmitError = {
+  message: string;
+  showLoginLink?: boolean;
+};
 
 export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter }: Props) {
   const router = useRouter();
-  const [state, formAction, pending] = useActionState(submitVerificationAction, initialActionState);
-  const redirected = useRef(false);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<SubmitError | null>(null);
 
-  useEffect(() => {
-    if (!state.ok || redirected.current) return;
-    redirected.current = true;
-    const q = redirectAfter ? `?redirect=${encodeURIComponent(redirectAfter)}` : "";
-    router.replace(`/match/verify/pending${q}`);
-  }, [state.ok, redirectAfter, router]);
+  const loginHref = `/login?redirect=${encodeURIComponent(
+    redirectAfter
+      ? `/match/verify?redirect=${encodeURIComponent(redirectAfter)}`
+      : "/match/verify"
+  )}`;
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setPending(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch("/api/user/verification", {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin",
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        code?: string;
+        ok?: boolean;
+      };
+
+      if (!res.ok) {
+        if (data.code === "login_required") {
+          const me = await fetch("/api/member/me", { credentials: "same-origin" })
+            .then((r) => r.json())
+            .catch(() => ({ isLoggedIn: false }));
+
+          if (me.isLoggedIn) {
+            setError({
+              message: "上傳時未能讀取登入狀態，請重新整理頁面後再試一次。",
+            });
+          } else {
+            setError({
+              message: data.error || "請先登入會員",
+              showLoginLink: true,
+            });
+          }
+        } else {
+          setError({ message: data.error || "上傳失敗，請稍後再試" });
+        }
+        return;
+      }
+
+      const q = redirectAfter ? `?redirect=${encodeURIComponent(redirectAfter)}` : "";
+      router.replace(`/match/verify/pending${q}`);
+    } catch {
+      setError({ message: "連線失敗，請稍後再試" });
+    } finally {
+      setPending(false);
+    }
+  }
 
   if (initialStatus === "approved") {
     return (
@@ -58,14 +109,8 @@ export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter 
     );
   }
 
-  const loginHref = `/login?redirect=${encodeURIComponent(
-    redirectAfter
-      ? `/match/verify?redirect=${encodeURIComponent(redirectAfter)}`
-      : "/match/verify"
-  )}`;
-
   return (
-    <form action={formAction} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {initialStatus === "rejected" && rejectionReason && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
           <p className="font-semibold">上次審核未通過</p>
@@ -92,12 +137,12 @@ export function MatchVerifyForm({ initialStatus, rejectionReason, redirectAfter 
         <span>{VERIFICATION_CONSENT_TEXT}</span>
       </label>
 
-      {state.error && (
+      {error && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
-          <p>{state.error}</p>
-          {state.code === "login_required" && (
+          <p>{error.message}</p>
+          {error.showLoginLink && (
             <Link href={loginHref} className="mt-2 inline-block font-semibold underline">
-              前往登入（登入後會回到此頁，無需重新填寫時請再試一次）
+              前往登入
             </Link>
           )}
         </div>

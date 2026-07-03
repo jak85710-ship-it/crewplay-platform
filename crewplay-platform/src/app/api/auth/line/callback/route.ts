@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 
 import { authCookieOptions } from "@/lib/auth-cookies";
-import { getLineCallbackUrl, getPublicSiteUrl, isLineLoginConfigured } from "@/lib/line-auth";
+import { applyMemberProfileToCookieStore } from "@/lib/member-session";
+import { getLineCallbackUrl, getLineOAuthOrigin, isLineLoginConfigured } from "@/lib/line-auth";
 
 export async function GET(req: Request) {
-  const site = getPublicSiteUrl();
+  const site = getLineOAuthOrigin();
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
 
@@ -57,6 +58,9 @@ export async function GET(req: Request) {
   if (profile?.userId) {
     res.cookies.set("line_uid", profile.userId, { ...cookieOpts, httpOnly: true });
     res.cookies.set("line_name", profile.displayName ?? "", cookieOpts);
+    if (profile.displayName?.trim()) {
+      applyMemberProfileToCookieStore(res.cookies, { name: profile.displayName.trim() });
+    }
   }
   return res;
 }

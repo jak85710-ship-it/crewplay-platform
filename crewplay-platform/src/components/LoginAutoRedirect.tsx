@@ -14,13 +14,17 @@ export function LoginAutoRedirect() {
     checked.current = true;
 
     const redirect = searchParams.get("redirect") || "/my/bookings";
-    const target = redirect.startsWith("/") && !redirect.startsWith("//") ? redirect : "/my/bookings";
+    const target =
+      redirect.startsWith("/") && !redirect.startsWith("//") && !redirect.startsWith("/login")
+        ? redirect
+        : "/my/bookings";
 
     fetch("/api/member/me", { credentials: "same-origin" })
       .then((r) => r.json())
       .then((data) => {
         if (data.isLoggedIn) {
           router.replace(target);
+          router.refresh();
         }
       })
       .catch(() => {});
