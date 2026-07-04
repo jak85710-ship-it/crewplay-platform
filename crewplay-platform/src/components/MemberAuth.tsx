@@ -29,12 +29,14 @@ export function MemberAuth({ displayName, isLoggedIn }: Props) {
         >
           {displayName}
         </Link>
-        <Link
-          href="/api/auth/logout"
-          className="rounded-lg px-2 py-1.5 text-xs text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-        >
-          登出
-        </Link>
+        <form method="POST" action="/api/auth/logout">
+          <button
+            type="submit"
+            className="rounded-lg px-2 py-1.5 text-xs text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+          >
+            登出
+          </button>
+        </form>
       </div>
     );
   }

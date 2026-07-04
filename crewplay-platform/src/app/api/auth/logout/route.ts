@@ -10,5 +10,5 @@ export async function POST() {
 }
 
 export async function GET() {
-  return POST();
+  return NextResponse.json({ error: "method_not_allowed" }, { status: 405 });
 }
