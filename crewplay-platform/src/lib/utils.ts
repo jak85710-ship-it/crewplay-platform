@@ -27,7 +27,7 @@ export function feeSummary(team: { fee_amount: number | null; fee_label: string;
   return parsed.label || parsed.amount ? `$${parsed.amount}/人` : "請見詳情";
 }
 
-/** 試算表 photo 為 r{列號}.jpg 且與該團列號一致時，視為已上架團圖；否則顯示品牌 Logo */
+/** 只有上傳團圖（r*.jpg）才顯示，其餘一律用品牌 Logo */
 export function getTeamPhotoUrl(team: { photo: string; sheet_row: number }): string {
   const photo = (team.photo || "").trim();
   const expectedSuffix = `/photo/r${team.sheet_row}.jpg`;
@@ -41,9 +41,9 @@ export function getTeamPhotoUrl(team: { photo: string; sheet_row: number }): str
     return photo;
   }
 
-  // Allow curated Google Storage photos even when sheet_row differs
-  // (used when duplicating a listing into multiple weekday variants).
-  if (photo.startsWith(GCS_PHOTO_BASE)) {
+  // Allow curated Google Storage photos when they are real uploaded rows (r*.jpg),
+  // even if sheet_row differs (weekday duplicated listings).
+  if (photo.startsWith(GCS_PHOTO_BASE) && /\/photo\/r\d+\.jpg$/i.test(photo)) {
     return photo;
   }
 
