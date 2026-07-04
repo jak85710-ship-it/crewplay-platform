@@ -41,6 +41,12 @@ export function getTeamPhotoUrl(team: { photo: string; sheet_row: number }): str
     return photo;
   }
 
+  // Allow curated Google Storage photos even when sheet_row differs
+  // (used when duplicating a listing into multiple weekday variants).
+  if (photo.startsWith(GCS_PHOTO_BASE)) {
+    return photo;
+  }
+
   return BRAND_LOGO_PATH;
 }
 
