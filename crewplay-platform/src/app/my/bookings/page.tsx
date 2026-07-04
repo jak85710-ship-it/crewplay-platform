@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { MyBookingCard } from "@/components/MyBookingCard";
+import { MyBookingsSessionGuard } from "@/components/MyBookingsSessionGuard";
 import { formatCreditRecoveryHint } from "@/lib/credit-recovery";
 import { listBookings } from "@/lib/bookings";
 import {
@@ -49,12 +50,9 @@ export default async function MyBookingsPage() {
         </div>
 
         {!member.isLoggedIn ? (
-          <Link
-            href="/login?redirect=/my/bookings"
-            className="rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white"
-          >
-            登入
-          </Link>
+          <span className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm text-slate-500">
+            登入狀態檢查中
+          </span>
         ) : (
           <form method="POST" action="/api/auth/logout">
             <button type="submit" className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
@@ -65,12 +63,7 @@ export default async function MyBookingsPage() {
       </div>
 
       {!member.isLoggedIn && (
-        <p className="mt-6 rounded-xl border border-brand-100 bg-brand-50 px-4 py-3 text-sm text-brand-900">
-          建議使用 LINE 免費登入；也可改用 Email 或手機驗證碼。
-          <Link href="/login?redirect=/my/bookings" className="ml-1 font-semibold underline">
-            前往登入
-          </Link>
-        </p>
+        <MyBookingsSessionGuard />
       )}
 
       {member.isLoggedIn && credit && (

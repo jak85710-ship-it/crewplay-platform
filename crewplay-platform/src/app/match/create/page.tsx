@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { MemberSessionSyncRedirect } from "@/components/MemberSessionSyncRedirect";
 import { MatchCreateForm } from "@/components/MatchCreateForm";
 import { checkMemberCanMatch } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
@@ -17,7 +18,12 @@ export default async function MatchCreatePage() {
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
   if (!member.isLoggedIn) {
-    redirect("/login?redirect=/match/create");
+    return (
+      <div className="mx-auto max-w-lg px-4 py-10">
+        <h1 className="text-2xl font-bold text-slate-900">發起 1V1 對局</h1>
+        <MemberSessionSyncRedirect targetPath="/match/create" />
+      </div>
+    );
   }
 
   const memberKey = getMemberKeyFromSession(member);
