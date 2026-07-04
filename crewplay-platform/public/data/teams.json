@@ -3863,8 +3863,50 @@
       "fee_amount": null,
       "fee_label": "",
       "status": "published"
+    },
+    {
+      "id": "c8c21e5a-0fa5-45c6-8fdd-7bd724085f28",
+      "sheet_row": 279,
+      "sport": "羽球",
+      "arena_name": "帝寶羽球館第1、2、3號場地-嘉裕羽球隊（週一）",
+      "introduce": "地點：帝寶羽球館第1、2、3號場地\n時間：每週一 晩上8點～10點\n程度：中、(等級6級以上)。\n用球：團主決定\n費用：用 : 200/人( 含球 )（本隊使用摩亞MS-90羽毛球）。",
+      "photo": "https://storage.googleapis.com/crewplay-arena-storage/photo/r186.jpg",
+      "assign_url": "https://www.facebook.com/groups/217113439536627/posts/1661400595107897/",
+      "region": "嘉義市",
+      "location": "嘉義市西區僑嘉三街91號",
+      "fee_amount": null,
+      "fee_label": "",
+      "status": "published"
+    },
+    {
+      "id": "189daeca-1b98-4e34-9dd8-a49700a47729",
+      "sheet_row": 280,
+      "sport": "羽球",
+      "arena_name": "帝寶羽球館第1、2、3號場地-嘉裕羽球隊（週三）",
+      "introduce": "地點：帝寶羽球館第1、2、3號場地\n時間：每週三 晩上8點～10點\n程度：中、(等級6級以上)。\n用球：團主決定\n費用：用 : 200/人( 含球 )（本隊使用摩亞MS-90羽毛球）。",
+      "photo": "https://storage.googleapis.com/crewplay-arena-storage/photo/r186.jpg",
+      "assign_url": "https://www.facebook.com/groups/217113439536627/posts/1661400595107897/",
+      "region": "嘉義市",
+      "location": "嘉義市西區僑嘉三街91號",
+      "fee_amount": null,
+      "fee_label": "",
+      "status": "published"
+    },
+    {
+      "id": "04b82055-01f3-4ce9-a39c-6ef785218ee8",
+      "sheet_row": 281,
+      "sport": "羽球",
+      "arena_name": "帝寶羽球館第1、2、3號場地-嘉裕羽球隊（週五）",
+      "introduce": "地點：帝寶羽球館第1、2、3號場地\n時間：每週五 晩上8點～10點\n程度：中、(等級6級以上)。\n用球：團主決定\n費用：用 : 200/人( 含球 )（本隊使用摩亞MS-90羽毛球）。",
+      "photo": "https://storage.googleapis.com/crewplay-arena-storage/photo/r186.jpg",
+      "assign_url": "https://www.facebook.com/groups/217113439536627/posts/1661400595107897/",
+      "region": "嘉義市",
+      "location": "嘉義市西區僑嘉三街91號",
+      "fee_amount": null,
+      "fee_label": "",
+      "status": "published"
     }
   ],
-  "exportedAt": "2026-07-01T11:56:54.372Z",
-  "count": 276
+  "exportedAt": "2026-07-04T07:20:00.000Z",
+  "count": 279
 }
