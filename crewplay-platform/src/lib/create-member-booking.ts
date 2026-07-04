@@ -2,6 +2,7 @@ import { createBooking } from "@/lib/bookings";
 import { memberSessionFromBookingToken } from "@/lib/booking-auth-token";
 import type { CookieReader } from "@/lib/cookie-reader";
 import { sendBookingSubmittedEmails } from "@/lib/email";
+import { notifyBookingCreatedLine } from "@/lib/line-notify";
 import { checkMemberCanBook, MIN_BOOKING_SCORE, touchMemberProfile } from "@/lib/member-credit";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
@@ -157,6 +158,23 @@ export async function processMemberBooking(
         guestNotified: false,
         error: mailErr instanceof Error ? mailErr.message : "send_failed",
       };
+    }
+
+    try {
+      const lineStatus = await notifyBookingCreatedLine({
+        booking,
+        team: {
+          id: enriched.id,
+          arena_name: enriched.arena_name,
+          introduce: enriched.introduce,
+          location: enriched.location,
+        },
+      });
+      if (!lineStatus.guest.sent || !lineStatus.host.sent) {
+        console.warn("booking LINE notify partial:", lineStatus);
+      }
+    } catch (lineErr) {
+      console.error("booking LINE notify failed (booking still saved):", lineErr);
     }
 
     return {
