@@ -23,11 +23,8 @@ export async function SiteHeader() {
             <Link href="/teams" className={navLink}>
               揪團查詢
             </Link>
-            <Link href="/join/host" className={navLink}>
+            <Link href="/join" className={navLink}>
               我要開團
-            </Link>
-            <Link href="/join/venue" className={navLink}>
-              場主刊登
             </Link>
             <Link href="/match" className={navLink}>
               1V1
@@ -67,11 +64,8 @@ export function SiteFooter() {
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link href="/join/host" className="hover:text-white">
+            <Link href="/join" className="hover:text-white">
               我要開團
-            </Link>
-            <Link href="/join/venue" className="hover:text-white">
-              場主刊登
             </Link>
             <Link href="/terms" className="hover:text-white">
               服務條款

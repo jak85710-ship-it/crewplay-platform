@@ -73,11 +73,8 @@ export default async function HomePage() {
           <HomeSearch sports={sports} regions={regions} exploreCards={exploreCards} />
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link href="/join/host" className="btn-outline">
+            <Link href="/join" className="btn-outline">
               我要開團
-            </Link>
-            <Link href="/join/venue" className="btn-outline">
-              場主刊登
             </Link>
           </div>
         </div>
