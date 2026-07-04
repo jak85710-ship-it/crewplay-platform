@@ -20,7 +20,10 @@ export default async function MatchCreatePage() {
     redirect("/login?redirect=/match/create");
   }
 
-  const memberKey = getMemberKeyFromSession(member)!;
+  const memberKey = getMemberKeyFromSession(member);
+  if (!memberKey) {
+    redirect("/match/verify?redirect=%2Fmatch%2Fcreate");
+  }
   const gate = await checkMemberCanMatch(memberKey);
   const verifyRedirect = matchAccessRedirect(gate, "/match/create");
   if (verifyRedirect) redirect(verifyRedirect);

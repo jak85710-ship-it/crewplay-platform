@@ -7,6 +7,8 @@ import { WebSiteJsonLd } from "@/components/WebSiteJsonLd";
 import { SITE_DESCRIPTION, SITE_OG_DESCRIPTION, SITE_TITLE, SITE_URL } from "@/lib/site-seo";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {

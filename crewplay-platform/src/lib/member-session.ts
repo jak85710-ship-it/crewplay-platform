@@ -184,6 +184,18 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
     };
   }
 
+  if (profileName?.trim()) {
+    return {
+      isLoggedIn: true,
+      memberKey: sessionKey || undefined,
+      displayName: profileName.trim(),
+      name: profileName.trim(),
+      email: profileEmail,
+      contactPhone,
+      method: "line",
+    };
+  }
+
   return { isLoggedIn: false };
 }
 

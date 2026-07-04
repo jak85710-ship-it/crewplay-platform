@@ -21,7 +21,10 @@ export default async function MatchBrowsePage() {
     redirect("/login?redirect=/match/browse");
   }
 
-  const memberKey = getMemberKeyFromSession(member)!;
+  const memberKey = getMemberKeyFromSession(member);
+  if (!memberKey) {
+    redirect("/match/verify?redirect=%2Fmatch%2Fbrowse");
+  }
   const gate = await checkMemberCanMatch(memberKey);
   const verifyRedirect = matchAccessRedirect(gate, "/match/browse");
   if (verifyRedirect) redirect(verifyRedirect);
