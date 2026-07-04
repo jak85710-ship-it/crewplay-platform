@@ -8,7 +8,7 @@ import {
   CREDIT_RECOVERY_POINTS,
 } from "@/lib/member-credit-constants";
 import { getMemberKeyFromSession } from "@/lib/member-key";
-import { getMemberSession } from "@/lib/member-session";
+import { applyMemberProfileToCookieStore, getMemberSession, setMemberSessionKey } from "@/lib/member-session";
 
 export async function POST(req: Request) {
   const cookieStore = await cookies();
@@ -39,13 +39,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: result.error, code: result.code }, { status });
     }
 
-    return NextResponse.json({
+    const res = NextResponse.json({
       ok: true,
       booking_id: result.booking.id,
       credit_score: result.credit_score,
       penalty: result.penalty,
       message: `已取消預約，信用分 -${result.penalty}（目前 ${result.credit_score} 分）。每 ${CREDIT_RECOVERY_INTERVAL_DAYS} 天自動回補 ${CREDIT_RECOVERY_POINTS} 分。`,
     });
+    applyMemberProfileToCookieStore(res.cookies, {
+      name: result.booking.guest_name,
+      email: result.booking.guest_email,
+      contactPhone: result.booking.guest_phone,
+    });
+    setMemberSessionKey(res.cookies, memberKey);
+    return res;
   } catch (e) {
     return NextResponse.json(
       { error: e instanceof Error ? e.message : "取消失敗" },

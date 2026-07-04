@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 import { processMemberBooking } from "@/lib/create-member-booking";
 import { issueCheckInToken } from "@/lib/check-in-token";
-import { applyMemberProfileToCookieStore } from "@/lib/member-session";
+import { applyMemberProfileToCookieStore, setMemberSessionKey } from "@/lib/member-session";
 
 export type BookFormState = {
   error?: string;
@@ -40,6 +40,7 @@ export async function submitBookingAction(
   }
 
   applyMemberProfileToCookieStore(cookieStore, result.profile);
+  setMemberSessionKey(cookieStore, result.memberKey);
 
   const mailFlag = result.emailStatus.guestNotified
     ? "sent"

@@ -5,6 +5,7 @@ import { normalizePhone } from "@/lib/phone-auth";
 
 export function getMemberKeyFromSession(member: MemberSession): string | null {
   if (!member.isLoggedIn) return null;
+  if (member.memberKey) return member.memberKey;
   if (member.lineUid) return `line:${member.lineUid}`;
   if (member.email) return `email:${member.email.trim().toLowerCase()}`;
   if (member.phone) return `phone:${member.phone}`;

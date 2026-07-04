@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { cookieReaderFromHeader, mergeCookieReaders } from "@/lib/cookie-reader";
 import { processMemberBooking, siteUrlFromRequest, type BookingInput } from "@/lib/create-member-booking";
 import { issueCheckInToken } from "@/lib/check-in-token";
-import { applyMemberProfileToCookieStore } from "@/lib/member-session";
+import { applyMemberProfileToCookieStore, setMemberSessionKey } from "@/lib/member-session";
 
 function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingInput {
   return {
@@ -103,5 +103,6 @@ export async function POST(req: Request) {
     : NextResponse.json({ booking: result.booking, emailStatus: result.emailStatus });
 
   applyMemberProfileToCookieStore(res.cookies, result.profile);
+  setMemberSessionKey(res.cookies, result.memberKey);
   return res;
 }

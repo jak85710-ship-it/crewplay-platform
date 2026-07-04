@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { authCookieOptions } from "@/lib/auth-cookies";
-import { applyMemberProfileToCookieStore } from "@/lib/member-session";
+import { applyMemberProfileToCookieStore, setMemberSessionKey } from "@/lib/member-session";
 import { getLineCallbackUrl, getLineOAuthOrigin, isLineLoginConfigured } from "@/lib/line-auth";
 
 export async function GET(req: Request) {
@@ -58,6 +58,7 @@ export async function GET(req: Request) {
   if (profile?.userId) {
     res.cookies.set("line_uid", profile.userId, { ...cookieOpts, httpOnly: true });
     res.cookies.set("line_name", profile.displayName ?? "", cookieOpts);
+    setMemberSessionKey(res.cookies, `line:${profile.userId}`);
     if (profile.displayName?.trim()) {
       applyMemberProfileToCookieStore(res.cookies, { name: profile.displayName.trim() });
     }

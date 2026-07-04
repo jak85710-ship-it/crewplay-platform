@@ -6,6 +6,7 @@ import { maskPhone, normalizePhone } from "@/lib/phone-auth";
 
 export type MemberSession = {
   isLoggedIn: boolean;
+  memberKey?: string;
   displayName?: string;
   name?: string;
   email?: string;
@@ -25,6 +26,7 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
   const profileEmail = cookieStore.get("member_email")?.value?.trim();
   const contactPhoneRaw = cookieStore.get("member_contact_phone")?.value?.trim();
   const contactPhone = contactPhoneRaw ? (normalizePhone(contactPhoneRaw) ?? contactPhoneRaw) : undefined;
+  const sessionKey = cookieStore.get("member_session_key")?.value?.trim();
 
   const lineUid = cookieStore.get("line_uid")?.value;
   const lineName = cookieStore.get("line_name")?.value;
@@ -32,6 +34,7 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
     const name = profileName || lineName || undefined;
     return {
       isLoggedIn: true,
+      memberKey: `line:${lineUid}`,
       displayName: name || "LINE 會員",
       name,
       email: profileEmail,
@@ -46,6 +49,7 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
     const name = profileName || loginEmail.split("@")[0];
     return {
       isLoggedIn: true,
+      memberKey: `email:${loginEmail}`,
       displayName: name,
       name: profileName || undefined,
       email: loginEmail,
@@ -60,6 +64,7 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
     const name = profileName || undefined;
     return {
       isLoggedIn: true,
+      memberKey: `phone:${phone}`,
       displayName: name || maskPhone(phone),
       name,
       email: profileEmail,
@@ -75,12 +80,93 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
     const name = profileName || appleName || undefined;
     return {
       isLoggedIn: true,
+      memberKey: `apple:${appleUid}`,
       displayName: name || "Apple 會員",
       name,
       email: profileEmail,
       contactPhone,
       appleUid,
       method: "apple",
+    };
+  }
+
+  if (sessionKey) {
+    const [prefix, value] = sessionKey.split(":");
+    if (prefix && value) {
+      if (prefix === "line") {
+        return {
+          isLoggedIn: true,
+          memberKey: sessionKey,
+          lineUid: value,
+          displayName: profileName || lineName || "LINE 會員",
+          name: profileName || undefined,
+          email: profileEmail,
+          contactPhone,
+          method: "line",
+        };
+      }
+      if (prefix === "email" && value.includes("@")) {
+        const email = value.trim().toLowerCase();
+        return {
+          isLoggedIn: true,
+          memberKey: sessionKey,
+          displayName: profileName || email.split("@")[0],
+          name: profileName || undefined,
+          email,
+          contactPhone,
+          method: "email",
+        };
+      }
+      if (prefix === "phone") {
+        const phone = normalizePhone(value) ?? value;
+        return {
+          isLoggedIn: true,
+          memberKey: `phone:${phone}`,
+          displayName: profileName || maskPhone(phone),
+          name: profileName || undefined,
+          email: profileEmail,
+          contactPhone: contactPhone || phone,
+          phone,
+          method: "phone",
+        };
+      }
+      if (prefix === "apple") {
+        return {
+          isLoggedIn: true,
+          memberKey: sessionKey,
+          appleUid: value,
+          displayName: profileName || "Apple 會員",
+          name: profileName || undefined,
+          email: profileEmail,
+          contactPhone,
+          method: "apple",
+        };
+      }
+    }
+  }
+
+  if (profileEmail?.includes("@")) {
+    const email = profileEmail.trim().toLowerCase();
+    return {
+      isLoggedIn: true,
+      memberKey: `email:${email}`,
+      displayName: profileName || email.split("@")[0],
+      name: profileName || undefined,
+      email,
+      contactPhone,
+      method: "email",
+    };
+  }
+
+  if (contactPhone) {
+    return {
+      isLoggedIn: true,
+      memberKey: `phone:${contactPhone}`,
+      displayName: profileName || maskPhone(contactPhone),
+      name: profileName || undefined,
+      contactPhone,
+      phone: contactPhone,
+      method: "phone",
     };
   }
 
@@ -99,6 +185,7 @@ export function setMemberCookies(
   const opts = authCookieOptions(86400 * 30);
   res.cookies.set("member_phone", normalized, { ...opts, httpOnly: true });
   res.cookies.set("member_phone_display", maskPhone(normalized), opts);
+  setMemberSessionKey(res.cookies, `phone:${normalized}`);
 }
 
 export function setMemberEmailLogin(
@@ -108,6 +195,7 @@ export function setMemberEmailLogin(
   const normalized = email.trim().toLowerCase();
   const opts = authCookieOptions(86400 * 30);
   res.cookies.set("member_login_email", normalized, { ...opts, httpOnly: true });
+  setMemberSessionKey(res.cookies, `email:${normalized}`);
   setMemberProfileCookies(res, { email: normalized });
 }
 
@@ -121,6 +209,14 @@ export function setMemberProfileCookies(
 type CookieWriter = {
   set: (name: string, value: string, opts?: object) => void;
 };
+
+export function setMemberSessionKey(cookieWriter: CookieWriter, memberKey: string) {
+  if (!memberKey?.trim()) return;
+  cookieWriter.set("member_session_key", memberKey.trim().slice(0, 160), {
+    ...authCookieOptions(86400 * 30),
+    httpOnly: true,
+  });
+}
 
 export function applyMemberProfileToCookieStore(
   cookieWriter: CookieWriter,
@@ -154,6 +250,7 @@ export function clearMemberCookies(res: {
     "member_email",
     "member_contact_phone",
     "member_login_email",
+    "member_session_key",
     "line_uid",
     "line_name",
     "apple_uid",

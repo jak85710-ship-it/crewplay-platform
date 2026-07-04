@@ -35,6 +35,7 @@ export type BookingSubmitResult =
   | {
       ok: true;
       booking: Awaited<ReturnType<typeof createBooking>>;
+      memberKey: string;
       profile: { name: string; email: string; contactPhone: string };
       emailStatus: import("@/lib/email").BookingEmailResult;
     }
@@ -180,6 +181,7 @@ export async function processMemberBooking(
     return {
       ok: true,
       booking,
+      memberKey,
       profile: { name: guestName, email: guestEmail, contactPhone: guestPhone },
       emailStatus,
     };
