@@ -44,6 +44,20 @@ export function getMemberSessionFromReader(cookieStore: CookieReader): MemberSes
     };
   }
 
+  // Fallback for edge cases where LINE profile name exists but UID cookie
+  // is temporarily unavailable (avoid forcing re-login loops in UI).
+  if (lineName?.trim()) {
+    return {
+      isLoggedIn: true,
+      memberKey: sessionKey || undefined,
+      displayName: profileName || lineName.trim(),
+      name: profileName || lineName.trim(),
+      email: profileEmail,
+      contactPhone,
+      method: "line",
+    };
+  }
+
   const loginEmail = cookieStore.get("member_login_email")?.value?.trim().toLowerCase();
   if (loginEmail) {
     const name = profileName || loginEmail.split("@")[0];

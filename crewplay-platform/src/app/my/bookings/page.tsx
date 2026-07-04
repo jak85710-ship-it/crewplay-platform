@@ -13,6 +13,8 @@ import { getMemberKeyFromSession } from "@/lib/member-key";
 import { emptyBookingsMessage, filterBookingsForMember } from "@/lib/member-bookings";
 import { getMemberSession } from "@/lib/member-session";
 
+export const dynamic = "force-dynamic";
+
 export default async function MyBookingsPage() {
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
