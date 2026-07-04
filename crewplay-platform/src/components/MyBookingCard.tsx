@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BookingCheckInQr } from "@/components/BookingCheckInQr";
 import { MyBookingCancelButton } from "@/components/MyBookingCancelButton";
 import { bookingReference } from "@/lib/booking-ref";
+import { issueCancelBookingAuthToken } from "@/lib/cancel-booking-auth-token";
 import { issueCheckInToken } from "@/lib/check-in-token";
 import { getTeamById } from "@/lib/teams";
 import type { Booking } from "@/types";
@@ -30,6 +31,7 @@ function bookingStatusLabel(status: string, checkedInAt?: string | null): string
 export async function MyBookingCard({ booking }: { booking: Booking }) {
   const ref = bookingReference(booking);
   const token = issueCheckInToken(booking);
+  const cancelAuthToken = issueCancelBookingAuthToken(booking);
   const team = await getTeamById(booking.team_id);
   const checkedIn = Boolean(booking.checked_in_at);
 
@@ -72,7 +74,7 @@ export async function MyBookingCard({ booking }: { booking: Booking }) {
         booking.status !== "no_show" &&
         booking.status !== "cancelled" &&
         booking.status !== "refunded" && (
-          <MyBookingCancelButton bookingId={booking.id} reference={ref} />
+          <MyBookingCancelButton bookingId={booking.id} reference={ref} cancelAuthToken={cancelAuthToken} />
         )}
 
       {team && (

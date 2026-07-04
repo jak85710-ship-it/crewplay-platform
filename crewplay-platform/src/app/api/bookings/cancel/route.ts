@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { cancelBookingByMember } from "@/lib/bookings";
+import { memberKeyFromCancelBookingToken } from "@/lib/cancel-booking-auth-token";
 import {
   CREDIT_RECOVERY_INTERVAL_DAYS,
   CREDIT_RECOVERY_POINTS,
@@ -12,17 +13,19 @@ import { getMemberSession } from "@/lib/member-session";
 export async function POST(req: Request) {
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
-  const memberKey = getMemberKeyFromSession(member);
-
-  if (!memberKey) {
-    return NextResponse.json({ error: "請先登入會員" }, { status: 401 });
-  }
 
   try {
     const body = await req.json();
     const bookingId = String(body.booking_id ?? "").trim();
+    const cancelAuth = String(body.cancel_auth ?? "").trim();
     if (!bookingId) {
       return NextResponse.json({ error: "請提供預約編號" }, { status: 400 });
+    }
+
+    const memberKey =
+      getMemberKeyFromSession(member) || memberKeyFromCancelBookingToken(cancelAuth, bookingId);
+    if (!memberKey) {
+      return NextResponse.json({ error: "請先登入會員" }, { status: 401 });
     }
 
     const result = await cancelBookingByMember(bookingId, memberKey);

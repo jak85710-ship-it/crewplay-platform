@@ -12,9 +12,10 @@ import {
 type Props = {
   bookingId: string;
   reference: string;
+  cancelAuthToken?: string;
 };
 
-export function MyBookingCancelButton({ bookingId, reference }: Props) {
+export function MyBookingCancelButton({ bookingId, reference, cancelAuthToken = "" }: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -34,7 +35,7 @@ export function MyBookingCancelButton({ bookingId, reference }: Props) {
       const res = await fetch("/api/bookings/cancel", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ booking_id: bookingId }),
+        body: JSON.stringify({ booking_id: bookingId, cancel_auth: cancelAuthToken }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "取消失敗");
