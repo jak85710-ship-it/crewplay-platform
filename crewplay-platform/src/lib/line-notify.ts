@@ -4,6 +4,7 @@ import { issueCheckInToken } from "@/lib/check-in-token";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { getPublicSiteUrl } from "@/lib/line-auth";
 import { parseIntroField } from "@/lib/utils";
+import { extractVolleyballPositionFromNote } from "@/lib/volleyball-position";
 
 type LineTextMessage = {
   type: "text";
@@ -35,6 +36,7 @@ type BookingLite = {
   guest_phone: string;
   guest_email: string;
   slots: number;
+  note?: string;
   line_uid?: string | null;
   merchant_trade_no?: string | null;
 };
@@ -112,12 +114,14 @@ function guestMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
   const myBookingsUrl = `${getPublicSiteUrl()}/my/bookings`;
   const timeText = parseIntroField(team.introduce || "", "時間");
   const placeText = parseIntroField(team.introduce || "", "地點") || team.location || "";
+  const positionMeta = extractVolleyballPositionFromNote(booking.note);
 
   const text = [
     "【CrewPlay】報名成功",
     `報名編號：${ref}`,
     `揪團：${team.arena_name}`,
     `人數：${booking.slots} 人`,
+    positionMeta.position ? `擅長位置：${positionMeta.position}` : "",
     timeText ? `時間：${timeText}` : "",
     placeText ? `地點：${placeText}` : "",
     "",
@@ -136,6 +140,7 @@ function hostMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
   const portalUrl = portalToken ? hostCheckInPortalUrl(portalToken) : "";
   const timeText = parseIntroField(team.introduce || "", "時間");
   const placeText = parseIntroField(team.introduce || "", "地點") || team.location || "";
+  const positionMeta = extractVolleyballPositionFromNote(booking.note);
 
   const text = [
     "【CrewPlay】有新球友報名",
@@ -145,6 +150,8 @@ function hostMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
     `手機：${booking.guest_phone}`,
     booking.guest_email ? `Email：${booking.guest_email}` : "",
     `人數：${booking.slots} 人`,
+    positionMeta.position ? `擅長位置：${positionMeta.position}` : "",
+    positionMeta.detail ? `位置補充：${positionMeta.detail}` : "",
     timeText ? `時間：${timeText}` : "",
     placeText ? `地點：${placeText}` : "",
     "",

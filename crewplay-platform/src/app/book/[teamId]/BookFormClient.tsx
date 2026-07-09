@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useFormStatus } from "react-dom";
+
+import { VOLLEYBALL_POSITIONS } from "@/lib/volleyball-position";
 
 type Props = {
   teamId: string;
@@ -10,6 +13,7 @@ type Props = {
   team: {
     arena_name: string;
     fee_label: string;
+    sport?: string;
   };
   feeLabel: string;
   unitPrice: number;
@@ -45,6 +49,11 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
   const urlError = searchParams.get("error");
   const defaultSlots = 1;
   const total = unitPrice * defaultSlots;
+  const isVolleyball = team.sport === "排球";
+  const [volleyballPosition, setVolleyballPosition] = useState<string>(
+    isVolleyball ? VOLLEYBALL_POSITIONS[0] : ""
+  );
+  const [positionDetail, setPositionDetail] = useState("");
 
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
@@ -140,6 +149,41 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5"
           />
         </label>
+
+        {isVolleyball && (
+          <div className="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-4 text-sm">
+            <p className="font-semibold text-indigo-900">排球位置偏好（會直接通知團主）</p>
+            <p className="mt-1 text-indigo-800">
+              先選擇您擅長的位置，方便團主快速判斷是否還有合適站位可安排。
+            </p>
+            <label className="mt-3 block">
+              <span className="font-medium text-slate-700">擅長位置</span>
+              <select
+                name="volleyball_position"
+                value={volleyballPosition}
+                onChange={(e) => setVolleyballPosition(e.target.value)}
+                className="mt-1 w-full rounded-xl border border-indigo-200 bg-white px-3 py-2.5"
+              >
+                {VOLLEYBALL_POSITIONS.map((pos) => (
+                  <option key={pos} value={pos}>
+                    {pos}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="mt-3 block">
+              <span className="font-medium text-slate-700">位置補充（選填）</span>
+              <input
+                type="text"
+                name="volleyball_position_detail"
+                value={positionDetail}
+                onChange={(e) => setPositionDetail(e.target.value)}
+                placeholder="例：主攻／中砲都可，攔中經驗中等"
+                className="mt-1 w-full rounded-xl border border-indigo-200 bg-white px-3 py-2.5"
+              />
+            </label>
+          </div>
+        )}
 
         <label className="block text-sm">
           <span className="font-medium text-slate-700">備註（選填）</span>

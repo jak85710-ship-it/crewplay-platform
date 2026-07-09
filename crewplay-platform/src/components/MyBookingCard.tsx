@@ -6,6 +6,7 @@ import { bookingReference } from "@/lib/booking-ref";
 import { issueCancelBookingAuthToken } from "@/lib/cancel-booking-auth-token";
 import { issueCheckInToken } from "@/lib/check-in-token";
 import { getTeamById } from "@/lib/teams";
+import { extractVolleyballPositionFromNote } from "@/lib/volleyball-position";
 import type { Booking } from "@/types";
 
 function bookingStatusLabel(status: string, checkedInAt?: string | null): string {
@@ -34,6 +35,7 @@ export async function MyBookingCard({ booking }: { booking: Booking }) {
   const cancelAuthToken = issueCancelBookingAuthToken(booking);
   const team = await getTeamById(booking.team_id);
   const checkedIn = Boolean(booking.checked_in_at);
+  const positionMeta = extractVolleyballPositionFromNote(booking.note);
 
   return (
     <li className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -62,6 +64,12 @@ export async function MyBookingCard({ booking }: { booking: Booking }) {
         {booking.slots} 人 · 參考團費 NT$ {booking.amount}
       </p>
       <p className="mt-1 font-mono text-xs text-slate-500">報名編號 {ref}</p>
+      {team?.sport === "排球" && positionMeta.position && (
+        <p className="mt-1 text-xs font-semibold text-indigo-700">
+          擅長位置：{positionMeta.position}
+          {positionMeta.detail ? `（${positionMeta.detail}）` : ""}
+        </p>
+      )}
       <p className="mt-1 text-xs text-slate-400">{booking.created_at}</p>
 
       {token && !checkedIn && booking.status !== "no_show" && booking.status !== "cancelled" && (

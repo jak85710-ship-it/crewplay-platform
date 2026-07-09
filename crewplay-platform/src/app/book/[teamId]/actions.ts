@@ -26,6 +26,8 @@ export async function submitBookingAction(
       guest_phone: String(formData.get("guest_phone") ?? ""),
       slots: parseInt(String(formData.get("slots") ?? "1"), 10) || 1,
       note: String(formData.get("note") ?? ""),
+      volleyball_position: String(formData.get("volleyball_position") ?? ""),
+      volleyball_position_detail: String(formData.get("volleyball_position_detail") ?? ""),
       amount: parseInt(String(formData.get("amount") ?? "0"), 10) || 0,
       booking_auth: String(formData.get("booking_auth") ?? ""),
     },

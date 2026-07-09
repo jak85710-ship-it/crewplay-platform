@@ -14,6 +14,8 @@ function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingIn
     guest_phone: String(raw.guest_phone ?? ""),
     slots: parseInt(String(raw.slots ?? "1"), 10) || 1,
     note: String(raw.note ?? ""),
+    volleyball_position: String(raw.volleyball_position ?? ""),
+    volleyball_position_detail: String(raw.volleyball_position_detail ?? ""),
     amount: parseInt(String(raw.amount ?? "0"), 10) || 0,
     booking_auth: String(raw.booking_auth ?? ""),
   };

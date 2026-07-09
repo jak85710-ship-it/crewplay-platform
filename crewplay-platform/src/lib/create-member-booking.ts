@@ -8,6 +8,7 @@ import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
 import { normalizePhone } from "@/lib/phone-auth";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
+import { composeBookingNoteWithVolleyballPosition } from "@/lib/volleyball-position";
 
 export type BookingInput = {
   team_id: string;
@@ -16,6 +17,8 @@ export type BookingInput = {
   guest_phone: string;
   slots: number;
   note?: string;
+  volleyball_position?: string;
+  volleyball_position_detail?: string;
   amount: number;
   booking_auth?: string;
 };
@@ -110,6 +113,12 @@ export async function processMemberBooking(
     const slots = Math.min(10, Math.max(1, parseInt(String(raw.slots ?? 1), 10) || 1));
     const unit = enriched.fee_amount ?? 200;
     const amount = unit * slots;
+    const normalizedNote = composeBookingNoteWithVolleyballPosition({
+      baseNote: String(raw.note ?? ""),
+      sport: enriched.sport,
+      position: raw.volleyball_position,
+      positionDetail: raw.volleyball_position_detail,
+    });
 
     const booking = await createBooking({
       team_id: team.id,
@@ -118,7 +127,7 @@ export async function processMemberBooking(
       guest_email: guestEmail,
       slots,
       amount,
-      note: String(raw.note ?? ""),
+      note: normalizedNote,
       member_key: memberKey,
       line_uid: member.method === "line" ? member.lineUid : null,
       apple_uid: member.method === "apple" ? member.appleUid : null,

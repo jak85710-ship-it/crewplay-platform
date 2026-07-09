@@ -44,6 +44,7 @@ export default async function BookPage({ params, searchParams }: Props) {
       team={{
         arena_name: team.arena_name,
         fee_label: team.fee_label,
+        sport: team.sport,
       }}
       feeLabel={feeSummary(team)}
       unitPrice={team.fee_amount ?? 200}

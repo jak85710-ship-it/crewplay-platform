@@ -6,6 +6,7 @@ import { hostCheckInPortalUrl } from "@/lib/check-in-url";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { submissionImagePublicUrl } from "@/lib/submission-images";
 import { feeSummary, parseIntroField } from "@/lib/utils";
+import { extractVolleyballPositionFromNote } from "@/lib/volleyball-position";
 
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
 const DEFAULT_NOTIFY_TO = "crew.matchplay@gmail.com";
@@ -289,6 +290,7 @@ export type BookingEmailResult = {
 
 function bookingLines(ctx: BookingMailContext, includeContact = true): string {
   const ref = bookingReference(ctx.booking);
+  const positionMeta = extractVolleyballPositionFromNote(ctx.booking.note);
   const rows: [string, string][] = [
     ["報名編號", ref],
     ["揪團名稱", ctx.team.arena_name],
@@ -303,7 +305,15 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
   if (includeContact && ctx.booking.guest_email) {
     rows.splice(7, 0, ["Email", ctx.booking.guest_email]);
   }
-  if (ctx.booking.note) rows.push(["備註", ctx.booking.note]);
+  if (positionMeta.position) {
+    rows.push(["排球位置", positionMeta.position]);
+  }
+  if (positionMeta.detail) {
+    rows.push(["位置補充", positionMeta.detail]);
+  }
+  if (positionMeta.noteWithoutPosition) {
+    rows.push(["備註", positionMeta.noteWithoutPosition]);
+  }
   return lines(rows);
 }
 
