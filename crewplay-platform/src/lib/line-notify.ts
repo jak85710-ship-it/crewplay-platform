@@ -130,14 +130,20 @@ export async function pushLineTextToRecipients(input: {
   success: number;
   failed: number;
   failedReasons: string[];
+  details: Array<{ recipient: string; sent: boolean; reason?: string }>;
 }> {
   const recipients = [...new Set(input.recipients.map((v) => String(v || "").trim()).filter(Boolean))];
   if (!recipients.length) {
-    return { total: 0, success: 0, failed: 0, failedReasons: ["no_recipients"] };
+    return { total: 0, success: 0, failed: 0, failedReasons: ["no_recipients"], details: [] };
   }
   const results = await Promise.all(
     recipients.map((uid) => pushLineMessage(uid, [{ type: "text", text: input.text }]))
   );
+  const details = recipients.map((recipient, idx) => ({
+    recipient,
+    sent: results[idx]?.sent === true,
+    reason: results[idx]?.reason,
+  }));
   const success = results.filter((r) => r.sent).length;
   const failedReasons = results.filter((r) => !r.sent).map((r) => r.reason || "unknown_error");
   return {
@@ -145,6 +151,7 @@ export async function pushLineTextToRecipients(input: {
     success,
     failed: recipients.length - success,
     failedReasons,
+    details,
   };
 }
 

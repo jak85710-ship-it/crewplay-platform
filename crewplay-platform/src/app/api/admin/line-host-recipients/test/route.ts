@@ -38,11 +38,21 @@ export async function POST(req: Request) {
     text,
   });
 
+  const hint =
+    result.failedReasons.find((r) => r.includes("line_token_missing")) != null
+      ? "缺少 LINE_MESSAGING_CHANNEL_ACCESS_TOKEN，請先在環境變數設定。"
+      : result.failedReasons.some((r) => r.includes("line_push_failed:401"))
+        ? "LINE token 無效或已過期，請更新 LINE Channel Access Token。"
+        : result.failedReasons.some((r) => r.includes("line_push_failed:400"))
+          ? "收件者 UID 可能無效，或 Bot 尚未與該使用者/群組建立可推播關係。"
+          : "請查看 failedReasons 與 details 以確認每個 UID 的錯誤。";
+
   if (result.success === 0) {
     return NextResponse.json(
       {
         ok: false,
         error: "測試訊息送出失敗",
+        hint,
         recipients: uniqueRecipients.length,
         ...result,
       },
@@ -52,6 +62,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     ok: true,
+    hint: result.failed > 0 ? hint : "",
     recipients: uniqueRecipients.length,
     ...result,
   });

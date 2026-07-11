@@ -32,6 +32,7 @@ export function AdminLineHostRecipientsPanel({
   const [testTeamId, setTestTeamId] = useState("");
   const [testText, setTestText] = useState("");
   const [message, setMessage] = useState("");
+  const [testDebug, setTestDebug] = useState("");
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -76,6 +77,7 @@ export function AdminLineHostRecipientsPanel({
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "儲存失敗");
       setMessage("LINE 團主收件者設定已更新");
+      setTestDebug("");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "儲存失敗");
     } finally {
@@ -94,6 +96,7 @@ export function AdminLineHostRecipientsPanel({
     }
     setTestBusy(true);
     setMessage("");
+    setTestDebug("");
     try {
       const res = await fetch("/api/admin/line-host-recipients/test", {
         method: "POST",
@@ -107,8 +110,23 @@ export function AdminLineHostRecipientsPanel({
         }),
       });
       const data = await res.json();
+      const hint = String(data.hint || "").trim();
+      const reasons = Array.isArray(data.failedReasons) ? data.failedReasons.slice(0, 5) : [];
+      const details = Array.isArray(data.details) ? data.details.slice(0, 8) : [];
+      const debugText = [
+        hint ? `提示：${hint}` : "",
+        reasons.length ? `失敗原因：${reasons.join(" | ")}` : "",
+        details.length
+          ? `明細：${details
+              .map((d) => `${d.sent ? "OK" : "FAIL"}:${String(d.recipient || "").slice(0, 8)}... ${d.reason || ""}`)
+              .join(" ; ")}`
+          : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+      setTestDebug(debugText);
       if (!res.ok) throw new Error(data.error || "測試訊息送出失敗");
-      setMessage(`測試完成：成功 ${data.success}/${data.total}，失敗 ${data.failed}`);
+      setMessage(`測試完成：成功 ${data.success}/${data.total}，失敗 ${data.failed}${hint ? `（${hint}）` : ""}`);
     } catch (err) {
       setMessage(err instanceof Error ? err.message : "測試訊息送出失敗");
     } finally {
@@ -214,6 +232,7 @@ export function AdminLineHostRecipientsPanel({
       </div>
 
       {message && <p className="mt-3 text-sm text-slate-600">{message}</p>}
+      {testDebug && <pre className="mt-2 overflow-auto rounded-lg bg-slate-100 p-3 text-xs text-slate-700">{testDebug}</pre>}
     </section>
   );
 }
