@@ -335,3 +335,94 @@ export async function cancelBookingByMember(
     penalty: CANCEL_BOOKING_PENALTY,
   };
 }
+
+export async function cancelBookingByAdmin(
+  bookingId: string
+): Promise<
+  | { ok: true; booking: Booking; alreadyCancelled: boolean }
+  | { ok: false; error: string; code?: string }
+> {
+  const booking = await getBookingById(bookingId);
+  if (!booking) {
+    return { ok: false, error: "找不到預約", code: "not_found" };
+  }
+
+  if (booking.checked_in_at) {
+    return { ok: false, error: "已進場的預約無法取消", code: "checked_in" };
+  }
+
+  if (booking.status === "cancelled") {
+    return { ok: true, booking, alreadyCancelled: true };
+  }
+
+  if (booking.status === "no_show" || booking.status === "refunded") {
+    return { ok: false, error: "此預約狀態無法取消", code: "invalid_status" };
+  }
+
+  const now = new Date().toISOString();
+  const { getSupabaseAdmin } = await import("./teams");
+  const supabase = getSupabaseAdmin();
+
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("bookings")
+      .update({ status: "cancelled", cancelled_at: now })
+      .eq("id", bookingId)
+      .select()
+      .maybeSingle();
+    if (error || !data) {
+      return { ok: false, error: error?.message || "取消失敗", code: "server" };
+    }
+    return { ok: true, booking: data as Booking, alreadyCancelled: false };
+  }
+
+  const list = await loadBookings();
+  const idx = list.findIndex((b) => b.id === bookingId);
+  if (idx < 0) {
+    return { ok: false, error: "找不到預約", code: "not_found" };
+  }
+  list[idx] = { ...list[idx], status: "cancelled", cancelled_at: now };
+  await saveBookings(list);
+  return { ok: true, booking: list[idx], alreadyCancelled: false };
+}
+
+export async function revertBookingNoShow(bookingId: string): Promise<
+  | { ok: true; booking: Booking; memberKey: string | null }
+  | { ok: false; error: string; code?: string }
+> {
+  const { getMemberKeyFromBooking } = await import("./member-key");
+
+  const booking = await getBookingById(bookingId);
+  if (!booking) {
+    return { ok: false, error: "找不到預約", code: "not_found" };
+  }
+  if (booking.status !== "no_show") {
+    return { ok: false, error: "僅可回復爽約扣分", code: "invalid_status" };
+  }
+
+  const { getSupabaseAdmin } = await import("./teams");
+  const supabase = getSupabaseAdmin();
+
+  if (supabase) {
+    const { data, error } = await supabase
+      .from("bookings")
+      .update({ status: "submitted", no_show_at: null })
+      .eq("id", bookingId)
+      .select()
+      .maybeSingle();
+    if (error || !data) {
+      return { ok: false, error: error?.message || "回復失敗", code: "server" };
+    }
+    const updated = data as Booking;
+    return { ok: true, booking: updated, memberKey: getMemberKeyFromBooking(updated) };
+  }
+
+  const list = await loadBookings();
+  const idx = list.findIndex((b) => b.id === bookingId);
+  if (idx < 0) {
+    return { ok: false, error: "找不到預約", code: "not_found" };
+  }
+  list[idx] = { ...list[idx], status: "submitted", no_show_at: null };
+  await saveBookings(list);
+  return { ok: true, booking: list[idx], memberKey: getMemberKeyFromBooking(list[idx]) };
+}

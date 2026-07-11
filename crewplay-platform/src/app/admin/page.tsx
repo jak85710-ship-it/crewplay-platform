@@ -1,6 +1,4 @@
 import { listBookings } from "@/lib/bookings";
-import { hostCheckInPortalUrl } from "@/lib/check-in-url";
-import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { listTeamCapacityOverrides } from "@/lib/team-capacity-overrides";
 import { getAllTeams } from "@/lib/teams";
 
@@ -11,12 +9,6 @@ export default async function AdminPage() {
   const bookings = await listBookings();
   const teamCapacityOverrides = await listTeamCapacityOverrides();
   const sports = [...new Set(teams.map((t) => t.sport))];
-  const scanUrls = Object.fromEntries(
-    bookings.map((b) => {
-      const token = issueHostPortalToken(b.team_id);
-      return [b.id, token ? hostCheckInPortalUrl(token) : ""];
-    })
-  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
@@ -31,7 +23,6 @@ export default async function AdminPage() {
 
       <AdminDashboard
         bookings={bookings}
-        scanUrls={scanUrls}
         teams={teams}
         teamCapacityOverrides={teamCapacityOverrides}
       />

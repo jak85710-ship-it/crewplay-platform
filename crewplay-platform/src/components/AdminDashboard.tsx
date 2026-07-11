@@ -10,12 +10,11 @@ import type { Team } from "@/types";
 
 type Props = {
   bookings: Booking[];
-  scanUrls: Record<string, string>;
   teams: Team[];
   teamCapacityOverrides: Record<string, number>;
 };
 
-export function AdminDashboard({ bookings, scanUrls, teams, teamCapacityOverrides }: Props) {
+export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props) {
   const [adminKey, setAdminKey] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState("");
@@ -81,7 +80,7 @@ export function AdminDashboard({ bookings, scanUrls, teams, teamCapacityOverride
 
       <section className="mt-10">
         <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
-        <AdminBookingsTable bookings={bookings} scanUrls={scanUrls} adminKey={adminKey} />
+        <AdminBookingsTable bookings={bookings} adminKey={adminKey} />
       </section>
 
       <AdminOneVsOneSection adminKey={adminKey} onAdminKeyChange={setAdminKey} />

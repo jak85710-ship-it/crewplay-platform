@@ -155,6 +155,17 @@ function applyCreditDeduction(profile: MemberCreditProfile, amount: number): Mem
   };
 }
 
+function applyCreditRestore(profile: MemberCreditProfile, amount: number): MemberCreditProfile {
+  const now = new Date().toISOString();
+  const nextScore = Math.min(MAX_CREDIT_SCORE, profile.credit_score + Math.max(0, amount));
+  return {
+    ...profile,
+    credit_score: nextScore,
+    last_credit_recovery_at: nextScore >= MAX_CREDIT_SCORE ? now : profile.last_credit_recovery_at ?? now,
+    updated_at: now,
+  };
+}
+
 export function isVerificationApproved(profile: MemberCreditProfile): boolean {
   return profile.verification_status === "approved";
 }
@@ -303,6 +314,20 @@ export async function applyCancelPenalty(memberKey: string): Promise<MemberCredi
   const profile: MemberCreditProfile = {
     ...applyCreditDeduction(recovered, CANCEL_BOOKING_PENALTY),
     cancel_count: (recovered.cancel_count ?? 0) + 1,
+  };
+  manifest.profiles[memberKey] = profile;
+  await saveManifest(manifest);
+  return profile;
+}
+
+export async function restoreNoShowPenalty(memberKey: string): Promise<MemberCreditProfile> {
+  const manifest = await loadManifest();
+  const existing = manifest.profiles[memberKey] ?? defaultProfile(memberKey);
+  const recovered = computeCreditRecovery(existing);
+  const restored = applyCreditRestore(recovered, NO_SHOW_PENALTY);
+  const profile: MemberCreditProfile = {
+    ...restored,
+    no_show_count: Math.max(0, (recovered.no_show_count ?? 0) - 1),
   };
   manifest.profiles[memberKey] = profile;
   await saveManifest(manifest);
