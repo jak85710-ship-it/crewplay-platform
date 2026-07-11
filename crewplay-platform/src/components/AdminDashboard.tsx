@@ -17,6 +17,8 @@ type Props = {
 
 export function AdminDashboard({ bookings, scanUrls, teams, teamCapacityOverrides }: Props) {
   const [adminKey, setAdminKey] = useState("");
+  const [authBusy, setAuthBusy] = useState(false);
+  const [authMessage, setAuthMessage] = useState("");
 
   useEffect(() => {
     const saved = window.localStorage.getItem("admin_api_key");
@@ -29,6 +31,27 @@ export function AdminDashboard({ bookings, scanUrls, teams, teamCapacityOverride
     }
   }, [adminKey]);
 
+  async function verifyAdminAccess() {
+    if (!adminKey.trim()) {
+      setAuthMessage("請先輸入管理金鑰");
+      return;
+    }
+    setAuthBusy(true);
+    setAuthMessage("");
+    try {
+      const res = await fetch("/api/admin/auth-check", {
+        headers: { "x-admin-key": adminKey.trim() },
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "驗證失敗");
+      setAuthMessage("金鑰驗證成功，可進行後台編輯。");
+    } catch (err) {
+      setAuthMessage(err instanceof Error ? err.message : "驗證失敗");
+    } finally {
+      setAuthBusy(false);
+    }
+  }
+
   return (
     <>
       <div className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
@@ -40,9 +63,20 @@ export function AdminDashboard({ bookings, scanUrls, teams, teamCapacityOverride
           placeholder="僅本機輸入，不會上傳到 Git"
           className="mt-2 w-full max-w-md rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm"
         />
+        <div className="mt-2">
+          <button
+            type="button"
+            onClick={verifyAdminAccess}
+            disabled={authBusy}
+            className="rounded-lg border border-amber-400 bg-white px-3 py-1.5 text-xs font-semibold text-amber-900 disabled:opacity-60"
+          >
+            {authBusy ? "驗證中..." : "驗證金鑰"}
+          </button>
+        </div>
         <p className="mt-2 text-xs text-amber-800">
-          用於爽約管理、1V1 實名審核、到場核銷與缺席核實。
+          用於爽約管理、1V1 實名審核、到場核銷與缺席核實。請輸入「金鑰值」，不是字樣 ADMIN_API_KEY。
         </p>
+        {authMessage && <p className="mt-2 text-xs text-amber-900">{authMessage}</p>}
       </div>
 
       <section className="mt-10">
