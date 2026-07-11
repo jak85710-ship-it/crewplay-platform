@@ -1,6 +1,6 @@
 export const VOLLEYBALL_POSITIONS = [
-  "主攻",
-  "接應（大砲）",
+  "主攻（大砲）",
+  "輔舉",
   "攔中",
   "舉球",
   "自由球員",
