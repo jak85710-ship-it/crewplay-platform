@@ -48,6 +48,7 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
   const [slots, setSlots] = useState(1);
+  const [slotsInput, setSlotsInput] = useState("1");
   const total = unitPrice * slots;
   const isVolleyball = team.sport === "排球";
   const [volleyballPositions, setVolleyballPositions] = useState<string[]>(
@@ -109,6 +110,7 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
       >
         <input type="hidden" name="team_id" value={teamId} />
         <input type="hidden" name="amount" value={total} />
+        <input type="hidden" name="slots" value={slots} />
         {isVolleyball && <input type="hidden" name="volleyball_position" value={volleyballPosition} />}
         {isVolleyball && (
           <input type="hidden" name="volleyball_position_detail" value={volleyballPositionDetail} />
@@ -165,13 +167,19 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
           <span className="font-medium text-slate-700">人數</span>
           <input
             type="number"
-            name="slots"
             min={1}
             max={10}
-            value={slots}
+            value={slotsInput}
             onChange={(e) => {
-              const n = parseInt(e.target.value || "1", 10);
-              setSlots(Math.max(1, Math.min(10, Number.isFinite(n) ? n : 1)));
+              const raw = e.target.value;
+              setSlotsInput(raw);
+              const n = Number(raw);
+              if (Number.isFinite(n) && n >= 1) {
+                setSlots(Math.max(1, Math.min(10, Math.floor(n))));
+              }
+            }}
+            onBlur={() => {
+              setSlotsInput(String(slots));
             }}
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5"
           />
