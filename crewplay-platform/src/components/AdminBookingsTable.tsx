@@ -28,20 +28,30 @@ function statusLabel(status: string): string {
 type Props = {
   bookings: Booking[];
   adminKey: string;
+  isAuthorized: boolean;
 };
 
-export function AdminBookingsTable({ bookings, adminKey }: Props) {
+export function AdminBookingsTable({ bookings, adminKey, isAuthorized }: Props) {
   const [busyId, setBusyId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [rows, setRows] = useState(bookings);
 
   const recent = useMemo(() => rows.slice(0, 50), [rows]);
 
-  async function markNoShow(bookingId: string) {
+  function ensureAuthorized(): boolean {
     if (!adminKey.trim()) {
       setMessage("請先輸入 ADMIN_API_KEY");
-      return;
+      return false;
     }
+    if (!isAuthorized) {
+      setMessage("請先按「驗證金鑰」完成編輯者身分確認。");
+      return false;
+    }
+    return true;
+  }
+
+  async function markNoShow(bookingId: string) {
+    if (!ensureAuthorized()) return;
     setBusyId(bookingId);
     setMessage("");
     try {
@@ -74,10 +84,7 @@ export function AdminBookingsTable({ bookings, adminKey }: Props) {
   }
 
   async function cancelByAdmin(bookingId: string) {
-    if (!adminKey.trim()) {
-      setMessage("請先輸入 ADMIN_API_KEY");
-      return;
-    }
+    if (!ensureAuthorized()) return;
     if (!window.confirm("確認要手動取消這筆預約？")) return;
     setBusyId(bookingId);
     setMessage("");
@@ -107,10 +114,7 @@ export function AdminBookingsTable({ bookings, adminKey }: Props) {
   }
 
   async function restoreCredit(bookingId: string) {
-    if (!adminKey.trim()) {
-      setMessage("請先輸入 ADMIN_API_KEY");
-      return;
-    }
+    if (!ensureAuthorized()) return;
     if (!window.confirm("確認回復這筆誤扣的信用積分？")) return;
     setBusyId(bookingId);
     setMessage("");
@@ -191,7 +195,7 @@ export function AdminBookingsTable({ bookings, adminKey }: Props) {
                       <span className="block text-xs text-slate-400">已標記爽約</span>
                       <button
                         type="button"
-                        disabled={busyId === b.id}
+                        disabled={busyId === b.id || !isAuthorized}
                         onClick={() => restoreCredit(b.id)}
                         className="rounded-lg border border-emerald-200 px-2.5 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-50 disabled:opacity-50"
                       >
@@ -203,7 +207,7 @@ export function AdminBookingsTable({ bookings, adminKey }: Props) {
                       {b.status !== "cancelled" && (
                         <button
                           type="button"
-                          disabled={busyId === b.id}
+                          disabled={busyId === b.id || !isAuthorized}
                           onClick={() => cancelByAdmin(b.id)}
                           className="mr-1 rounded-lg border border-amber-200 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-50 disabled:opacity-50"
                         >
@@ -212,7 +216,7 @@ export function AdminBookingsTable({ bookings, adminKey }: Props) {
                       )}
                       <button
                         type="button"
-                        disabled={busyId === b.id || b.status === "cancelled"}
+                        disabled={busyId === b.id || b.status === "cancelled" || !isAuthorized}
                         onClick={() => markNoShow(b.id)}
                         className="rounded-lg border border-red-200 px-2.5 py-1 text-xs font-medium text-red-700 hover:bg-red-50 disabled:opacity-50"
                       >

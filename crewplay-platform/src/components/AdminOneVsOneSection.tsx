@@ -5,15 +5,20 @@ import { AdminVerificationPanel } from "@/components/AdminVerificationPanel";
 
 type Props = {
   adminKey: string;
+  isAuthorized: boolean;
   onAdminKeyChange: (value: string) => void;
 };
 
 /** 1VS1 管理區塊（共用 AdminBookingsTable 的管理金鑰） */
-export function AdminOneVsOneSection({ adminKey, onAdminKeyChange }: Props) {
+export function AdminOneVsOneSection({ adminKey, isAuthorized, onAdminKeyChange }: Props) {
   return (
     <>
-      <AdminVerificationPanel adminKey={adminKey} onAdminKeyChange={onAdminKeyChange} />
-      <AdminMatchPanel adminKey={adminKey} />
+      <AdminVerificationPanel
+        adminKey={adminKey}
+        isAuthorized={isAuthorized}
+        onAdminKeyChange={onAdminKeyChange}
+      />
+      <AdminMatchPanel adminKey={adminKey} isAuthorized={isAuthorized} />
     </>
   );
 }

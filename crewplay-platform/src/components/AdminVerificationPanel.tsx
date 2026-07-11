@@ -13,10 +13,11 @@ type PendingItem = {
 
 type Props = {
   adminKey: string;
+  isAuthorized: boolean;
   onAdminKeyChange: (value: string) => void;
 };
 
-export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
+export function AdminVerificationPanel({ adminKey, isAuthorized, onAdminKeyChange }: Props) {
   const [pending, setPending] = useState<PendingItem[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [busyKey, setBusyKey] = useState<string | null>(null);
@@ -41,11 +42,20 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
     [adminKey]
   );
 
-  async function load() {
+  function ensureAuthorized(): boolean {
     if (!adminKey.trim()) {
       setMessage("請先輸入 ADMIN_API_KEY");
-      return;
+      return false;
     }
+    if (!isAuthorized) {
+      setMessage("請先按「驗證金鑰」完成編輯者身分確認。");
+      return false;
+    }
+    return true;
+  }
+
+  async function load() {
+    if (!ensureAuthorized()) return;
     setMessage("");
     try {
       const res = await fetch("/api/admin/verification/pending", {
@@ -61,6 +71,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
   }
 
   async function review(memberKey: string, action: "approve" | "reject") {
+    if (!ensureAuthorized()) return;
     let reason = "";
     if (action === "reject") {
       reason = window.prompt("拒絕原因（選填）") ?? "";
@@ -99,6 +110,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
   }
 
   async function reviewAll(action: "approve" | "reject") {
+    if (!ensureAuthorized()) return;
     if (pending.length === 0 || batchBusy) return;
     const ok = window.confirm(
       action === "approve"
@@ -181,7 +193,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
       <button
         type="button"
         onClick={load}
-        disabled={batchBusy}
+            disabled={batchBusy || !isAuthorized}
         className="mt-4 rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold"
       >
         載入待審證件
@@ -190,7 +202,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
         <div className="mt-3 flex flex-wrap gap-2">
           <button
             type="button"
-            disabled={batchBusy}
+              disabled={batchBusy || !isAuthorized}
             onClick={() => reviewAll("approve")}
             className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-60"
           >
@@ -198,7 +210,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
           </button>
           <button
             type="button"
-            disabled={batchBusy}
+              disabled={batchBusy || !isAuthorized}
             onClick={() => reviewAll("reject")}
             className="rounded-lg border border-red-300 px-3 py-1.5 text-sm font-semibold text-red-700 disabled:opacity-60"
           >
@@ -234,7 +246,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
             <div className="mt-3 flex gap-2">
               <button
                 type="button"
-                disabled={busyKey === item.member_key || batchBusy}
+                disabled={busyKey === item.member_key || batchBusy || !isAuthorized}
                 onClick={() => review(item.member_key, "approve")}
                 className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white disabled:opacity-60"
               >
@@ -242,7 +254,7 @@ export function AdminVerificationPanel({ adminKey, onAdminKeyChange }: Props) {
               </button>
               <button
                 type="button"
-                disabled={busyKey === item.member_key || batchBusy}
+                disabled={busyKey === item.member_key || batchBusy || !isAuthorized}
                 onClick={() => review(item.member_key, "reject")}
                 className="rounded-lg border border-red-300 px-3 py-1.5 text-sm font-semibold text-red-700 disabled:opacity-60"
               >

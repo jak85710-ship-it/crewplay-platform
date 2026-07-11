@@ -16,8 +16,10 @@ type Props = {
 
 export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props) {
   const [adminKey, setAdminKey] = useState("");
+  const [verifiedKey, setVerifiedKey] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [authMessage, setAuthMessage] = useState("");
+  const isAuthorized = !!adminKey.trim() && adminKey.trim() === verifiedKey;
 
   useEffect(() => {
     const saved = window.localStorage.getItem("admin_api_key");
@@ -29,6 +31,14 @@ export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props
       window.localStorage.setItem("admin_api_key", adminKey.trim());
     }
   }, [adminKey]);
+
+  function onAdminKeyInput(value: string) {
+    setAdminKey(value);
+    if (value.trim() !== verifiedKey) {
+      setVerifiedKey("");
+      setAuthMessage("請按「驗證金鑰」完成身分確認後，才能進行後台修改。");
+    }
+  }
 
   async function verifyAdminAccess() {
     if (!adminKey.trim()) {
@@ -43,6 +53,7 @@ export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "驗證失敗");
+      setVerifiedKey(adminKey.trim());
       setAuthMessage("金鑰驗證成功，可進行後台編輯。");
     } catch (err) {
       setAuthMessage(err instanceof Error ? err.message : "驗證失敗");
@@ -58,7 +69,7 @@ export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props
         <input
           type="password"
           value={adminKey}
-          onChange={(e) => setAdminKey(e.target.value)}
+          onChange={(e) => onAdminKeyInput(e.target.value)}
           placeholder="僅本機輸入，不會上傳到 Git"
           className="mt-2 w-full max-w-md rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm"
         />
@@ -80,11 +91,16 @@ export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props
 
       <section className="mt-10">
         <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
-        <AdminBookingsTable bookings={bookings} adminKey={adminKey} />
+        <AdminBookingsTable bookings={bookings} adminKey={adminKey} isAuthorized={isAuthorized} />
       </section>
 
-      <AdminOneVsOneSection adminKey={adminKey} onAdminKeyChange={setAdminKey} />
-      <AdminTeamCapacityPanel adminKey={adminKey} teams={teams} initialOverrides={teamCapacityOverrides} />
+      <AdminOneVsOneSection adminKey={adminKey} isAuthorized={isAuthorized} onAdminKeyChange={onAdminKeyInput} />
+      <AdminTeamCapacityPanel
+        adminKey={adminKey}
+        isAuthorized={isAuthorized}
+        teams={teams}
+        initialOverrides={teamCapacityOverrides}
+      />
     </>
   );
 }

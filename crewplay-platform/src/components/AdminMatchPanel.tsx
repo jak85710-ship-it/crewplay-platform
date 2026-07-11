@@ -16,9 +16,10 @@ type PendingReview = {
 
 type Props = {
   adminKey: string;
+  isAuthorized: boolean;
 };
 
-export function AdminMatchPanel({ adminKey }: Props) {
+export function AdminMatchPanel({ adminKey, isAuthorized }: Props) {
   const [scanKey, setScanKey] = useState(0);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -33,11 +34,20 @@ export function AdminMatchPanel({ adminKey }: Props) {
     [adminKey]
   );
 
-  async function loadPendingReviews() {
+  function ensureAuthorized(): boolean {
     if (!adminKey.trim()) {
       setMessage("請先輸入 ADMIN_API_KEY");
-      return;
+      return false;
     }
+    if (!isAuthorized) {
+      setMessage("請先按「驗證金鑰」完成編輯者身分確認。");
+      return false;
+    }
+    return true;
+  }
+
+  async function loadPendingReviews() {
+    if (!ensureAuthorized()) return;
     setMessage("");
     try {
       const res = await fetch("/api/admin/match/reviews/pending", {
@@ -55,6 +65,10 @@ export function AdminMatchPanel({ adminKey }: Props) {
     async (text: string): Promise<boolean> => {
       if (!adminKey.trim()) {
         setMessage("請先輸入 ADMIN_API_KEY");
+        return false;
+      }
+      if (!isAuthorized) {
+        setMessage("請先按「驗證金鑰」完成編輯者身分確認。");
         return false;
       }
 
@@ -84,10 +98,11 @@ export function AdminMatchPanel({ adminKey }: Props) {
         setBusy(false);
       }
     },
-    [adminKey, headers]
+    [adminKey, headers, isAuthorized]
   );
 
   async function verifyNoShow(reviewId: string) {
+    if (!ensureAuthorized()) return;
     if (!window.confirm("確認核實缺席？將扣信用分並停用 1V1 功能 90 日。")) return;
 
     setVerifyBusy(reviewId);
@@ -124,6 +139,7 @@ export function AdminMatchPanel({ adminKey }: Props) {
           <button
             type="button"
             onClick={loadPendingReviews}
+            disabled={!isAuthorized}
             className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm"
           >
             載入申訴
@@ -141,7 +157,7 @@ export function AdminMatchPanel({ adminKey }: Props) {
                 <p className="text-slate-600">{r.venue_name ?? ""}</p>
                 <button
                   type="button"
-                  disabled={verifyBusy === r.id}
+                  disabled={verifyBusy === r.id || !isAuthorized}
                   onClick={() => verifyNoShow(r.id)}
                   className="mt-2 rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
                 >

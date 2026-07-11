@@ -5,11 +5,12 @@ import type { Team } from "@/types";
 
 type Props = {
   adminKey: string;
+  isAuthorized: boolean;
   teams: Team[];
   initialOverrides: Record<string, number>;
 };
 
-export function AdminTeamCapacityPanel({ adminKey, teams, initialOverrides }: Props) {
+export function AdminTeamCapacityPanel({ adminKey, isAuthorized, teams, initialOverrides }: Props) {
   const [query, setQuery] = useState("");
   const [overrides, setOverrides] = useState<Record<string, number>>(initialOverrides);
   const [draftById, setDraftById] = useState<Record<string, string>>(
@@ -33,6 +34,10 @@ export function AdminTeamCapacityPanel({ adminKey, teams, initialOverrides }: Pr
   async function save(teamId: string) {
     if (!adminKey.trim()) {
       setMessage("請先輸入 ADMIN_API_KEY");
+      return;
+    }
+    if (!isAuthorized) {
+      setMessage("請先按「驗證金鑰」完成編輯者身分確認。");
       return;
     }
 
@@ -114,11 +119,12 @@ export function AdminTeamCapacityPanel({ adminKey, teams, initialOverrides }: Pr
                 value={draftById[team.id] ?? ""}
                 onChange={(e) => setDraftById((prev) => ({ ...prev, [team.id]: e.target.value }))}
                 placeholder={overrides[team.id] != null ? String(overrides[team.id]) : "留空=自動"}
-                className="w-28 rounded-lg border border-slate-300 px-2 py-1.5 text-sm"
+                disabled={!isAuthorized}
+                className="w-28 rounded-lg border border-slate-300 px-2 py-1.5 text-sm disabled:opacity-50"
               />
               <button
                 type="button"
-                disabled={busyId === team.id}
+                disabled={busyId === team.id || !isAuthorized}
                 onClick={() => save(team.id)}
                 className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-60"
               >
