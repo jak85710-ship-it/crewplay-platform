@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TeamCard } from "@/components/TeamCard";
+import { getTeamBookingStatsMap } from "@/lib/team-booking-stats";
 import { REGION_OPTIONS, regionsMatch } from "@/lib/region";
 import { filterTeams, getAllTeams } from "@/lib/teams";
 import { PAGE_SIZE, SPORTS } from "@/lib/utils";
@@ -21,6 +22,7 @@ export default async function TeamsPage({ searchParams }: Props) {
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const slice = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const statsMap = await getTeamBookingStatsMap(slice);
 
   const sportsInData = [...new Set(all.map((t) => t.sport).filter(Boolean))];
   const regionsInData = [...new Set(all.map((t) => t.region).filter(Boolean))];
@@ -84,7 +86,7 @@ export default async function TeamsPage({ searchParams }: Props) {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {slice.map((team) => (
-            <TeamCard key={team.id} team={team} />
+            <TeamCard key={team.id} team={team} stats={statsMap[team.id]} />
           ))}
         </div>
       )}

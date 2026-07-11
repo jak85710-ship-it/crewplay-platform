@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Team } from "@/types";
 import { TeamCoverImage } from "@/components/TeamCoverImage";
+import type { TeamBookingStats } from "@/lib/team-booking-stats";
 import { feeSummary } from "@/lib/utils";
 
-export function TeamCard({ team }: { team: Team }) {
+export function TeamCard({ team, stats }: { team: Team; stats?: TeamBookingStats }) {
   const fee = feeSummary(team);
 
   return (
@@ -20,6 +21,18 @@ export function TeamCard({ team }: { team: Team }) {
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3 className="line-clamp-2 text-base font-bold text-slate-900">{team.arena_name}</h3>
         <p className="text-sm text-slate-500">{team.region} · {team.location || "見詳情"}</p>
+        {stats && (
+          <p className="text-xs text-slate-600">
+            報名 {stats.usedSlots}/{stats.totalSlots}
+            {stats.isFull ? (
+              <span className="ml-2 rounded-full bg-red-100 px-2 py-0.5 font-semibold text-red-700">已滿團</span>
+            ) : (
+              <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 font-semibold text-amber-700">
+                尚缺 {stats.remainingSlots} 人
+              </span>
+            )}
+          </p>
+        )}
         {fee && <p className="mt-auto text-sm font-medium text-brand-700">{fee}</p>}
       </div>
     </Link>
