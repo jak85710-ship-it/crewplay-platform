@@ -109,12 +109,23 @@ export function AdminLineHostRecipientsPanel({
           text: testText.trim() || undefined,
         }),
       });
-      const data = await res.json();
+      const rawText = await res.text();
+      const data = JSON.parse(rawText || "{}") as {
+        error?: string;
+        hint?: string;
+        detail?: string;
+        failedReasons?: string[];
+        details?: Array<{ recipient?: string; sent?: boolean; reason?: string }>;
+        success?: number;
+        total?: number;
+        failed?: number;
+      };
       const hint = String(data.hint || "").trim();
       const reasons = Array.isArray(data.failedReasons) ? data.failedReasons.slice(0, 5) : [];
       const details = Array.isArray(data.details) ? data.details.slice(0, 8) : [];
       const debugText = [
         hint ? `提示：${hint}` : "",
+        data.detail ? `例外：${data.detail}` : "",
         reasons.length ? `失敗原因：${reasons.join(" | ")}` : "",
         details.length
           ? `明細：${details
@@ -128,7 +139,12 @@ export function AdminLineHostRecipientsPanel({
       if (!res.ok) throw new Error(data.error || "測試訊息送出失敗");
       setMessage(`測試完成：成功 ${data.success}/${data.total}，失敗 ${data.failed}${hint ? `（${hint}）` : ""}`);
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "測試訊息送出失敗");
+      if (err instanceof SyntaxError) {
+        setMessage("測試訊息送出失敗（伺服器回應格式異常）");
+        setTestDebug("例外：API 未回傳 JSON，請檢查伺服器部署版本是否最新。");
+      } else {
+        setMessage(err instanceof Error ? err.message : "測試訊息送出失敗");
+      }
     } finally {
       setTestBusy(false);
     }
