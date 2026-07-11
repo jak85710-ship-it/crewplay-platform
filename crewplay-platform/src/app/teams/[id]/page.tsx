@@ -69,7 +69,6 @@ export default async function TeamDetailPage({ params }: Props) {
               </p>
               <p className="text-xs text-slate-500">
                 統計筆數：{stats.activeBookings} 筆
-                {stats.capacitySource === "default" ? "（未設定明確名額，使用系統預設名額估算）" : ""}
               </p>
 
               {team.sport === "排球" && stats.volleyball && (

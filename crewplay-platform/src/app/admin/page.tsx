@@ -1,6 +1,7 @@
 import { listBookings } from "@/lib/bookings";
 import { hostCheckInPortalUrl } from "@/lib/check-in-url";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
+import { listTeamCapacityOverrides } from "@/lib/team-capacity-overrides";
 import { getAllTeams } from "@/lib/teams";
 
 import { AdminDashboard } from "@/components/AdminDashboard";
@@ -8,6 +9,7 @@ import { AdminDashboard } from "@/components/AdminDashboard";
 export default async function AdminPage() {
   const teams = await getAllTeams();
   const bookings = await listBookings();
+  const teamCapacityOverrides = await listTeamCapacityOverrides();
   const sports = [...new Set(teams.map((t) => t.sport))];
   const scanUrls = Object.fromEntries(
     bookings.map((b) => {
@@ -27,7 +29,12 @@ export default async function AdminPage() {
         <Stat label="預約筆數" value={String(bookings.length)} />
       </div>
 
-      <AdminDashboard bookings={bookings} scanUrls={scanUrls} />
+      <AdminDashboard
+        bookings={bookings}
+        scanUrls={scanUrls}
+        teams={teams}
+        teamCapacityOverrides={teamCapacityOverrides}
+      />
 
       <section className="mt-10 rounded-xl border border-brand-200 bg-brand-50 p-5 text-sm text-brand-900">
         <p className="font-semibold">同步試算表到網站</p>

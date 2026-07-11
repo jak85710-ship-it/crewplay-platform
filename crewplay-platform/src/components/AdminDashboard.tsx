@@ -4,14 +4,18 @@ import { useEffect, useState } from "react";
 
 import { AdminBookingsTable } from "@/components/AdminBookingsTable";
 import { AdminOneVsOneSection } from "@/components/AdminOneVsOneSection";
+import { AdminTeamCapacityPanel } from "@/components/AdminTeamCapacityPanel";
 import type { Booking } from "@/types";
+import type { Team } from "@/types";
 
 type Props = {
   bookings: Booking[];
   scanUrls: Record<string, string>;
+  teams: Team[];
+  teamCapacityOverrides: Record<string, number>;
 };
 
-export function AdminDashboard({ bookings, scanUrls }: Props) {
+export function AdminDashboard({ bookings, scanUrls, teams, teamCapacityOverrides }: Props) {
   const [adminKey, setAdminKey] = useState("");
 
   useEffect(() => {
@@ -47,6 +51,7 @@ export function AdminDashboard({ bookings, scanUrls }: Props) {
       </section>
 
       <AdminOneVsOneSection adminKey={adminKey} onAdminKeyChange={setAdminKey} />
+      <AdminTeamCapacityPanel adminKey={adminKey} teams={teams} initialOverrides={teamCapacityOverrides} />
     </>
   );
 }
