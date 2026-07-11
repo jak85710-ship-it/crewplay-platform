@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { AdminBookingsTable } from "@/components/AdminBookingsTable";
+import { AdminLineHostRecipientsPanel } from "@/components/AdminLineHostRecipientsPanel";
 import { AdminOneVsOneSection } from "@/components/AdminOneVsOneSection";
 import { AdminTeamCapacityPanel } from "@/components/AdminTeamCapacityPanel";
 import type { Booking } from "@/types";
@@ -12,9 +13,17 @@ type Props = {
   bookings: Booking[];
   teams: Team[];
   teamCapacityOverrides: Record<string, number>;
+  lineHostGlobalRecipients: string[];
+  lineHostRecipientsByTeam: Record<string, string[]>;
 };
 
-export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props) {
+export function AdminDashboard({
+  bookings,
+  teams,
+  teamCapacityOverrides,
+  lineHostGlobalRecipients,
+  lineHostRecipientsByTeam,
+}: Props) {
   const [adminKey, setAdminKey] = useState("");
   const [verifiedKey, setVerifiedKey] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
@@ -100,6 +109,13 @@ export function AdminDashboard({ bookings, teams, teamCapacityOverrides }: Props
         isAuthorized={isAuthorized}
         teams={teams}
         initialOverrides={teamCapacityOverrides}
+      />
+      <AdminLineHostRecipientsPanel
+        adminKey={adminKey}
+        isAuthorized={isAuthorized}
+        teams={teams}
+        initialGlobalRecipients={lineHostGlobalRecipients}
+        initialByTeam={lineHostRecipientsByTeam}
       />
     </>
   );

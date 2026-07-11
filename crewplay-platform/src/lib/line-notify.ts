@@ -2,6 +2,7 @@ import { bookingReference } from "@/lib/booking-ref";
 import { checkInPassUrl, hostCheckInPortalUrl } from "@/lib/check-in-url";
 import { issueCheckInToken } from "@/lib/check-in-token";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
+import { getLineHostRecipientsConfig } from "@/lib/line-host-recipients";
 import { getPublicSiteUrl } from "@/lib/line-auth";
 import { parseIntroField } from "@/lib/utils";
 import { extractVolleyballPositionFromNote } from "@/lib/volleyball-position";
@@ -60,22 +61,36 @@ function splitRecipients(raw: string | undefined): string[] {
     .filter(Boolean);
 }
 
-function hostRecipientsByTeam(teamId: string): string[] {
+export async function resolveHostRecipientsByTeam(teamId: string): Promise<string[]> {
   const globalRecipients = splitRecipients(process.env.LINE_NOTIFY_HOST_UIDS);
   const byTeamRaw = String(process.env.LINE_NOTIFY_HOST_UIDS_BY_TEAM || "").trim();
-  if (!byTeamRaw) return globalRecipients;
+
+  const fromEnv = (): string[] => {
+    if (!byTeamRaw) return globalRecipients;
+
+    try {
+      const parsed = JSON.parse(byTeamRaw) as Record<string, string | string[]>;
+      const picked = parsed[teamId];
+      const teamRecipients = Array.isArray(picked)
+        ? picked.map((v) => String(v).trim()).filter(Boolean)
+        : picked
+          ? [String(picked).trim()]
+          : [];
+      return [...new Set([...teamRecipients, ...globalRecipients])];
+    } catch {
+      return globalRecipients;
+    }
+  };
 
   try {
-    const parsed = JSON.parse(byTeamRaw) as Record<string, string | string[]>;
-    const picked = parsed[teamId];
-    const teamRecipients = Array.isArray(picked)
-      ? picked.map((v) => String(v).trim()).filter(Boolean)
-      : picked
-        ? [String(picked).trim()]
-        : [];
-    return [...new Set([...teamRecipients, ...globalRecipients])];
+    const config = await getLineHostRecipientsConfig();
+    const runtimeTeam = Array.isArray(config.byTeam?.[teamId]) ? config.byTeam[teamId] : [];
+    const runtimeGlobal = Array.isArray(config.globalRecipients) ? config.globalRecipients : [];
+    const runtimeRecipients = [...new Set([...runtimeTeam, ...runtimeGlobal].map((v) => String(v).trim()).filter(Boolean))];
+    if (runtimeRecipients.length) return runtimeRecipients;
+    return fromEnv();
   } catch {
-    return globalRecipients;
+    return fromEnv();
   }
 }
 
@@ -105,6 +120,32 @@ async function pushLineMessage(to: string, messages: LineTextMessage[]): Promise
       reason: err instanceof Error ? err.message : "line_push_error",
     };
   }
+}
+
+export async function pushLineTextToRecipients(input: {
+  recipients: string[];
+  text: string;
+}): Promise<{
+  total: number;
+  success: number;
+  failed: number;
+  failedReasons: string[];
+}> {
+  const recipients = [...new Set(input.recipients.map((v) => String(v || "").trim()).filter(Boolean))];
+  if (!recipients.length) {
+    return { total: 0, success: 0, failed: 0, failedReasons: ["no_recipients"] };
+  }
+  const results = await Promise.all(
+    recipients.map((uid) => pushLineMessage(uid, [{ type: "text", text: input.text }]))
+  );
+  const success = results.filter((r) => r.sent).length;
+  const failedReasons = results.filter((r) => !r.sent).map((r) => r.reason || "unknown_error");
+  return {
+    total: recipients.length,
+    success,
+    failed: recipients.length - success,
+    failedReasons,
+  };
 }
 
 function guestMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
@@ -190,7 +231,7 @@ export async function notifyBookingCreatedLine(input: {
     base.guest = { sent: false, reason: "guest_line_uid_missing" };
   }
 
-  const hostRecipients = hostRecipientsByTeam(input.team.id);
+  const hostRecipients = await resolveHostRecipientsByTeam(input.team.id);
   if (!hostRecipients.length) {
     base.host = { sent: false, reason: "host_line_uid_missing" };
     return base;

@@ -1,4 +1,5 @@
 import { listBookings } from "@/lib/bookings";
+import { getLineHostRecipientsConfig } from "@/lib/line-host-recipients";
 import { listTeamCapacityOverrides } from "@/lib/team-capacity-overrides";
 import { getAllTeams } from "@/lib/teams";
 
@@ -8,6 +9,7 @@ export default async function AdminPage() {
   const teams = await getAllTeams();
   const bookings = await listBookings();
   const teamCapacityOverrides = await listTeamCapacityOverrides();
+  const lineHostRecipients = await getLineHostRecipientsConfig();
   const sports = [...new Set(teams.map((t) => t.sport))];
 
   return (
@@ -25,6 +27,8 @@ export default async function AdminPage() {
         bookings={bookings}
         teams={teams}
         teamCapacityOverrides={teamCapacityOverrides}
+        lineHostGlobalRecipients={lineHostRecipients.globalRecipients}
+        lineHostRecipientsByTeam={lineHostRecipients.byTeam}
       />
 
       <section className="mt-10 rounded-xl border border-brand-200 bg-brand-50 p-5 text-sm text-brand-900">
