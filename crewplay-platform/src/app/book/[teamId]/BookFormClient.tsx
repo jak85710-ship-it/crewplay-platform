@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 import { VOLLEYBALL_POSITIONS } from "@/lib/volleyball-position";
@@ -47,13 +47,32 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
 export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice, member, credit }: Props) {
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
-  const defaultSlots = 1;
-  const total = unitPrice * defaultSlots;
+  const [slots, setSlots] = useState(1);
+  const total = unitPrice * slots;
   const isVolleyball = team.sport === "排球";
-  const [volleyballPosition, setVolleyballPosition] = useState<string>(
-    isVolleyball ? VOLLEYBALL_POSITIONS[0] : ""
+  const [volleyballPositions, setVolleyballPositions] = useState<string[]>(
+    isVolleyball ? [VOLLEYBALL_POSITIONS[0]] : []
   );
   const [positionDetail, setPositionDetail] = useState("");
+
+  useEffect(() => {
+    if (!isVolleyball) return;
+    setVolleyballPositions((prev) => {
+      const next = [...prev];
+      while (next.length < slots) {
+        next.push(VOLLEYBALL_POSITIONS[0]);
+      }
+      return next.slice(0, slots);
+    });
+  }, [isVolleyball, slots]);
+
+  const volleyballPosition = volleyballPositions[0] ?? VOLLEYBALL_POSITIONS[0];
+  const volleyballPositionDetail = useMemo(() => {
+    if (!isVolleyball) return positionDetail.trim();
+    if (slots <= 1) return positionDetail.trim();
+    const group = volleyballPositions.map((pos, idx) => `${idx + 1}.${pos}`).join(" ");
+    return [group, positionDetail.trim()].filter(Boolean).join(" | ");
+  }, [isVolleyball, slots, volleyballPositions, positionDetail]);
 
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
@@ -90,6 +109,10 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
       >
         <input type="hidden" name="team_id" value={teamId} />
         <input type="hidden" name="amount" value={total} />
+        {isVolleyball && <input type="hidden" name="volleyball_position" value={volleyballPosition} />}
+        {isVolleyball && (
+          <input type="hidden" name="volleyball_position_detail" value={volleyballPositionDetail} />
+        )}
         {bookingAuth ? <input type="hidden" name="booking_auth" value={bookingAuth} /> : null}
 
         <label className="block text-sm">
@@ -145,7 +168,11 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
             name="slots"
             min={1}
             max={10}
-            defaultValue={defaultSlots}
+            value={slots}
+            onChange={(e) => {
+              const n = parseInt(e.target.value || "1", 10);
+              setSlots(Math.max(1, Math.min(10, Number.isFinite(n) ? n : 1)));
+            }}
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5"
           />
         </label>
@@ -154,28 +181,36 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
           <div className="rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-4 text-sm">
             <p className="font-semibold text-indigo-900">排球位置偏好（會直接通知團主）</p>
             <p className="mt-1 text-indigo-800">
-              先選擇您擅長的位置，方便團主快速判斷是否還有合適站位可安排。
+              可依報名人數分別設定位置，方便團主快速安排。
             </p>
-            <label className="mt-3 block">
-              <span className="font-medium text-slate-700">擅長位置</span>
-              <select
-                name="volleyball_position"
-                value={volleyballPosition}
-                onChange={(e) => setVolleyballPosition(e.target.value)}
-                className="mt-1 w-full rounded-xl border border-indigo-200 bg-white px-3 py-2.5"
-              >
-                {VOLLEYBALL_POSITIONS.map((pos) => (
-                  <option key={pos} value={pos}>
-                    {pos}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="mt-3 space-y-2">
+              {volleyballPositions.map((value, idx) => (
+                <label key={idx} className="block">
+                  <span className="font-medium text-slate-700">第 {idx + 1} 位擅長位置</span>
+                  <select
+                    value={value}
+                    onChange={(e) =>
+                      setVolleyballPositions((prev) => {
+                        const next = [...prev];
+                        next[idx] = e.target.value;
+                        return next;
+                      })
+                    }
+                    className="mt-1 w-full rounded-xl border border-indigo-200 bg-white px-3 py-2.5"
+                  >
+                    {VOLLEYBALL_POSITIONS.map((pos) => (
+                      <option key={pos} value={pos}>
+                        {pos}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+            </div>
             <label className="mt-3 block">
               <span className="font-medium text-slate-700">位置補充（選填）</span>
               <input
                 type="text"
-                name="volleyball_position_detail"
                 value={positionDetail}
                 onChange={(e) => setPositionDetail(e.target.value)}
                 placeholder="例：主攻／中砲都可，攔中經驗中等"
@@ -197,7 +232,7 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
         <div className="rounded-xl bg-slate-50 p-4 text-sm text-slate-600">
           <p className="font-medium text-slate-700">到場付費參考</p>
           <p className="mt-1">
-            約 NT$ {unitPrice} × {defaultSlots} 人 ≈ NT$ {total}
+            約 NT$ {unitPrice} × {slots} 人 ≈ NT$ {total}
           </p>
         </div>
 
