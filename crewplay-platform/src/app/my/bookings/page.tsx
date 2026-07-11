@@ -54,11 +54,16 @@ export default async function MyBookingsPage() {
             登入狀態檢查中
           </span>
         ) : (
-          <form method="POST" action="/api/auth/logout">
-            <button type="submit" className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
-              登出
-            </button>
-          </form>
+          <div className="flex items-center gap-2">
+            <Link href="/my/host" className="rounded-xl border border-brand-300 px-4 py-2.5 text-sm text-brand-700">
+              我的開團管理
+            </Link>
+            <form method="POST" action="/api/auth/logout">
+              <button type="submit" className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
+                登出
+              </button>
+            </form>
+          </div>
         )}
       </div>
 

@@ -5,6 +5,8 @@ import type { HostSubmission, VenueSubmission } from "@/lib/email";
 
 export type SubmissionKind = "host" | "venue";
 export type SubmissionPaymentStatus = "pending_payment" | "paid";
+export type HostSubmissionRecord = StoredHost;
+export type VenueSubmissionRecord = StoredVenue;
 
 type StoredHost = HostSubmission & {
   merchant_trade_no: string;
@@ -143,4 +145,11 @@ export async function markVenuePaid(tradeNo: string): Promise<StoredVenue | null
   manifest.venue[idx] = { ...manifest.venue[idx], payment_status: "paid" };
   await saveManifest(manifest);
   return manifest.venue[idx];
+}
+
+export async function listHostSubmissions(): Promise<StoredHost[]> {
+  const manifest = await loadManifest();
+  return [...manifest.host].sort(
+    (a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()
+  );
 }

@@ -1,5 +1,6 @@
 import { listBookings } from "@/lib/bookings";
 import { listTeamCapacityOverrides } from "@/lib/team-capacity-overrides";
+import { listTeamManualMembers } from "@/lib/team-manual-members";
 import { extractVolleyballPositionFromNote, VOLLEYBALL_POSITIONS, type VolleyballPosition } from "@/lib/volleyball-position";
 import type { Booking, Team } from "@/types";
 
@@ -139,6 +140,7 @@ function volleyballTargetPositions(total: number): Record<VolleyballPosition, nu
 
 export type TeamBookingStats = {
   totalSlots: number;
+  manualMembers: number;
   usedSlots: number;
   remainingSlots: number;
   isFull: boolean;
@@ -154,17 +156,21 @@ export type TeamBookingStats = {
 function computeTeamBookingStats(
   team: Team,
   bookings: Booking[],
-  overrides?: Record<string, number>
+  overrides?: Record<string, number>,
+  manualMembersById?: Record<string, number>
 ): TeamBookingStats {
   const cap = inferCapacityFromIntroduce(team, overrides);
   const active = bookings.filter(
     (b) => b.team_id === team.id && ACTIVE_BOOKING_STATUSES.has(b.status)
   );
 
-  const usedSlots = active.reduce((sum, b) => sum + Math.max(1, Number(b.slots || 1)), 0);
+  const bookingSlots = active.reduce((sum, b) => sum + Math.max(1, Number(b.slots || 1)), 0);
+  const manualMembers = Math.max(0, Math.floor(Number(manualMembersById?.[team.id] || 0)));
+  const usedSlots = bookingSlots + manualMembers;
   const remainingSlots = Math.max(0, cap.total - usedSlots);
   const base: TeamBookingStats = {
     totalSlots: cap.total,
+    manualMembers,
     usedSlots,
     remainingSlots,
     isFull: remainingSlots <= 0,
@@ -210,18 +216,24 @@ function computeTeamBookingStats(
 }
 
 export async function getTeamBookingStats(team: Team): Promise<TeamBookingStats> {
-  const bookings = await listBookings();
-  const overrides = await listTeamCapacityOverrides();
-  return computeTeamBookingStats(team, bookings, overrides);
+  const [bookings, overrides, manualMembersById] = await Promise.all([
+    listBookings(),
+    listTeamCapacityOverrides(),
+    listTeamManualMembers(),
+  ]);
+  return computeTeamBookingStats(team, bookings, overrides, manualMembersById);
 }
 
 export async function getTeamBookingStatsMap(teams: Team[]): Promise<Record<string, TeamBookingStats>> {
   if (teams.length === 0) return {};
-  const bookings = await listBookings();
-  const overrides = await listTeamCapacityOverrides();
+  const [bookings, overrides, manualMembersById] = await Promise.all([
+    listBookings(),
+    listTeamCapacityOverrides(),
+    listTeamManualMembers(),
+  ]);
   const map: Record<string, TeamBookingStats> = {};
   for (const team of teams) {
-    map[team.id] = computeTeamBookingStats(team, bookings, overrides);
+    map[team.id] = computeTeamBookingStats(team, bookings, overrides, manualMembersById);
   }
   return map;
 }
