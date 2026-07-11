@@ -59,9 +59,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <BrandLogo href="/" size="sm" className="[&_span]:text-white [&_span_span]:text-brand-300" />
-            <p className="mt-4 max-w-sm text-brand-200/90">
-              高雄市鼓山區文忠路86號3樓 · crew.matchplay@gmail.com · 07-552-2092
-            </p>
+            <p className="mt-4 max-w-sm text-brand-200/90">crew.matchplay@gmail.com</p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <Link href="/join" className="hover:text-white">
