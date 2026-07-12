@@ -1,5 +1,6 @@
 import { createBooking } from "@/lib/bookings";
 import { memberSessionFromBookingToken } from "@/lib/booking-auth-token";
+import { BOOKING_PAUSE_MESSAGE, isBookingOpenForTeam } from "@/lib/booking-availability";
 import type { CookieReader } from "@/lib/cookie-reader";
 import { sendBookingSubmittedEmails } from "@/lib/email";
 import { notifyBookingCreatedLine } from "@/lib/line-notify";
@@ -106,6 +107,13 @@ export async function processMemberBooking(
   const team = await getTeamById(teamId);
   if (!team) {
     return { ok: false, code: "not_found", error: "找不到揪團" };
+  }
+  if (!isBookingOpenForTeam(team)) {
+    return {
+      ok: false,
+      code: "validation",
+      error: BOOKING_PAUSE_MESSAGE,
+    };
   }
 
   try {

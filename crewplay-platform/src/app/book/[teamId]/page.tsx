@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
+import { BOOKING_PAUSE_MESSAGE, isBookingOpenForTeam } from "@/lib/booking-availability";
 import { checkMemberCanBook } from "@/lib/member-credit";
 import { issueBookingAuthToken } from "@/lib/booking-auth-token";
 import { getMemberKeyFromSession } from "@/lib/member-key";
@@ -32,6 +33,7 @@ export default async function BookPage({ params, searchParams }: Props) {
   if (!teamRaw) notFound();
 
   const team = enrichTeamFromIntro(teamRaw);
+  const bookingOpen = isBookingOpenForTeam(team);
   const memberKey = getMemberKeyFromSession(member);
   const credit = memberKey ? await checkMemberCanBook(memberKey) : null;
   const bookingAuth = issueBookingAuthToken(member, teamId);
@@ -41,6 +43,8 @@ export default async function BookPage({ params, searchParams }: Props) {
       <BookFormClient
       teamId={teamId}
       bookingAuth={bookingAuth}
+      bookingOpen={bookingOpen}
+      bookingPauseMessage={BOOKING_PAUSE_MESSAGE}
       team={{
         arena_name: team.arena_name,
         fee_label: team.fee_label,

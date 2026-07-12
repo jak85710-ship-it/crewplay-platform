@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TeamCoverImage } from "@/components/TeamCoverImage";
+import { BOOKING_PAUSE_MESSAGE, isBookingOpenForTeam } from "@/lib/booking-availability";
 import { getTeamBookingStats } from "@/lib/team-booking-stats";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 import { feeSummary, formatIntroduce } from "@/lib/utils";
@@ -14,6 +15,7 @@ export default async function TeamDetailPage({ params }: Props) {
   const raw = await getTeamById(id);
   if (!raw) notFound();
   const team = enrichTeamFromIntro(raw);
+  const bookingOpen = isBookingOpenForTeam(team);
   const stats = await getTeamBookingStats(team);
   const lines = formatIntroduce(team.introduce);
   const fee = feeSummary(team);
@@ -102,12 +104,18 @@ export default async function TeamDetailPage({ params }: Props) {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href={`/book/${team.id}`}
-              className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow hover:bg-brand-700"
-            >
-              快速報名（現場付費）
-            </Link>
+            {bookingOpen ? (
+              <Link
+                href={`/book/${team.id}`}
+                className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow hover:bg-brand-700"
+              >
+                快速報名（現場付費）
+              </Link>
+            ) : (
+              <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-3 text-sm font-semibold text-red-700">
+                {BOOKING_PAUSE_MESSAGE}
+              </div>
+            )}
             {mapQuery && (
               <a
                 href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}

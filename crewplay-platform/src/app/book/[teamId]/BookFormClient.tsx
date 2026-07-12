@@ -10,6 +10,8 @@ import { VOLLEYBALL_POSITIONS } from "@/lib/volleyball-position";
 type Props = {
   teamId: string;
   bookingAuth: string;
+  bookingOpen: boolean;
+  bookingPauseMessage: string;
   team: {
     arena_name: string;
     fee_label: string;
@@ -31,7 +33,7 @@ type Props = {
   } | null;
 };
 
-function SubmitButton({ disabled }: { disabled: boolean }) {
+function SubmitButton({ disabled, bookingOpen }: { disabled: boolean; bookingOpen: boolean }) {
   const { pending } = useFormStatus();
   return (
     <button
@@ -39,12 +41,22 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
       disabled={pending || disabled}
       className="w-full rounded-xl bg-brand-600 py-3.5 text-base font-bold text-white hover:bg-brand-700 disabled:opacity-50"
     >
-      {pending ? "送出中…" : "快速報名（現場付費）"}
+      {pending ? "送出中…" : bookingOpen ? "快速報名（現場付費）" : "目前未開放預約"}
     </button>
   );
 }
 
-export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice, member, credit }: Props) {
+export function BookFormClient({
+  teamId,
+  bookingAuth,
+  bookingOpen,
+  bookingPauseMessage,
+  team,
+  feeLabel,
+  unitPrice,
+  member,
+  credit,
+}: Props) {
   const searchParams = useSearchParams();
   const urlError = searchParams.get("error");
   const [slots, setSlots] = useState(1);
@@ -94,6 +106,13 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
             信用分 {credit.credit_score}（低於 {credit.min_score} 分）。爽約 {credit.no_show_count}{" "}
             次會影響後續預約，若有疑問請聯絡客服。
           </p>
+        </div>
+      )}
+
+      {!bookingOpen && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
+          <p className="font-semibold">目前未開放預約</p>
+          <p className="mt-1">{bookingPauseMessage}</p>
         </div>
       )}
 
@@ -250,7 +269,7 @@ export function BookFormClient({ teamId, bookingAuth, team, feeLabel, unitPrice,
           </div>
         )}
 
-        <SubmitButton disabled={credit != null && !credit.can_book} />
+        <SubmitButton disabled={!bookingOpen || (credit != null && !credit.can_book)} bookingOpen={bookingOpen} />
 
         <p className="text-center text-xs text-slate-500">
           報名即表示同意留名額；未到場可能影響後續預約權益。
