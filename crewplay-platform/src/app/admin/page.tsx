@@ -24,7 +24,6 @@ export default async function AdminPage() {
       </div>
 
       <AdminDashboard
-        bookings={bookings}
         teams={teams}
         teamCapacityOverrides={teamCapacityOverrides}
         lineHostGlobalRecipients={lineHostRecipients.globalRecipients}

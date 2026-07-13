@@ -6,11 +6,9 @@ import { AdminBookingsTable } from "@/components/AdminBookingsTable";
 import { AdminLineHostRecipientsPanel } from "@/components/AdminLineHostRecipientsPanel";
 import { AdminOneVsOneSection } from "@/components/AdminOneVsOneSection";
 import { AdminTeamCapacityPanel } from "@/components/AdminTeamCapacityPanel";
-import type { Booking } from "@/types";
 import type { Team } from "@/types";
 
 type Props = {
-  bookings: Booking[];
   teams: Team[];
   teamCapacityOverrides: Record<string, number>;
   lineHostGlobalRecipients: string[];
@@ -18,7 +16,6 @@ type Props = {
 };
 
 export function AdminDashboard({
-  bookings,
   teams,
   teamCapacityOverrides,
   lineHostGlobalRecipients,
@@ -100,7 +97,7 @@ export function AdminDashboard({
 
       <section className="mt-10">
         <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
-        <AdminBookingsTable bookings={bookings} adminKey={adminKey} isAuthorized={isAuthorized} />
+        <AdminBookingsTable adminKey={adminKey} isAuthorized={isAuthorized} />
       </section>
 
       <AdminOneVsOneSection adminKey={adminKey} isAuthorized={isAuthorized} onAdminKeyChange={onAdminKeyInput} />

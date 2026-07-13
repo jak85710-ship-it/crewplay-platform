@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { bookingReference } from "@/lib/booking-ref";
 import { NO_SHOW_PENALTY } from "@/lib/member-credit-constants";
@@ -26,17 +26,49 @@ function statusLabel(status: string): string {
 }
 
 type Props = {
-  bookings: Booking[];
   adminKey: string;
   isAuthorized: boolean;
 };
 
-export function AdminBookingsTable({ bookings, adminKey, isAuthorized }: Props) {
+export function AdminBookingsTable({ adminKey, isAuthorized }: Props) {
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const [rows, setRows] = useState(bookings);
+  const [rows, setRows] = useState<Booking[]>([]);
 
   const recent = useMemo(() => rows.slice(0, 50), [rows]);
+
+  useEffect(() => {
+    if (!adminKey.trim() || !isAuthorized) {
+      setRows([]);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setMessage("");
+    fetch("/api/admin/bookings/recent", {
+      headers: { "x-admin-key": adminKey.trim() },
+    })
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "載入預約資料失敗");
+        if (cancelled) return;
+        const list = Array.isArray(data.bookings) ? (data.bookings as Booking[]) : [];
+        setRows(list);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setRows([]);
+          setMessage(err instanceof Error ? err.message : "載入預約資料失敗");
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [adminKey, isAuthorized]);
 
   function ensureAuthorized(): boolean {
     if (!adminKey.trim()) {
@@ -148,6 +180,12 @@ export function AdminBookingsTable({ bookings, adminKey, isAuthorized }: Props) 
   return (
     <div>
       {message && <p className="mt-3 text-sm text-slate-700">{message}</p>}
+      {!isAuthorized && (
+        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          為保護個資，請先輸入並驗證管理金鑰後，才會顯示完整預約資料。
+        </p>
+      )}
+      {loading && <p className="mt-3 text-sm text-slate-500">載入預約資料中…</p>}
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
         <table className="min-w-full text-left text-sm">
@@ -163,6 +201,13 @@ export function AdminBookingsTable({ bookings, adminKey, isAuthorized }: Props) 
             </tr>
           </thead>
           <tbody>
+            {!loading && isAuthorized && recent.length === 0 && (
+              <tr>
+                <td className="px-4 py-8 text-center text-sm text-slate-500" colSpan={7}>
+                  目前沒有可顯示的預約資料
+                </td>
+              </tr>
+            )}
             {recent.map((b) => {
               const ref = bookingReference(b);
               return (
