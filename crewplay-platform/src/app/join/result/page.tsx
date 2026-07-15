@@ -4,17 +4,18 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Props {
-  searchParams: Promise<{ kind?: string; status?: string; tradeNo?: string }>;
+  searchParams: Promise<{ kind?: string; status?: string; tradeNo?: string; mode?: string }>;
 }
 
 export default function JoinResultPage({ searchParams }: Props) {
-  const [params, setParams] = useState<{ kind?: string; status?: string; tradeNo?: string }>({});
+  const [params, setParams] = useState<{ kind?: string; status?: string; tradeNo?: string; mode?: string }>({});
 
   useEffect(() => {
     searchParams.then(setParams);
   }, [searchParams]);
 
   const ok = params.status === "ok";
+  const isFreeFlow = params.mode === "free";
   const kindLabel =
     params.kind === "host" ? "開團申請" : params.kind === "venue" ? "場地刊登" : "申請";
 
@@ -28,11 +29,13 @@ export default function JoinResultPage({ searchParams }: Props) {
         {ok ? "✓" : "!"}
       </div>
       <h1 className="mt-6 text-2xl font-bold text-slate-900">
-        {ok ? `${kindLabel}付款成功` : "付款未完成"}
+        {ok ? (isFreeFlow ? `${kindLabel}送出成功` : `${kindLabel}付款成功`) : "付款未完成"}
       </h1>
       <p className="mt-3 text-slate-600">
         {ok
-          ? "我們已收到您的刊登費，申請資料已送達。確認信將寄至您填寫的聯絡方式，媒合成功後會再次通知。"
+          ? isFreeFlow
+            ? "此功能目前免費使用，您的申請資料已送達。確認信將寄至您填寫的聯絡方式，媒合成功後會再次通知。"
+            : "我們已收到您的刊登費，申請資料已送達。確認信將寄至您填寫的聯絡方式，媒合成功後會再次通知。"
           : "若已扣款但未顯示成功，請聯絡 crew.matchplay@gmail.com 並提供訂單編號。"}
       </p>
       {params.tradeNo && (

@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 
 import { type VenueSubmission } from "@/lib/email";
-import { getJoinVenueFee } from "@/lib/join-fees";
-import { getListingPaymentUrl } from "@/lib/listing-payment";
 import { hasSubmissionImage } from "@/lib/submission-images";
 import { createTradeNo, saveVenueSubmission } from "@/lib/submissions";
 
@@ -40,9 +38,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "場地照片無效，請重新上傳" }, { status: 400 });
     }
 
-    const platformFee = getJoinVenueFee();
+    const platformFee = 0;
     const merchantTradeNo = createTradeNo("CV");
-    const paymentUrl = getListingPaymentUrl();
 
     const record: VenueSubmission = {
       id: crypto.randomUUID(),
@@ -67,7 +64,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       ok: true,
       id: record.id,
-      paymentUrl,
+      resultUrl: `/join/result?kind=venue&status=ok&mode=free&tradeNo=${merchantTradeNo}`,
       platformFee,
     });
   } catch (err) {

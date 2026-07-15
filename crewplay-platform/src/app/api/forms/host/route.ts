@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 
 import { type HostSubmission } from "@/lib/email";
-import { getJoinHostFee } from "@/lib/join-fees";
-import { getListingPaymentUrl } from "@/lib/listing-payment";
 import { hasSubmissionImage } from "@/lib/submission-images";
 import { createTradeNo, saveHostSubmission } from "@/lib/submissions";
 
@@ -46,9 +44,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "團隊照片無效，請重新上傳" }, { status: 400 });
     }
 
-    const platformFee = getJoinHostFee();
+    const platformFee = 0;
     const merchantTradeNo = createTradeNo("CH");
-    const paymentUrl = getListingPaymentUrl();
 
     const record: HostSubmission = {
       id: crypto.randomUUID(),
@@ -76,7 +73,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       ok: true,
       id: record.id,
-      paymentUrl,
+      resultUrl: `/join/result?kind=host&status=ok&mode=free&tradeNo=${merchantTradeNo}`,
       platformFee,
     });
   } catch (err) {

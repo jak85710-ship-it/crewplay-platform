@@ -93,7 +93,7 @@ export async function saveHostSubmission(
   const stored: StoredHost = {
     ...record,
     merchant_trade_no: merchantTradeNo,
-    payment_status: "pending_payment",
+    payment_status: platformFee > 0 ? "pending_payment" : "paid",
     platform_fee: platformFee,
   };
   const manifest = await loadManifest();
@@ -110,7 +110,7 @@ export async function saveVenueSubmission(
   const stored: StoredVenue = {
     ...record,
     merchant_trade_no: merchantTradeNo,
-    payment_status: "pending_payment",
+    payment_status: platformFee > 0 ? "pending_payment" : "paid",
     platform_fee: platformFee,
   };
   const manifest = await loadManifest();

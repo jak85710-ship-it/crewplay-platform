@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   CheckboxField,
   FormSection,
@@ -13,12 +13,10 @@ import {
   TextField,
 } from "@/components/forms/FormControls";
 import { HOST_TIME_SLOTS, SKILL_LEVELS, WEEKDAYS } from "@/lib/form-options";
-import { LISTING_PAYMENT_URL } from "@/lib/listing-payment";
 
 export default function HostJoinPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [platformFee, setPlatformFee] = useState(500);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState("");
   const [form, setForm] = useState({
@@ -35,15 +33,6 @@ export default function HostJoinPage() {
     email: "",
     agreed: false,
   });
-
-  useEffect(() => {
-    fetch("/api/join/fees")
-      .then((r) => r.json())
-      .then((data) => {
-        if (typeof data.hostFee === "number") setPlatformFee(data.hostFee);
-      })
-      .catch(() => undefined);
-  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -82,7 +71,7 @@ export default function HostJoinPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "提交失敗");
 
-      window.location.assign(data.paymentUrl || LISTING_PAYMENT_URL);
+      window.location.assign(data.resultUrl || "/join/result?kind=host&status=ok&mode=free");
       return;
     } catch (err) {
       setError(err instanceof Error ? err.message : "提交失敗");
@@ -228,22 +217,8 @@ export default function HostJoinPage() {
 
         <div className="space-y-2">
           <button type="submit" disabled={loading} className="btn-primary block w-full sm:w-auto">
-            {loading ? "處理中…" : "確認並前往付款"}
+            {loading ? "處理中…" : "確認"}
           </button>
-          <p className="text-left text-sm text-slate-500 sm:max-w-md">
-            完成表單後需支付平台刊登費 NT$ {platformFee.toLocaleString()}
-          </p>
-          <p className="text-left text-sm text-slate-500 sm:max-w-md">
-            若未自動跳轉，請{" "}
-            <a
-              href={LISTING_PAYMENT_URL}
-              className="font-medium text-brand-600 underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              點此前往付款
-            </a>
-          </p>
         </div>
       </form>
     </div>
