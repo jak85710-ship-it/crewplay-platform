@@ -1,10 +1,8 @@
 import Link from "next/link";
 
-import { BookingCheckInQr } from "@/components/BookingCheckInQr";
 import { MyBookingCancelButton } from "@/components/MyBookingCancelButton";
 import { bookingReference } from "@/lib/booking-ref";
 import { issueCancelBookingAuthToken } from "@/lib/cancel-booking-auth-token";
-import { issueCheckInToken } from "@/lib/check-in-token";
 import { getTeamById } from "@/lib/teams";
 import { extractVolleyballPositionFromNote } from "@/lib/volleyball-position";
 import type { Booking } from "@/types";
@@ -31,7 +29,6 @@ function bookingStatusLabel(status: string, checkedInAt?: string | null): string
 
 export async function MyBookingCard({ booking }: { booking: Booking }) {
   const ref = bookingReference(booking);
-  const token = issueCheckInToken(booking);
   const cancelAuthToken = issueCancelBookingAuthToken(booking);
   const team = await getTeamById(booking.team_id);
   const checkedIn = Boolean(booking.checked_in_at);
@@ -72,10 +69,10 @@ export async function MyBookingCard({ booking }: { booking: Booking }) {
       )}
       <p className="mt-1 text-xs text-slate-400">{booking.created_at}</p>
 
-      {token && !checkedIn && booking.status !== "no_show" && booking.status !== "cancelled" && (
-        <div className="mt-4">
-          <BookingCheckInQr token={token} reference={ref} compact />
-        </div>
+      {!checkedIn && booking.status !== "no_show" && booking.status !== "cancelled" && (
+        <p className="mt-3 rounded-xl border border-brand-200 bg-brand-50 px-3 py-2 text-xs text-brand-900">
+          到場後請用您的手機掃描團主現場出示的「專屬報到 QR Code」完成報到。
+        </p>
       )}
 
       {!checkedIn &&

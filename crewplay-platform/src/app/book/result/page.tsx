@@ -5,7 +5,6 @@ import { use, useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 import { BookingSuccessIllustration } from "@/components/BookingSuccessIllustration";
-import { BookingCheckInQr } from "@/components/BookingCheckInQr";
 import { bookingReference } from "@/lib/booking-ref";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 
@@ -45,7 +44,6 @@ export default function BookResultPage({ searchParams }: Props) {
 
   const ok = params.status === "ok";
   const bookingRef = params.id ? bookingReference({ id: params.id, merchant_trade_no: null }) : "";
-  const checkinToken = params.checkin ?? "";
   const guestEmail = params.email ?? "";
   const mailStatus = params.mail ?? "";
   const timeText = team ? parseIntroField(team.introduce, "時間") : "";
@@ -89,12 +87,6 @@ export default function BookResultPage({ searchParams }: Props) {
         </p>
       )}
 
-      {ok && checkinToken && bookingRef && (
-        <div className="mt-8">
-          <BookingCheckInQr token={checkinToken} reference={bookingRef} />
-        </div>
-      )}
-
       {ok ? (
         <ol className="mt-8 space-y-3">
           <li className="flex gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-sm">
@@ -128,17 +120,15 @@ export default function BookResultPage({ searchParams }: Props) {
               </p>
             </div>
           </li>
-          {checkinToken && (
-            <li className="flex gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm">
-              <span className="font-bold text-brand-700">4</span>
-              <div>
-                <p className="font-semibold text-brand-900">進場出示 QR Code</p>
-                <p className="mt-1 text-brand-800">供團主掃描核對，或使用報名編號 {bookingRef}。</p>
-              </div>
-            </li>
-          )}
+          <li className="flex gap-3 rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm">
+            <span className="font-bold text-brand-700">4</span>
+            <div>
+              <p className="font-semibold text-brand-900">到場掃描團主專屬報到 QR Code</p>
+              <p className="mt-1 text-brand-800">掃描後畫面會顯示「報到成功」與報名編號 {bookingRef}。</p>
+            </div>
+          </li>
           <li className="flex gap-3 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm">
-            <span className="font-bold text-violet-700">{checkinToken ? "5" : "4"}</span>
+            <span className="font-bold text-violet-700">5</span>
             <div className="w-full">
               <p className="font-semibold text-violet-900">團主資料連結（快速對接）</p>
               {hasHostBridgeLink ? (

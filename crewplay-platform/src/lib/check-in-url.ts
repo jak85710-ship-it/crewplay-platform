@@ -10,6 +10,11 @@ export function hostCheckInPortalUrl(portalToken: string): string {
   return `${getPublicSiteUrl()}/checkin/host?t=${encodeURIComponent(portalToken)}`;
 }
 
+/** 團主現場出示給球友掃描的報到 QR 入口 */
+export function hostGuestCheckInScanUrl(portalToken: string): string {
+  return `${getPublicSiteUrl()}/checkin/scan?t=${encodeURIComponent(portalToken)}`;
+}
+
 /** @deprecated 使用 checkInPassUrl */
 export function checkInUrl(token: string): string {
   return checkInPassUrl(token);

@@ -23,7 +23,7 @@ export function GuestPassPanel({ booking, team }: Props) {
         CrewPlay 進場條碼
       </p>
       <h1 className="mt-2 text-center text-2xl font-bold text-slate-900">報到憑證</h1>
-      <p className="mt-2 text-center text-sm text-slate-600">請出示此畫面或 QR Code 給團主掃描</p>
+      <p className="mt-2 text-center text-sm text-slate-600">請向團主出示此頁的報名編號與狀態畫面</p>
 
       <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <p className="font-mono text-center text-xl font-bold tracking-wider text-slate-900">{ref}</p>
@@ -39,7 +39,7 @@ export function GuestPassPanel({ booking, team }: Props) {
       </div>
 
       <p className="mt-6 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-center text-sm text-brand-900">
-        此頁面供球友出示憑證。進場核銷請由團主使用 Email 內的「進場核銷」連結操作。
+        舊版憑證頁仍可查閱資料；現場建議直接掃描團主出示的「專屬報到 QR Code」完成報到。
       </p>
     </div>
   );

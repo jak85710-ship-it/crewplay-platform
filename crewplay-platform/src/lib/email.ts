@@ -426,7 +426,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
           "您已在 CrewPlay 運動媒合平台完成揪團報名，名額已為您保留。",
           `您的報名編號：${ref}（洽詢客服或查詢預約時請提供此編號）`,
           "",
-          "到場請開啟「我的預約」出示 QR Code 給團主掃描，無需自行操作核銷。",
+          "到場後請用您的手機掃描團主現場出示的專屬報到 QR Code，完成後畫面會顯示報到成功與編號。",
           "",
           "【報名資訊】",
           bookingLines(ctx, true),
@@ -460,10 +460,10 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
         timeText ? `時間：${timeText}` : "",
         placeText ? `地點：${placeText}` : "",
         "",
-        "請使用手機開啟以下連結，直接掃描球友 QR Code 完成進場核銷：",
+        "請使用手機開啟以下連結，現場出示專屬報到 QR Code 供球友掃描：",
         hostPortalLink,
         "",
-        "球友會在「我的預約」出示 QR Code，請在現場掃描即可。",
+        "球友掃描後會直接在手機看到「報到成功」與編號，您只需現場確認畫面。",
       ]
         .filter(Boolean)
         .join("\n");
