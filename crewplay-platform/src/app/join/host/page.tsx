@@ -34,6 +34,21 @@ export default function HostJoinPage() {
     agreed: false,
   });
 
+  function buildConfirmText() {
+    return [
+      "請確認以下資料是否正確：",
+      `運動項目：${form.sport}`,
+      `地點：${form.location}`,
+      `固定日期：${form.weekday}`,
+      `時段：${form.time_slots.join("、")}`,
+      `團隊名稱：${form.team_name}`,
+      `聯絡電話：${form.phone}`,
+      `Email：${form.email}`,
+      "",
+      "按下「確定」後將正式送出申請。",
+    ].join("\n");
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -48,6 +63,9 @@ export default function HostJoinPage() {
     }
     if (!imageFile) {
       setError("請上傳團隊照片");
+      return;
+    }
+    if (!window.confirm(buildConfirmText())) {
       return;
     }
 

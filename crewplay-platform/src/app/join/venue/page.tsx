@@ -20,11 +20,27 @@ export default function VenueJoinPage() {
     address: "",
     price: "",
     phone: "",
+    email: "",
     line_id: "",
     capacity: "",
     court_count: "",
     time_slots: [] as string[],
   });
+
+  function buildConfirmText() {
+    return [
+      "請確認以下資料是否正確：",
+      `場館名稱：${form.venue_name}`,
+      `場館地址：${form.address}`,
+      `場租價格：${form.price}`,
+      `聯絡電話：${form.phone}`,
+      `Email：${form.email}`,
+      `LINE ID：${form.line_id}`,
+      `可預約時段：${form.time_slots.join("、")}`,
+      "",
+      "按下「確定」後將正式送出申請。",
+    ].join("\n");
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,6 +52,9 @@ export default function VenueJoinPage() {
     }
     if (!imageFile) {
       setError("請上傳場地照片");
+      return;
+    }
+    if (!window.confirm(buildConfirmText())) {
       return;
     }
 
@@ -126,6 +145,14 @@ export default function VenueJoinPage() {
             required
             value={form.phone}
             onChange={(phone) => setForm({ ...form, phone })}
+          />
+          <TextField
+            label="電子郵件(送出後會寄送確認連結)"
+            name="email"
+            type="email"
+            required
+            value={form.email}
+            onChange={(email) => setForm({ ...form, email })}
           />
           <TextField
             label="LINEID"

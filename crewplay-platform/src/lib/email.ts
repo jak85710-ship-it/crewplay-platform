@@ -70,6 +70,7 @@ export type HostSubmission = {
   phone: string;
   email: string;
   trust_image_id?: string;
+  result_url?: string;
 };
 
 export type VenueSubmission = {
@@ -79,11 +80,13 @@ export type VenueSubmission = {
   address: string;
   price: string;
   phone: string;
+  email?: string;
   line_id: string;
   capacity: string;
   court_count: string;
   time_slots: string[];
   trust_image_id?: string;
+  result_url?: string;
 };
 
 function trustImageLine(data: { trust_image_id?: string }): [string, string] | null {
@@ -137,6 +140,7 @@ function hostCustomerBody(data: HostSubmission): string {
     ]),
     "",
     `申請編號：${data.id}`,
+    data.result_url ? `查詢連結：${data.result_url}` : "",
     "",
     "我們將依序審核並為您媒合，媒合成功後會再次以 Email 通知。",
     "如有疑問，請直接回信至本信箱，或致電 07-552-2092。",
@@ -152,6 +156,7 @@ function venueInternalBody(data: VenueSubmission): string {
       ["場館地址", data.address],
       ["場租價格", data.price],
       ["連絡電話", data.phone],
+      ["電子郵件", data.email || "未填寫"],
       ["LINE ID", data.line_id],
       ["場館預計單一時段租借多少人次", data.capacity],
       ["場地預計出借幾塊場地", data.court_count],
@@ -169,6 +174,36 @@ function venueInternalBody(data: VenueSubmission): string {
     "",
     "（此表單未填 Email，請以電話或 LINE 聯繫場主）",
   ].join("\n");
+}
+
+function venueCustomerBody(data: VenueSubmission): string {
+  return [
+    `${data.venue_name || "您好"}，`,
+    "",
+    "感謝您透過 CrewPlay運動媒合平台 提交「場地刊登」申請，我們已收到您的資料：",
+    "",
+    lines([
+      ["場館名稱", data.venue_name],
+      ["場館地址", data.address],
+      ["場租價格", data.price],
+      ["連絡電話", data.phone],
+      ["LINE ID", data.line_id],
+      ["場館預計單一時段租借多少人次", data.capacity],
+      ["場地預計出借幾塊場地", data.court_count],
+      ["場館開放預約時間", data.time_slots.join("、")],
+    ]),
+    "",
+    `申請編號：${data.id}`,
+    data.result_url ? `查詢連結：${data.result_url}` : "",
+    "",
+    "我們將依序審核，若有需要會以您填寫的聯絡方式與您聯繫。",
+    "如有疑問，請直接回信至本信箱。",
+    "",
+    "CrewPlay運動媒合平台",
+    "crew.matchplay@gmail.com",
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 async function sendMail(opts: {
@@ -223,6 +258,14 @@ export async function sendVenueFormEmails(data: VenueSubmission) {
     subject: `[場地刊登] ${data.venue_name}（${data.id.slice(0, 8)}）`,
     text: venueInternalBody(data),
   });
+
+  if (data.email && data.email.includes("@")) {
+    await sendMail({
+      to: data.email,
+      subject: `[CrewPlay] 已收到您的場地刊登申請（${data.id.slice(0, 8)}）`,
+      text: venueCustomerBody(data),
+    });
+  }
 }
 
 export function isEmailConfigured(): boolean {

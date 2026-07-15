@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { type VenueSubmission } from "@/lib/email";
+import { sendVenueFormEmails, type VenueSubmission } from "@/lib/email";
+import { siteUrl } from "@/lib/payment/site-url";
 import { hasSubmissionImage } from "@/lib/submission-images";
 import { createTradeNo, saveVenueSubmission } from "@/lib/submissions";
 
@@ -20,6 +21,7 @@ export async function POST(req: Request) {
       "address",
       "price",
       "phone",
+      "email",
       "line_id",
       "capacity",
       "court_count",
@@ -40,6 +42,7 @@ export async function POST(req: Request) {
 
     const platformFee = 0;
     const merchantTradeNo = createTradeNo("CV");
+    const resultUrl = `${siteUrl()}/join/result?kind=venue&status=ok&mode=free&tradeNo=${merchantTradeNo}`;
 
     const record: VenueSubmission = {
       id: crypto.randomUUID(),
@@ -48,6 +51,7 @@ export async function POST(req: Request) {
       address: String(body.address).trim(),
       price: String(body.price).trim(),
       phone: String(body.phone).trim(),
+      email: String(body.email).trim(),
       line_id: String(body.line_id).trim(),
       capacity: String(body.capacity).trim(),
       court_count: String(body.court_count).trim(),
@@ -60,11 +64,19 @@ export async function POST(req: Request) {
     } catch (saveErr) {
       console.error("saveVenueSubmission failed:", saveErr);
     }
+    try {
+      await sendVenueFormEmails({
+        ...record,
+        result_url: resultUrl,
+      });
+    } catch (mailErr) {
+      console.error("sendVenueFormEmails failed:", mailErr);
+    }
 
     return NextResponse.json({
       ok: true,
       id: record.id,
-      resultUrl: `/join/result?kind=venue&status=ok&mode=free&tradeNo=${merchantTradeNo}`,
+      resultUrl,
       platformFee,
     });
   } catch (err) {

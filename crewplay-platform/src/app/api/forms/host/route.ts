@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { type HostSubmission } from "@/lib/email";
+import { sendHostFormEmails, type HostSubmission } from "@/lib/email";
+import { siteUrl } from "@/lib/payment/site-url";
 import { hasSubmissionImage } from "@/lib/submission-images";
 import { createTradeNo, saveHostSubmission } from "@/lib/submissions";
 
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
 
     const platformFee = 0;
     const merchantTradeNo = createTradeNo("CH");
+    const resultUrl = `${siteUrl()}/join/result?kind=host&status=ok&mode=free&tradeNo=${merchantTradeNo}`;
 
     const record: HostSubmission = {
       id: crypto.randomUUID(),
@@ -69,11 +71,19 @@ export async function POST(req: Request) {
     } catch (saveErr) {
       console.error("saveHostSubmission failed:", saveErr);
     }
+    try {
+      await sendHostFormEmails({
+        ...record,
+        result_url: resultUrl,
+      });
+    } catch (mailErr) {
+      console.error("sendHostFormEmails failed:", mailErr);
+    }
 
     return NextResponse.json({
       ok: true,
       id: record.id,
-      resultUrl: `/join/result?kind=host&status=ok&mode=free&tradeNo=${merchantTradeNo}`,
+      resultUrl,
       platformFee,
     });
   } catch (err) {
