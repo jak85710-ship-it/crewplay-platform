@@ -31,8 +31,8 @@ export default async function MyHostTeamsPage() {
         </p>
       ) : (
         <div className="mt-6 space-y-6">
-          <HostFreemiumPanel />
           <HostTeamManager />
+          <HostFreemiumPanel />
         </div>
       )}
     </div>
