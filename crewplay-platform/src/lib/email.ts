@@ -15,6 +15,9 @@ type MailConfig = {
   user: string;
   pass: string;
   notifyTo: string;
+  smtpHost?: string;
+  smtpPort?: number;
+  smtpSecure?: boolean;
 };
 
 let transporter: Transporter | null = null;
@@ -23,10 +26,19 @@ function getMailConfig(): MailConfig | null {
   const user = process.env.GMAIL_USER || DEFAULT_GMAIL;
   const pass = process.env.GMAIL_APP_PASSWORD?.replace(/\s/g, "");
   if (!pass) return null;
+  const smtpHost = process.env.SMTP_HOST?.trim() || undefined;
+  const smtpPortRaw = process.env.SMTP_PORT?.trim();
+  const smtpPort = smtpPortRaw ? Number(smtpPortRaw) : undefined;
+  const smtpSecureRaw = process.env.SMTP_SECURE?.trim().toLowerCase();
+  const smtpSecure =
+    smtpSecureRaw === "true" ? true : smtpSecureRaw === "false" ? false : undefined;
   return {
     user,
     pass,
     notifyTo: process.env.GMAIL_NOTIFY_TO || DEFAULT_NOTIFY_TO,
+    smtpHost,
+    smtpPort: Number.isFinite(smtpPort) ? smtpPort : undefined,
+    smtpSecure,
   };
 }
 
@@ -43,10 +55,19 @@ function getTransporter(): Transporter {
     throw new Error("Gmail 尚未設定：請在 .env.local 填入 GMAIL_APP_PASSWORD");
   }
   if (!transporter) {
-    transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: cfg.user, pass: cfg.pass },
-    });
+    if (cfg.smtpHost) {
+      transporter = nodemailer.createTransport({
+        host: cfg.smtpHost,
+        port: cfg.smtpPort ?? 587,
+        secure: cfg.smtpSecure ?? false,
+        auth: { user: cfg.user, pass: cfg.pass },
+      });
+    } else {
+      transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: { user: cfg.user, pass: cfg.pass },
+      });
+    }
   }
   return transporter;
 }
@@ -210,6 +231,7 @@ async function sendMail(opts: {
   to: string;
   subject: string;
   text: string;
+  html?: string;
   replyTo?: string;
   attachments?: {
     filename: string;
@@ -226,8 +248,62 @@ async function sendMail(opts: {
     replyTo: opts.replyTo || cfg.user,
     subject: opts.subject,
     text: opts.text,
+    html: opts.html,
     attachments: opts.attachments,
   });
+}
+
+function escapeHtml(input: string): string {
+  return input
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function qrCodeImageUrl(raw: string): string {
+  const value = String(raw || "").trim();
+  if (!value) return "";
+  return `https://quickchart.io/qr?size=280&text=${encodeURIComponent(value)}`;
+}
+
+function hostCheckInEmailHtml(input: {
+  arenaName: string;
+  reference: string;
+  guestName: string;
+  guestPhone: string;
+  guestEmail?: string;
+  slots: number;
+  timeText?: string;
+  placeText?: string;
+  portalUrl: string;
+}): string {
+  const qrUrl = qrCodeImageUrl(input.portalUrl);
+  const rows = [
+    `揪團：${escapeHtml(input.arenaName)}`,
+    `報名編號：${escapeHtml(input.reference)}`,
+    `報名者：${escapeHtml(input.guestName)} · ${escapeHtml(input.guestPhone)}`,
+    input.guestEmail ? `Email：${escapeHtml(input.guestEmail)}` : "",
+    `人數：${escapeHtml(String(input.slots))} 人`,
+    input.timeText ? `時間：${escapeHtml(input.timeText)}` : "",
+    input.placeText ? `地點：${escapeHtml(input.placeText)}` : "",
+  ]
+    .filter(Boolean)
+    .join("<br/>");
+
+  return [
+    `<div style="font-family:Arial,'Noto Sans TC',sans-serif;line-height:1.6;color:#0f172a">`,
+    `<p style="margin:0 0 12px;font-weight:700">【團主進場核銷】有新球友報名</p>`,
+    `<p style="margin:0 0 10px">${rows}</p>`,
+    `<p style="margin:12px 0 8px">請在現場出示下方 QR Code，讓球友掃描後自助完成報到：</p>`,
+    qrUrl
+      ? `<p style="margin:0 0 8px"><img src="${escapeHtml(qrUrl)}" alt="團主報到 QR Code" width="220" height="220" style="display:block;border:1px solid #e2e8f0;padding:6px;border-radius:8px;background:#fff"/></p>`
+      : "",
+    `<p style="margin:0 0 8px">備援連結：<a href="${escapeHtml(input.portalUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(input.portalUrl)}</a></p>`,
+    `<p style="margin:0;color:#475569">球友掃描後會直接在手機看到「報到成功」與編號，您只需現場確認畫面。</p>`,
+    `</div>`,
+  ].join("");
 }
 
 /** 1) 通知 CREW 信箱  2) 自動回覆團主 Email */
@@ -474,6 +550,17 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
           to,
           subject: `[CrewPlay 進場核銷] ${ctx.team.arena_name} 新報名（${ref}）`,
           text: hostBody,
+          html: hostCheckInEmailHtml({
+            arenaName: ctx.team.arena_name,
+            reference: ref,
+            guestName: ctx.booking.guest_name,
+            guestPhone: ctx.booking.guest_phone,
+            guestEmail: ctx.booking.guest_email || "",
+            slots: ctx.booking.slots,
+            timeText: timeText || "",
+            placeText: placeText || "",
+            portalUrl: hostPortalLink,
+          }),
           replyTo: cfg.user,
         });
       }
