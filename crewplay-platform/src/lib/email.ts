@@ -436,12 +436,53 @@ function bookingLines(ctx: BookingMailContext, includeContact = true): string {
   return lines(rows);
 }
 
-function findContactEmail(text: string | undefined): string | null {
-  if (!text) return null;
-  const labeled = text.match(/(?:Email|email|信箱|聯絡)[：:\s]*([^\s@]+@[^\s@]+\.[^\s@]+)/i);
-  if (labeled?.[1]) return labeled[1].trim();
-  const any = text.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/i);
-  return any ? any[0].trim() : null;
+function uniqueValidEmails(values: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of values) {
+    const email = String(raw || "").trim().toLowerCase();
+    if (!email.includes("@")) continue;
+    if (seen.has(email)) continue;
+    seen.add(email);
+    out.push(email);
+  }
+  return out;
+}
+
+function extractContactEmails(text: string | undefined): string[] {
+  if (!text) return [];
+  const found = text.match(/[\w.+-]+@[\w.-]+\.[a-z]{2,}/gi) || [];
+  return uniqueValidEmails(found);
+}
+
+function hostNotifyEmailsFromEnv(teamId?: string): string[] {
+  const fromGlobal = String(process.env.HOST_NOTIFICATION_EMAILS_GLOBAL || "")
+    .split(/[,;\n]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const fromByTeam: string[] = [];
+  const rawByTeam = String(process.env.HOST_NOTIFICATION_EMAILS_BY_TEAM || "").trim();
+  if (rawByTeam && teamId) {
+    try {
+      const parsed = JSON.parse(rawByTeam) as Record<string, string | string[]>;
+      const picked = parsed[teamId];
+      if (Array.isArray(picked)) fromByTeam.push(...picked.map((v) => String(v || "")));
+      else if (picked) fromByTeam.push(String(picked));
+    } catch {
+      /* ignore invalid env json */
+    }
+  }
+
+  return uniqueValidEmails([...fromByTeam, ...fromGlobal]);
+}
+
+function resolveHostEmailRecipients(ctx: BookingMailContext, notifyTo: string): string[] {
+  const fromIntro = extractContactEmails(ctx.team.introduce);
+  const fromEnv = hostNotifyEmailsFromEnv(ctx.team.id);
+  const fromNotify = notifyRecipients(notifyTo);
+  const combined = uniqueValidEmails([...fromIntro, ...fromEnv, ...fromNotify]);
+  return combined;
 }
 
 /** 新預約（報名）：通知平台 + 回覆報名者（現場付費） */
@@ -455,7 +496,6 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
   const ref = bookingReference(ctx.booking);
   const hostPortalToken = ctx.team.id ? issueHostPortalToken(ctx.team.id) : "";
   const hostPortalLink = hostPortalToken ? hostCheckInPortalUrl(hostPortalToken) : "";
-  const hostEmail = findContactEmail(ctx.team.introduce);
   const timeText = parseIntroField(ctx.team.introduce ?? "", "時間");
   const placeText =
     parseIntroField(ctx.team.introduce ?? "", "地點") || ctx.team.location || "—";
@@ -544,7 +584,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
         .filter(Boolean)
         .join("\n");
 
-      const hostRecipients = hostEmail ? [hostEmail] : notifyRecipients(cfg.notifyTo);
+      const hostRecipients = resolveHostEmailRecipients(ctx, cfg.notifyTo);
       for (const to of hostRecipients) {
         await sendMail({
           to,
