@@ -104,7 +104,7 @@ export default async function TeamDetailPage({ params }: Props) {
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            {bookingOpen ? (
+            {bookingOpen && !stats.isFull ? (
               <Link
                 href={`/book/${team.id}`}
                 className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-bold text-white shadow hover:bg-brand-700"
@@ -113,7 +113,7 @@ export default async function TeamDetailPage({ params }: Props) {
               </Link>
             ) : (
               <div className="rounded-xl border border-red-200 bg-red-50 px-6 py-3 text-sm font-semibold text-red-700">
-                {BOOKING_PAUSE_MESSAGE}
+                {stats.isFull ? "目前已滿團，暫停接受新預約。" : BOOKING_PAUSE_MESSAGE}
               </div>
             )}
             {mapQuery && (

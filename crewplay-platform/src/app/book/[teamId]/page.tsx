@@ -7,6 +7,7 @@ import { checkMemberCanBook } from "@/lib/member-credit";
 import { issueBookingAuthToken } from "@/lib/booking-auth-token";
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSession } from "@/lib/member-session";
+import { getTeamBookingStats } from "@/lib/team-booking-stats";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 import { feeSummary } from "@/lib/utils";
 
@@ -33,7 +34,11 @@ export default async function BookPage({ params, searchParams }: Props) {
   if (!teamRaw) notFound();
 
   const team = enrichTeamFromIntro(teamRaw);
-  const bookingOpen = isBookingOpenForTeam(team);
+  const stats = await getTeamBookingStats(team);
+  const bookingOpen = isBookingOpenForTeam(team) && !stats.isFull;
+  const bookingPauseMessage = stats.isFull
+    ? "目前已滿團，暫停接受新預約。"
+    : BOOKING_PAUSE_MESSAGE;
   const memberKey = getMemberKeyFromSession(member);
   const credit = memberKey ? await checkMemberCanBook(memberKey) : null;
   const bookingAuth = issueBookingAuthToken(member, teamId);
@@ -44,7 +49,7 @@ export default async function BookPage({ params, searchParams }: Props) {
       teamId={teamId}
       bookingAuth={bookingAuth}
       bookingOpen={bookingOpen}
-      bookingPauseMessage={BOOKING_PAUSE_MESSAGE}
+      bookingPauseMessage={bookingPauseMessage}
       team={{
         arena_name: team.arena_name,
         fee_label: team.fee_label,

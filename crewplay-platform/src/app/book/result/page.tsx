@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
-import { QRCodeSVG } from "qrcode.react";
 
 import { BookingSuccessIllustration } from "@/components/BookingSuccessIllustration";
 import { bookingReference } from "@/lib/booking-ref";
@@ -25,7 +24,6 @@ type TeamInfo = {
   introduce: string;
   fee_amount: number | null;
   fee_label: string;
-  assign_url?: string;
 };
 
 export default function BookResultPage({ searchParams }: Props) {
@@ -51,8 +49,6 @@ export default function BookResultPage({ searchParams }: Props) {
     ? parseIntroField(team.introduce, "地點") || team.location
     : "";
   const feeText = team ? feeSummary(team) : "";
-  const hostBridgeUrl = String(team?.assign_url || "").trim();
-  const hasHostBridgeLink = /^https?:\/\//i.test(hostBridgeUrl);
 
   return (
     <div className="mx-auto max-w-lg px-4 py-16">
@@ -125,30 +121,6 @@ export default function BookResultPage({ searchParams }: Props) {
             <div>
               <p className="font-semibold text-brand-900">到場掃描團主專屬報到 QR Code</p>
               <p className="mt-1 text-brand-800">掃描後畫面會顯示「報到成功」與報名編號 {bookingRef}。</p>
-            </div>
-          </li>
-          <li className="flex gap-3 rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm">
-            <span className="font-bold text-violet-700">5</span>
-            <div className="w-full">
-              <p className="font-semibold text-violet-900">團主資料連結（快速對接）</p>
-              {hasHostBridgeLink ? (
-                <>
-                  <a
-                    href={hostBridgeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1 inline-block break-all text-violet-700 underline underline-offset-2 hover:text-violet-900"
-                  >
-                    {hostBridgeUrl}
-                  </a>
-                  <div className="mt-3 inline-flex rounded-lg border border-violet-200 bg-white p-2">
-                    <QRCodeSVG value={hostBridgeUrl} size={96} />
-                  </div>
-                  <p className="mt-2 text-xs text-violet-800">可直接點連結或掃描 QR Code，快速與團主對接。</p>
-                </>
-              ) : (
-                <p className="mt-1 text-violet-800">團主資料連結尚未提供，請先透過已留手機與 Email 聯絡。</p>
-              )}
             </div>
           </li>
         </ol>

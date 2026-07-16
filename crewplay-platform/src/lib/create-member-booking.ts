@@ -8,6 +8,7 @@ import { checkMemberCanBook, MIN_BOOKING_SCORE, touchMemberProfile } from "@/lib
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
 import { normalizePhone } from "@/lib/phone-auth";
+import { getTeamBookingStats } from "@/lib/team-booking-stats";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 import { composeBookingNoteWithVolleyballPosition } from "@/lib/volleyball-position";
 
@@ -113,6 +114,14 @@ export async function processMemberBooking(
       ok: false,
       code: "validation",
       error: BOOKING_PAUSE_MESSAGE,
+    };
+  }
+  const stats = await getTeamBookingStats(team);
+  if (stats.isFull) {
+    return {
+      ok: false,
+      code: "validation",
+      error: "目前已滿團，暫停接受新預約。",
     };
   }
 
