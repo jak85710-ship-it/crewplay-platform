@@ -12,6 +12,28 @@ type LineTextMessage = {
   text: string;
 };
 
+type LineFlexMessage = {
+  type: "flex";
+  altText: string;
+  contents: {
+    type: "bubble";
+    body?: {
+      type: "box";
+      layout: "vertical";
+      spacing?: string;
+      contents: Array<Record<string, unknown>>;
+    };
+    footer?: {
+      type: "box";
+      layout: "vertical";
+      spacing?: string;
+      contents: Array<Record<string, unknown>>;
+    };
+  };
+};
+
+type LineMessage = LineTextMessage | LineFlexMessage;
+
 type LinePushResult = {
   sent: boolean;
   reason?: string;
@@ -94,7 +116,7 @@ export async function resolveHostRecipientsByTeam(teamId: string): Promise<strin
   }
 }
 
-async function pushLineMessage(to: string, messages: LineTextMessage[]): Promise<LinePushResult> {
+async function pushLineMessage(to: string, messages: LineMessage[]): Promise<LinePushResult> {
   const token = lineMessagingToken();
   if (!token) return { sent: false, reason: "line_token_missing" };
 
@@ -155,7 +177,7 @@ export async function pushLineTextToRecipients(input: {
   };
 }
 
-function guestMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
+function guestMessage(booking: BookingLite, team: TeamLite): LineMessage[] {
   const ref = bookingReference(booking);
   const checkInToken = issueCheckInToken(booking);
   const checkInUrl = checkInToken ? checkInPassUrl(checkInToken) : "";
@@ -182,7 +204,7 @@ function guestMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
   return [{ type: "text", text }];
 }
 
-function hostMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
+function hostMessage(booking: BookingLite, team: TeamLite): LineMessage[] {
   const ref = bookingReference(booking);
   const portalToken = issueHostPortalToken(team.id);
   const portalUrl = portalToken ? hostCheckInPortalUrl(portalToken) : "";
@@ -208,7 +230,43 @@ function hostMessage(booking: BookingLite, team: TeamLite): LineTextMessage[] {
     .filter(Boolean)
     .join("\n");
 
-  return [{ type: "text", text }];
+  const messages: LineMessage[] = [{ type: "text", text }];
+  if (portalUrl) {
+    messages.push({
+      type: "flex",
+      altText: `開啟掃碼入口：${team.arena_name}（${ref}）`,
+      contents: {
+        type: "bubble",
+        body: {
+          type: "box",
+          layout: "vertical",
+          spacing: "sm",
+          contents: [
+            { type: "text", text: "團主掃碼入口", weight: "bold", size: "lg" },
+            { type: "text", text: team.arena_name, size: "sm", color: "#64748b" },
+            { type: "text", text: `報名編號 ${ref}`, size: "sm", color: "#64748b" },
+          ],
+        },
+        footer: {
+          type: "box",
+          layout: "vertical",
+          contents: [
+            {
+              type: "button",
+              style: "primary",
+              color: "#2563eb",
+              action: {
+                type: "uri",
+                label: "開啟掃碼按鈕",
+                uri: portalUrl,
+              },
+            },
+          ],
+        },
+      },
+    });
+  }
+  return messages;
 }
 
 export async function notifyBookingCreatedLine(input: {
