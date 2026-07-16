@@ -1,4 +1,4 @@
-# 鹿角蕨穿搭模擬器
+﻿# 鹿角蕨穿搭模擬器
 
 靜態網站：選植株 → 挑板材 → 點綴配件 → LINE 預購。
 
@@ -31,3 +31,35 @@ powershell -ExecutionPolicy Bypass -File sync-catalog.ps1
 ## LINE 分享
 
 部署後將網址貼到 LINE 即可；官方帳號：@313lykia
+
+## 同步上板材料圖
+
+上板材料來源：`桌面\喚鹿工作室上板材料`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File sync-bases.ps1
+```
+
+會依檔名字母順序取前 3 張圖，對應：
+- `base_acrylic`
+- `base_wood_3d`
+- `base_metal_grid`
+
+## 同步上板配件圖（Step 3）
+
+配件來源：`桌面\上板配件`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File sync-parts.ps1
+```
+
+規則：
+- 支援：jpg / jpeg / png / webp
+- 會遞迴讀取子資料夾
+- 同步後會寫入 `catalog.json` 的 `parts`，前端 Step 3 自動改為圖片配件
+
+
+## 配件價格對照表
+
+修改 parts-price-map.json 來設定關鍵字價格，sync-parts.ps1 會依檔名關鍵字自動帶入價格。
+

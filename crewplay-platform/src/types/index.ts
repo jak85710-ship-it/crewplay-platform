@@ -1,4 +1,5 @@
 export type TeamStatus = "published" | "hidden" | "full";
+export type SubscriptionPlan = "FREE" | "PRO";
 export type BookingStatus =
   | "submitted"
   | "pending_payment"
@@ -21,8 +22,34 @@ export interface Team {
   fee_amount: number | null;
   fee_label: string;
   status: TeamStatus;
+  is_featured?: boolean;
   published_at?: string;
   updated_at?: string;
+}
+
+export interface HostSubscriptionProfile {
+  host_id: string;
+  subscription_plan: SubscriptionPlan;
+  monthly_leads_used: number;
+  quota_reset_date: string;
+  updated_at: string;
+}
+
+export interface HostLead {
+  id: string;
+  host_id: string;
+  team_id: string;
+  player_info: {
+    name?: string;
+    email?: string;
+    line_id?: string;
+    note?: string;
+    sport?: string;
+    region?: string;
+  };
+  is_unlocked: boolean;
+  unlocked_at?: string | null;
+  created_at: string;
 }
 
 export interface TeamContact {

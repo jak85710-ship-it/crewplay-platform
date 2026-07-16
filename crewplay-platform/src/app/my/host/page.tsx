@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 
+import { HostFreemiumPanel } from "@/components/HostFreemiumPanel";
 import { HostTeamManager } from "@/components/HostTeamManager";
 import { getMemberSession } from "@/lib/member-session";
 
@@ -29,7 +30,8 @@ export default async function MyHostTeamsPage() {
           請先登入後再使用團主編輯功能。
         </p>
       ) : (
-        <div className="mt-6">
+        <div className="mt-6 space-y-6">
+          <HostFreemiumPanel />
           <HostTeamManager />
         </div>
       )}

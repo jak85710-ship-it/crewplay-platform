@@ -16,5 +16,26 @@
     "balls": "團主提供",
     "phone": "0988555666",
     "email": "jak85710@gmail.com"
+  },
+  {
+    "id": "096679a7-cc61-49c4-91ed-125f3efff739",
+    "submitted_at": "2026-06-23T07:15:03.244Z",
+    "sport": "羽球",
+    "location": "高雄",
+    "weekday": "星期一",
+    "time_slots": [
+      "24:00-01:00",
+      "08:00-09:00"
+    ],
+    "fee": "150",
+    "skill_level": "第三級",
+    "team_name": "羽球團",
+    "equipment": "不用",
+    "balls": "三圍",
+    "phone": "0931366665",
+    "email": "jak85710@gmail.com",
+    "merchant_trade_no": "CHMQQB7MPS",
+    "payment_status": "pending_payment",
+    "platform_fee": 1000
   }
 ]

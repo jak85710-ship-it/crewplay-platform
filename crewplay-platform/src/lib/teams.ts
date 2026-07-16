@@ -1,6 +1,7 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 import type { Team, TeamsManifest } from "@/types";
 import { filterListedTeams, isDelistedTeam } from "@/lib/delisted-teams";
+import { getFeaturedEventMap } from "@/lib/host-freemium";
 import { regionsMatch } from "@/lib/region";
 import { parseFee } from "./utils";
 import fs from "fs";
@@ -49,6 +50,7 @@ function mapRow(row: Record<string, unknown>): Team {
     location: String(row.location ?? ""),
     fee_amount: row.fee_amount != null ? Number(row.fee_amount) : null,
     fee_label: String(row.fee_label ?? ""),
+    is_featured: row.is_featured === true,
     status: (row.status as Team["status"]) ?? "published",
     published_at: row.published_at as string | undefined,
     updated_at: row.updated_at as string | undefined,
@@ -60,7 +62,9 @@ export async function getAllTeams(): Promise<Team[]> {
   const useSupabase = process.env.TEAMS_DATA_SOURCE === "supabase";
 
   if (!useSupabase && manifest?.teams?.length) {
-    return filterListedTeams(manifest.teams);
+    const list = filterListedTeams(manifest.teams);
+    const featuredMap = await getFeaturedEventMap();
+    return sortByFeatured(list, featuredMap);
   }
 
   const supabase = getSupabasePublic();
@@ -71,15 +75,32 @@ export async function getAllTeams(): Promise<Team[]> {
       .eq("status", "published")
       .order("sheet_row", { ascending: true });
     if (!error && data?.length) {
-      return filterListedTeams(data.map((r) => mapRow(r as Record<string, unknown>)));
+      const list = filterListedTeams(data.map((r) => mapRow(r as Record<string, unknown>)));
+      const featuredMap = await getFeaturedEventMap();
+      return sortByFeatured(list, featuredMap);
     }
   }
 
   if (manifest?.teams?.length) {
-    return filterListedTeams(manifest.teams);
+    const list = filterListedTeams(manifest.teams);
+    const featuredMap = await getFeaturedEventMap();
+    return sortByFeatured(list, featuredMap);
   }
 
   return [];
+}
+
+function sortByFeatured(teams: Team[], featuredMap: Record<string, boolean>): Team[] {
+  const withFlag = teams.map((team) => ({
+    ...team,
+    is_featured: featuredMap[team.id] === true,
+  }));
+  return withFlag.sort((a, b) => {
+    const af = a.is_featured ? 1 : 0;
+    const bf = b.is_featured ? 1 : 0;
+    if (bf !== af) return bf - af;
+    return (a.sheet_row || 0) - (b.sheet_row || 0);
+  });
 }
 
 export async function getTeamById(id: string): Promise<Team | null> {

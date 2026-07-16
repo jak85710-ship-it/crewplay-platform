@@ -1,0 +1,64 @@
+{
+  "fromRow": 266,
+  "toRow": 278,
+  "dryRun": false,
+  "ok": [],
+  "skipped": [
+    {
+      "row": 267,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 268,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 269,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 270,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 271,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 272,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 273,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 274,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 275,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 276,
+      "reason": "already_has_r_jpg"
+    },
+    {
+      "row": 277,
+      "reason": "already_has_r_jpg"
+    }
+  ],
+  "failed": [
+    {
+      "row": 266,
+      "error": "no og:image",
+      "assign_url": "https://www.facebook.com/groups/613579357425031/posts/1225980519518242/"
+    },
+    {
+      "row": 278,
+      "error": "no og:image",
+      "assign_url": "https://www.facebook.com/groups/210484085802885/permalink/3253867728131157/"
+    }
+  ]
+}

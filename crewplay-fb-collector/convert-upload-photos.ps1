@@ -4,7 +4,10 @@ param(
     [switch]$Upload,
     [switch]$UpdateSheet,
     [switch]$OnlyEmpty,
-    [int]$Limit = 0
+    [int]$Limit = 0,
+    [int]$FromRow = 0,
+    [int]$ToRow = 0,
+    [switch]$ForceMissingLocal
 )
 
 $ErrorActionPreference = 'Stop'
@@ -201,14 +204,19 @@ $skipped = 0
 for ($i = 0; $i -lt $data.values.Count; $i++) {
     $row = @($data.values[$i])
     $sheetRow = $i + 2
+    if ($FromRow -gt 0 -and $sheetRow -lt $FromRow) { continue }
+    if ($ToRow -gt 0 -and $sheetRow -gt $ToRow) { continue }
     while ($row.Count -lt 7) { $row += '' }
     $arena = [string]$row[1]
     $photo = [string]$row[3]
     if ([string]::IsNullOrWhiteSpace($arena)) { continue }
 
     if (Test-ValidGcsJpg $photo) {
-        $skipped++
-        continue
+        $localJpg = Join-Path $JpgDir (Get-GcsFileName $sheetRow)
+        if (-not $ForceMissingLocal -or (Test-Path $localJpg)) {
+            $skipped++
+            continue
+        }
     }
 
     $inbox = Find-InboxSource $sheetRow

@@ -1,24 +1,25 @@
 ﻿{
-    "checkedAt":  "2026-06-19 12:10:14",
+    "checkedAt":  "2026-06-23 19:46:48",
     "sheetName":  "工作表1",
-    "fromRow":  2,
+    "fromRow":  97,
     "summary":  {
-                    "checkedRows":  280,
-                    "okRows":  278,
+                    "checkedRows":  182,
+                    "okRows":  180,
                     "errorRows":  2,
-                    "warningOnly":  2,
-                    "uniqueArenas":  232,
-                    "duplicateArenaGroups":  25,
+                    "warningOnly":  0,
+                    "uniqueArenas":  163,
+                    "duplicateArenaGroups":  16,
                     "errorCounts":  {
-                                        "introduce 缺少「程度：」":  2
+                                        "introduce 缺少「程度：」":  1,
+                                        "introduce 缺少「用球：」":  1
                                     },
                     "warnCounts":  {
-                                       "introduce 行數過多（建議只留 5 行，其餘放工作表2）":  2
+                                       "introduce 行數過多（建議只留 5 行，其餘放工作表2）":  1
                                    }
                 },
     "errorRows":  [
                       {
-                          "sheetRow":  196,
+                          "sheetRow":  192,
                           "sport":  "羽球",
                           "arena":  "湖美羽球館",
                           "errors":  [
@@ -29,1208 +30,20 @@
                                        ]
                       },
                       {
-                          "sheetRow":  281,
-                          "sport":  "匹克球",
-                          "arena":  "樂活匹克球館｜假日兒童匹克球班 招生中！",
+                          "sheetRow":  278,
+                          "sport":  "羽球",
+                          "arena":  " 東和歡樂羽球團",
                           "errors":  [
-                                         "introduce 缺少「程度：」"
+                                         "introduce 缺少「用球：」"
                                      ],
                           "warnings":  [
-
+                                           "introduce 行數過多（建議只留 5 行，其餘放工作表2）"
                                        ]
                       }
                   ],
     "allRows":  [
                     {
-                        "sheetRow":  2,
-                        "sport":  "桌球",
-                        "arena":  "萬拓乒乓",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  3,
-                        "sport":  "羽球",
-                        "arena":  "新手互戳羽球團",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  4,
-                        "sport":  "排球",
-                        "arena":  "洪竿女子排球",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  5,
-                        "sport":  "羽球",
-                        "arena":  "邁特帶萌羽球社",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  6,
-                        "sport":  "羽球",
-                        "arena":  "羽毛毛蟲",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  7,
-                        "sport":  "羽球",
-                        "arena":  "小皮歡樂羽球團 ",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  8,
-                        "sport":  "羽球",
-                        "arena":  "心碎小狗羽球團",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  9,
-                        "sport":  "羽球",
-                        "arena":  "亮劍羽球聯盟(大戰士 ) ",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  10,
-                        "sport":  "羽球",
-                        "arena":  "凱璿羽球團  ",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  11,
-                        "sport":  "羽球",
-                        "arena":  "牽羊羽球團",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  12,
-                        "sport":  "羽球",
-                        "arena":  "胖丁羽球特攻隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  13,
-                        "sport":  "羽球",
-                        "arena":  "星期天固定團",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  14,
-                        "sport":  "羽球",
-                        "arena":  "小羽宙羽球隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  15,
-                        "sport":  "羽球",
-                        "arena":  "羽鷹飛翔(鷹揚羽球館)",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  16,
-                        "sport":  "羽球",
-                        "arena":  "羽鷹飛翔(裕興羽球館)",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  17,
-                        "sport":  "羽球",
-                        "arena":  "左營Wumo羽球館 ",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  18,
-                        "sport":  "羽球",
-                        "arena":  "天鷹羽球隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  19,
-                        "sport":  "匹克球",
-                        "arena":  "XS匹克球隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  20,
-                        "sport":  "匹克球",
-                        "arena":  "週末歡樂匹克團 ",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  21,
-                        "sport":  "匹克球",
-                        "arena":  "三民公園羽球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  22,
-                        "sport":  "匹克球",
-                        "arena":  "正勤活動中心",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  23,
-                        "sport":  "匹克球",
-                        "arena":  "文西里廣場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  24,
-                        "sport":  "羽球",
-                        "arena":  "鷹揚羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  25,
-                        "sport":  "羽球",
-                        "arena":  "台北體育館(紅館)7樓",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  26,
-                        "sport":  "羽球",
-                        "arena":  "嘉世羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  27,
-                        "sport":  "羽球",
-                        "arena":  "嘉世羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  28,
-                        "sport":  "羽球",
-                        "arena":  "嘉世羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  29,
-                        "sport":  "羽球",
-                        "arena":  "嘉世羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  30,
-                        "sport":  "羽球",
-                        "arena":  "鷹揚羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  31,
-                        "sport":  "羽球",
-                        "arena":  "鷹揚羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  32,
-                        "sport":  "羽球",
-                        "arena":  "鷹揚羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  33,
-                        "sport":  "桌球",
-                        "arena":  "鷹揚羽球館(桌球場)",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  34,
-                        "sport":  "匹克球",
-                        "arena":  "鷹揚羽球館(匹克球場)",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  35,
-                        "sport":  "匹克球",
-                        "arena":  "潭子運動中心3F",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  36,
-                        "sport":  "匹克球",
-                        "arena":  "Pickzone台中西屯",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  37,
-                        "sport":  "匹克球",
-                        "arena":  "台中港區運動公園",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  38,
-                        "sport":  "匹克球",
-                        "arena":  "2F綜合球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  39,
-                        "sport":  "匹克球",
-                        "arena":  "西雅圖匹克俱樂部",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  40,
-                        "sport":  "匹克球",
-                        "arena":  "PRF 匹克球玩轉基地",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  41,
-                        "sport":  "匹克球",
-                        "arena":  "GXS羽毛球雅潭館明鴻運動訓練中心",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  42,
-                        "sport":  "匹克球",
-                        "arena":  "豐原國民暨兒童運動中心3F",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  43,
-                        "sport":  "匹克球",
-                        "arena":  "Pickzone台中西屯",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  44,
-                        "sport":  "匹克球",
-                        "arena":  "新羽力俱樂部",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  45,
-                        "sport":  "匹克球",
-                        "arena":  "羽克打球聚會所",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  46,
-                        "sport":  "匹克球",
-                        "arena":  "2F綜合球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  47,
-                        "sport":  "玉米洞",
-                        "arena":  "玩樂倉庫複合式運動館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  48,
-                        "sport":  "羽球",
-                        "arena":  "南區羽球自由高醫館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  49,
-                        "sport":  "排球",
-                        "arena":  "排球訓練基地",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  50,
-                        "sport":  "排球",
-                        "arena":  "實踐大學體育館第二場女網",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  51,
-                        "sport":  "排球",
-                        "arena":  "蘆洲Oin排球基地",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  52,
-                        "sport":  "排球",
-                        "arena":  "永和運動中心6F ",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  53,
-                        "sport":  "排球",
-                        "arena":  "PCL 柏吉倫排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  54,
-                        "sport":  "排球",
-                        "arena":  "新莊259排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  55,
-                        "sport":  "匹克球",
-                        "arena":  "鎮昌國小",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  56,
-                        "sport":  "匹克球",
-                        "arena":  "鎮昌國小",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  57,
-                        "sport":  "匹克球",
-                        "arena":  "鎮昌國小",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  58,
-                        "sport":  "匹克球",
-                        "arena":  "諾亞羽球館/ 匹克球/ 皮拉提斯/ 瑜伽運動俱樂部",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  59,
-                        "sport":  "匹克球",
-                        "arena":  "DOPE水瀨綠洲匹克球俱樂部",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  60,
-                        "sport":  "排球",
-                        "arena":  "板城輕鬆玩",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  61,
-                        "sport":  "排球",
-                        "arena":  "新北新店北新國小綜合大樓四樓球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  62,
-                        "sport":  "排球",
-                        "arena":  "頭前國中（靠入口）球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  63,
-                        "sport":  "排球",
-                        "arena":  "板橋國中",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-                                         "introduce 行數過多（建議只留 5 行，其餘放工作表2）"
-                                     ]
-                    },
-                    {
-                        "sheetRow":  64,
-                        "sport":  "排球",
-                        "arena":  "文藻外語大學體育館一樓",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  65,
-                        "sport":  "排球",
-                        "arena":  "文藻外語大學體育館一樓",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  66,
-                        "sport":  "排球",
-                        "arena":  "文藻外語大學體育館一樓",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  67,
-                        "sport":  "排球",
-                        "arena":  "大寮MVC排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  68,
-                        "sport":  "排球",
-                        "arena":  "小咘排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-                                         "introduce 行數過多（建議只留 5 行，其餘放工作表2）"
-                                     ]
-                    },
-                    {
-                        "sheetRow":  69,
-                        "sport":  "排球",
-                        "arena":  "屏東大學屏商校區風雨球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  70,
-                        "sport":  "排球",
-                        "arena":  "嚮網排羽休閒旗艦館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  71,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  72,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  73,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  74,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  75,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  76,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  77,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  78,
-                        "sport":  "排球",
-                        "arena":  "活力小蛙泰林排球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  79,
-                        "sport":  "羽球",
-                        "arena":  "羽潮休閒館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  80,
-                        "sport":  "匹克球",
-                        "arena":  "苓雅運動中心綜合球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  81,
-                        "sport":  "匹克球",
-                        "arena":  "泰山羽神拍拍館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  82,
-                        "sport":  "羽球",
-                        "arena":  "鳳西羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  83,
-                        "sport":  "羽球",
-                        "arena":  "鳳西羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  84,
-                        "sport":  "羽球",
-                        "arena":  "神力羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  85,
-                        "sport":  "羽球",
-                        "arena":  "力羽美羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  86,
-                        "sport":  "羽球",
-                        "arena":  "力羽美羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  87,
-                        "sport":  "羽球",
-                        "arena":  "力羽美羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  88,
-                        "sport":  "羽球",
-                        "arena":  "力羽美羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  89,
-                        "sport":  "羽球",
-                        "arena":  "內惟國小",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  90,
-                        "sport":  "羽球",
-                        "arena":  "鳳西羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  91,
-                        "sport":  "羽球",
-                        "arena":  "仁愛國小",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  92,
-                        "sport":  "羽球",
-                        "arena":  "鳳西羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  93,
-                        "sport":  "羽球",
-                        "arena":  "苓雅國中",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  94,
-                        "sport":  "羽球",
-                        "arena":  "鳳西羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  95,
-                        "sport":  "羽球",
-                        "arena":  "More羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  96,
-                        "sport":  "羽球",
-                        "arena":  "YUNI 羽球場",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
                         "sheetRow":  97,
-                        "sport":  "羽球",
-                        "arena":  "戰將羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  98,
-                        "sport":  "羽球",
-                        "arena":  "復興國小",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  99,
-                        "sport":  "羽球",
-                        "arena":  "復興國小4樓禮堂",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  100,
-                        "sport":  "羽球",
-                        "arena":  "仁武羽利羽球館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  101,
                         "sport":  "羽球",
                         "arena":  "鼎金國中",
                         "ok":  true,
@@ -1242,7 +55,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  102,
+                        "sheetRow":  98,
                         "sport":  "羽球",
                         "arena":  "苓洲國小活動中心3F",
                         "ok":  true,
@@ -1254,7 +67,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  103,
+                        "sheetRow":  99,
                         "sport":  "羽球",
                         "arena":  "左營概念館",
                         "ok":  true,
@@ -1266,7 +79,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  104,
+                        "sheetRow":  100,
                         "sport":  "羽球",
                         "arena":  "嘉世羽球館左楠館",
                         "ok":  true,
@@ -1278,7 +91,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  105,
+                        "sheetRow":  101,
                         "sport":  "羽球",
                         "arena":  "瘋羽球館",
                         "ok":  true,
@@ -1290,7 +103,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  106,
+                        "sheetRow":  102,
                         "sport":  "羽球",
                         "arena":  "嘉世羽球館左楠館",
                         "ok":  true,
@@ -1302,7 +115,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  107,
+                        "sheetRow":  103,
                         "sport":  "羽球",
                         "arena":  "More羽球館",
                         "ok":  true,
@@ -1314,7 +127,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  108,
+                        "sheetRow":  104,
                         "sport":  "羽球",
                         "arena":  "鳳西羽球館",
                         "ok":  true,
@@ -1326,7 +139,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  109,
+                        "sheetRow":  105,
                         "sport":  "羽球",
                         "arena":  "左營Wumo羽球館(愛惜羽毛團)",
                         "ok":  true,
@@ -1338,9 +151,57 @@
                                      ]
                     },
                     {
-                        "sheetRow":  110,
+                        "sheetRow":  106,
                         "sport":  "羽球",
                         "arena":  "More羽球館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  107,
+                        "sport":  "羽球",
+                        "arena":  "鳳西羽球館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  108,
+                        "sport":  "羽球",
+                        "arena":  "力羽美下午團",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  109,
+                        "sport":  "羽球",
+                        "arena":  "優勢冷氣羽球館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  110,
+                        "sport":  "羽球",
+                        "arena":  "G山羽球隊",
                         "ok":  true,
                         "errors":  [
 
@@ -1352,7 +213,7 @@
                     {
                         "sheetRow":  111,
                         "sport":  "羽球",
-                        "arena":  "鳳西羽球館",
+                        "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球徵固定和",
                         "ok":  true,
                         "errors":  [
 
@@ -1364,7 +225,7 @@
                     {
                         "sheetRow":  112,
                         "sport":  "羽球",
-                        "arena":  "力羽美下午團",
+                        "arena":  "以球會友",
                         "ok":  true,
                         "errors":  [
 
@@ -1376,7 +237,7 @@
                     {
                         "sheetRow":  113,
                         "sport":  "羽球",
-                        "arena":  "優勢冷氣羽球館",
+                        "arena":  "XS羽球團",
                         "ok":  true,
                         "errors":  [
 
@@ -1388,7 +249,7 @@
                     {
                         "sheetRow":  114,
                         "sport":  "羽球",
-                        "arena":  "G山羽球隊",
+                        "arena":  "午後羽茶時光高光624羽球隊",
                         "ok":  true,
                         "errors":  [
 
@@ -1400,7 +261,7 @@
                     {
                         "sheetRow":  115,
                         "sport":  "羽球",
-                        "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球徵固定和",
+                        "arena":  "羽Vi同樂",
                         "ok":  true,
                         "errors":  [
 
@@ -1412,7 +273,7 @@
                     {
                         "sheetRow":  116,
                         "sport":  "羽球",
-                        "arena":  "以球會友",
+                        "arena":  "高雄大裕隊",
                         "ok":  true,
                         "errors":  [
 
@@ -1424,7 +285,7 @@
                     {
                         "sheetRow":  117,
                         "sport":  "羽球",
-                        "arena":  "XS羽球團",
+                        "arena":  "力羽美下午團",
                         "ok":  true,
                         "errors":  [
 
@@ -1436,54 +297,6 @@
                     {
                         "sheetRow":  118,
                         "sport":  "羽球",
-                        "arena":  "午後羽茶時光高光624羽球隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  119,
-                        "sport":  "羽球",
-                        "arena":  "羽Vi同樂",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  120,
-                        "sport":  "羽球",
-                        "arena":  "高雄大裕隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  121,
-                        "sport":  "羽球",
-                        "arena":  "力羽美下午團",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  122,
-                        "sport":  "羽球",
                         "arena":  "四海羽我羽球隊",
                         "ok":  true,
                         "errors":  [
@@ -1494,7 +307,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  123,
+                        "sheetRow":  119,
                         "sport":  "籃球",
                         "arena":  "勝負慾太高 怪隊",
                         "ok":  true,
@@ -1506,7 +319,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  124,
+                        "sheetRow":  120,
                         "sport":  "羽球",
                         "arena":  "三民區莊敬國小羽球館1面場地",
                         "ok":  true,
@@ -1518,7 +331,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  125,
+                        "sheetRow":  121,
                         "sport":  "羽球",
                         "arena":  "賀逗陣 週三團",
                         "ok":  true,
@@ -1530,7 +343,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  126,
+                        "sheetRow":  122,
                         "sport":  "羽球",
                         "arena":  "新手互戳羽球團",
                         "ok":  true,
@@ -1542,7 +355,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  127,
+                        "sheetRow":  123,
                         "sport":  "羽球",
                         "arena":  "技擊館羽球團",
                         "ok":  true,
@@ -1554,7 +367,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  128,
+                        "sheetRow":  124,
                         "sport":  "羽球",
                         "arena":  "羽凡團子｜溫馨揪團打球",
                         "ok":  true,
@@ -1566,7 +379,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  129,
+                        "sheetRow":  125,
                         "sport":  "羽球",
                         "arena":  "光榮國小",
                         "ok":  true,
@@ -1578,7 +391,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  130,
+                        "sheetRow":  126,
                         "sport":  "羽球",
                         "arena":  "優勢冷氣羽球館",
                         "ok":  true,
@@ -1590,7 +403,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  131,
+                        "sheetRow":  127,
                         "sport":  "羽球",
                         "arena":  "就將星期二下午團",
                         "ok":  true,
@@ -1602,7 +415,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  132,
+                        "sheetRow":  128,
                         "sport":  "羽球",
                         "arena":  "新力羽球仁武館",
                         "ok":  true,
@@ -1614,7 +427,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  133,
+                        "sheetRow":  129,
                         "sport":  "羽球",
                         "arena":  "奧本羽球館",
                         "ok":  true,
@@ -1626,7 +439,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  134,
+                        "sheetRow":  130,
                         "sport":  "羽球",
                         "arena":  "More 羽球館",
                         "ok":  true,
@@ -1638,7 +451,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  135,
+                        "sheetRow":  131,
                         "sport":  "羽球",
                         "arena":  "歡樂羽球團",
                         "ok":  true,
@@ -1650,7 +463,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  136,
+                        "sheetRow":  132,
                         "sport":  "羽球",
                         "arena":  "阿瑪莉莉絲羽球團",
                         "ok":  true,
@@ -1662,7 +475,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  137,
+                        "sheetRow":  133,
                         "sport":  "羽球",
                         "arena":  "鳳西羽球館",
                         "ok":  true,
@@ -1674,7 +487,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  138,
+                        "sheetRow":  134,
                         "sport":  "羽球",
                         "arena":  "南區高醫自由館第2、3、4場地",
                         "ok":  true,
@@ -1686,7 +499,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  139,
+                        "sheetRow":  135,
                         "sport":  "羽球",
                         "arena":  "榮總好朋友羽球隊",
                         "ok":  true,
@@ -1698,7 +511,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  140,
+                        "sheetRow":  136,
                         "sport":  "羽球",
                         "arena":  "前鎮區復興國小四樓禮堂",
                         "ok":  true,
@@ -1710,7 +523,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  141,
+                        "sheetRow":  137,
                         "sport":  "羽球",
                         "arena":  "《追球格格》羽球隊",
                         "ok":  true,
@@ -1722,7 +535,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  142,
+                        "sheetRow":  138,
                         "sport":  "羽球",
                         "arena":  "G山羽球隊",
                         "ok":  true,
@@ -1734,7 +547,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  143,
+                        "sheetRow":  139,
                         "sport":  "羽球",
                         "arena":  "羽曜球團",
                         "ok":  true,
@@ -1746,7 +559,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  144,
+                        "sheetRow":  140,
                         "sport":  "羽球",
                         "arena":  "可以打得非常盡興，完全消耗體力，高CP值球團",
                         "ok":  true,
@@ -1758,7 +571,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  145,
+                        "sheetRow":  141,
                         "sport":  "羽球",
                         "arena":  "不用等太久羽球團",
                         "ok":  true,
@@ -1770,7 +583,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  146,
+                        "sheetRow":  142,
                         "sport":  "羽球",
                         "arena":  "徵固定",
                         "ok":  true,
@@ -1782,7 +595,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  147,
+                        "sheetRow":  143,
                         "sport":  "羽球",
                         "arena":  "來帕羽球",
                         "ok":  true,
@@ -1794,7 +607,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  148,
+                        "sheetRow":  144,
                         "sport":  "羽球",
                         "arena":  "山山羽球",
                         "ok":  true,
@@ -1806,7 +619,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  149,
+                        "sheetRow":  145,
                         "sport":  "羽球",
                         "arena":  "羽利羽球館",
                         "ok":  true,
@@ -1818,7 +631,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  150,
+                        "sheetRow":  146,
                         "sport":  "羽球",
                         "arena":  "東尼美術館羽球館",
                         "ok":  true,
@@ -1830,7 +643,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  151,
+                        "sheetRow":  147,
                         "sport":  "羽球",
                         "arena":  "《梓羽球團",
                         "ok":  true,
@@ -1842,7 +655,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  152,
+                        "sheetRow":  148,
                         "sport":  "羽球",
                         "arena":  "東尼鳳山 羽球館",
                         "ok":  true,
@@ -1854,7 +667,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  153,
+                        "sheetRow":  149,
                         "sport":  "羽球",
                         "arena":  "GOGO21羽球團",
                         "ok":  true,
@@ -1866,7 +679,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  154,
+                        "sheetRow":  150,
                         "sport":  "羽球",
                         "arena":  "凱富羽球館",
                         "ok":  true,
@@ -1878,7 +691,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  155,
+                        "sheetRow":  151,
                         "sport":  "羽球",
                         "arena":  "鳳西 星期二 團",
                         "ok":  true,
@@ -1890,7 +703,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  156,
+                        "sheetRow":  152,
                         "sport":  "羽球",
                         "arena":  "［吃飽再打羽球隊",
                         "ok":  true,
@@ -1902,7 +715,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  157,
+                        "sheetRow":  153,
                         "sport":  "羽球",
                         "arena":  "［早上羽球隊",
                         "ok":  true,
@@ -1914,7 +727,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  158,
+                        "sheetRow":  154,
                         "sport":  "羽球",
                         "arena":  "快樂球隊",
                         "ok":  true,
@@ -1926,7 +739,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  159,
+                        "sheetRow":  155,
                         "sport":  "羽球",
                         "arena":  "BMT羽球團",
                         "ok":  true,
@@ -1938,7 +751,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  160,
+                        "sheetRow":  156,
                         "sport":  "羽球",
                         "arena":  "星光夜羽羽球隊",
                         "ok":  true,
@@ -1950,7 +763,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  161,
+                        "sheetRow":  157,
                         "sport":  "羽球",
                         "arena":  "小怪獸羽球團",
                         "ok":  true,
@@ -1962,7 +775,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  162,
+                        "sheetRow":  158,
                         "sport":  "羽球",
                         "arena":  "格洛斯特 羽球隊",
                         "ok":  true,
@@ -1974,7 +787,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  163,
+                        "sheetRow":  159,
                         "sport":  "羽球",
                         "arena":  "梓羽球團",
                         "ok":  true,
@@ -1986,7 +799,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  164,
+                        "sheetRow":  160,
                         "sport":  "羽球",
                         "arena":  "Snake羽球隊",
                         "ok":  true,
@@ -1998,7 +811,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  165,
+                        "sheetRow":  161,
                         "sport":  "羽球",
                         "arena":  "南Fang夜訓團",
                         "ok":  true,
@@ -2010,7 +823,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  166,
+                        "sheetRow":  162,
                         "sport":  "羽球",
                         "arena":  "鳳西 星期五團",
                         "ok":  true,
@@ -2022,7 +835,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  167,
+                        "sheetRow":  163,
                         "sport":  "羽球",
                         "arena":  "［晚上羽球隊",
                         "ok":  true,
@@ -2034,7 +847,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  168,
+                        "sheetRow":  164,
                         "sport":  "羽球",
                         "arena":  "柏林羽球隊",
                         "ok":  true,
@@ -2046,7 +859,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  169,
+                        "sheetRow":  165,
                         "sport":  "羽球",
                         "arena":  "羽宙team",
                         "ok":  true,
@@ -2058,7 +871,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  170,
+                        "sheetRow":  166,
                         "sport":  "羽球",
                         "arena":  "透中午羽你同樂 固定每週六徵零打",
                         "ok":  true,
@@ -2070,7 +883,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  171,
+                        "sheetRow":  167,
                         "sport":  "羽球",
                         "arena":  "More羽球館",
                         "ok":  true,
@@ -2082,7 +895,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  172,
+                        "sheetRow":  168,
                         "sport":  "羽球",
                         "arena":  "德蔻羽球團",
                         "ok":  true,
@@ -2094,7 +907,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  173,
+                        "sheetRow":  169,
                         "sport":  "羽球",
                         "arena":  "德蔻許願羽球團",
                         "ok":  true,
@@ -2106,7 +919,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  174,
+                        "sheetRow":  170,
                         "sport":  "羽球",
                         "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球徵",
                         "ok":  true,
@@ -2118,7 +931,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  175,
+                        "sheetRow":  171,
                         "sport":  "羽球",
                         "arena":  "ㄎㄧㄤ ㄎㄧㄤ羽球",
                         "ok":  true,
@@ -2130,7 +943,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  176,
+                        "sheetRow":  172,
                         "sport":  "羽球",
                         "arena":  "康橋羽球館",
                         "ok":  true,
@@ -2142,7 +955,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  177,
+                        "sheetRow":  173,
                         "sport":  "羽球",
                         "arena":  "隼勝羽球隊",
                         "ok":  true,
@@ -2154,7 +967,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  178,
+                        "sheetRow":  174,
                         "sport":  "羽球",
                         "arena":  "陀螺羽球隊",
                         "ok":  true,
@@ -2166,7 +979,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  179,
+                        "sheetRow":  175,
                         "sport":  "羽球",
                         "arena":  "民族館",
                         "ok":  true,
@@ -2178,7 +991,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  180,
+                        "sheetRow":  176,
                         "sport":  "羽球",
                         "arena":  "星勝羽球館",
                         "ok":  true,
@@ -2190,7 +1003,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  181,
+                        "sheetRow":  177,
                         "sport":  "羽球",
                         "arena":  "星勝羽球館",
                         "ok":  true,
@@ -2202,7 +1015,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  182,
+                        "sheetRow":  178,
                         "sport":  "羽球",
                         "arena":  "星勝羽球館-有點多羽羽球團",
                         "ok":  true,
@@ -2214,7 +1027,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  183,
+                        "sheetRow":  179,
                         "sport":  "羽球",
                         "arena":  "星勝羽球館",
                         "ok":  true,
@@ -2226,7 +1039,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  184,
+                        "sheetRow":  180,
                         "sport":  "羽球",
                         "arena":  "世大羽球館-藥聯羽球隊",
                         "ok":  true,
@@ -2238,7 +1051,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  185,
+                        "sheetRow":  181,
                         "sport":  "羽球",
                         "arena":  "世大羽球館-炸蝦羽球隊",
                         "ok":  true,
@@ -2250,7 +1063,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  186,
+                        "sheetRow":  182,
                         "sport":  "羽球",
                         "arena":  "屏東信義羽球場-不收新手，",
                         "ok":  true,
@@ -2262,7 +1075,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  187,
+                        "sheetRow":  183,
                         "sport":  "羽球",
                         "arena":  "屏東 世大羽球館",
                         "ok":  true,
@@ -2274,7 +1087,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  188,
+                        "sheetRow":  184,
                         "sport":  "羽球",
                         "arena":  "屏東信義羽球館",
                         "ok":  true,
@@ -2286,7 +1099,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  189,
+                        "sheetRow":  185,
                         "sport":  "羽球",
                         "arena":  "大樹體育館",
                         "ok":  true,
@@ -2298,7 +1111,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  190,
+                        "sheetRow":  186,
                         "sport":  "羽球",
                         "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
                         "ok":  true,
@@ -2310,7 +1123,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  191,
+                        "sheetRow":  187,
                         "sport":  "羽球",
                         "arena":  "嘉鴻羽球館「嘉鴻」",
                         "ok":  true,
@@ -2322,7 +1135,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  192,
+                        "sheetRow":  188,
                         "sport":  "羽球",
                         "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
                         "ok":  true,
@@ -2334,7 +1147,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  193,
+                        "sheetRow":  189,
                         "sport":  "羽球",
                         "arena":  "嘉得羽球館-樂咖羽球隊",
                         "ok":  true,
@@ -2346,7 +1159,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  194,
+                        "sheetRow":  190,
                         "sport":  "羽球",
                         "arena":  "嘉鴻羽球館「嘉鴻」",
                         "ok":  true,
@@ -2358,7 +1171,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  195,
+                        "sheetRow":  191,
                         "sport":  "羽球",
                         "arena":  "香湖羽球館新館",
                         "ok":  true,
@@ -2370,7 +1183,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  196,
+                        "sheetRow":  192,
                         "sport":  "羽球",
                         "arena":  "湖美羽球館",
                         "ok":  false,
@@ -2382,7 +1195,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  197,
+                        "sheetRow":  193,
                         "sport":  "羽球",
                         "arena":  "福興羽球館-純羽球",
                         "ok":  true,
@@ -2394,7 +1207,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  198,
+                        "sheetRow":  194,
                         "sport":  "羽球",
                         "arena":  "嘉鴻羽球館",
                         "ok":  true,
@@ -2406,7 +1219,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  199,
+                        "sheetRow":  195,
                         "sport":  "羽球",
                         "arena":  "台北市信義區吳興國小",
                         "ok":  true,
@@ -2418,7 +1231,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  200,
+                        "sheetRow":  196,
                         "sport":  "羽球",
                         "arena":  "成功高中0620端午徵求4人",
                         "ok":  true,
@@ -2430,7 +1243,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  201,
+                        "sheetRow":  197,
                         "sport":  "羽球",
                         "arena":  "新北三重運動中心-三重羽球",
                         "ok":  true,
@@ -2442,7 +1255,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  202,
+                        "sheetRow":  198,
                         "sport":  "羽球",
                         "arena":  "中山運動中心4 樓-羽毛球",
                         "ok":  true,
@@ -2454,7 +1267,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  203,
+                        "sheetRow":  199,
                         "sport":  "羽球",
                         "arena":  "延平國小羽球館",
                         "ok":  true,
@@ -2466,7 +1279,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  204,
+                        "sheetRow":  200,
                         "sport":  "羽球",
                         "arena":  "台北市信義區吳興國小",
                         "ok":  true,
@@ -2478,7 +1291,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  205,
+                        "sheetRow":  201,
                         "sport":  "羽球",
                         "arena":  "大安運動中心",
                         "ok":  true,
@@ -2490,7 +1303,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  206,
+                        "sheetRow":  202,
                         "sport":  "羽球",
                         "arena":  "南港運動中心",
                         "ok":  true,
@@ -2502,7 +1315,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  207,
+                        "sheetRow":  203,
                         "sport":  "羽球",
                         "arena":  "板橋羽球館6/23-AI排版，不用擔心自己來打找不到隊",
                         "ok":  true,
@@ -2514,7 +1327,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  208,
+                        "sheetRow":  204,
                         "sport":  "羽球",
                         "arena":  "中山運動中心4樓",
                         "ok":  true,
@@ -2526,7 +1339,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  209,
+                        "sheetRow":  205,
                         "sport":  "羽球",
                         "arena":  "森羽羽球館",
                         "ok":  true,
@@ -2538,7 +1351,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  210,
+                        "sheetRow":  206,
                         "sport":  "匹克球",
                         "arena":  "鼓山運動中心-來帕匹克球隊",
                         "ok":  true,
@@ -2550,7 +1363,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  211,
+                        "sheetRow":  207,
                         "sport":  "匹克球",
                         "arena":  "鼓山運動中心-來帕匹克球隊",
                         "ok":  true,
@@ -2562,7 +1375,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  212,
+                        "sheetRow":  208,
                         "sport":  "匹克球",
                         "arena":  "羽神拍拍館",
                         "ok":  true,
@@ -2574,7 +1387,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  213,
+                        "sheetRow":  209,
                         "sport":  "匹克球",
                         "arena":  "三重碧華國小-三重匹克球團",
                         "ok":  true,
@@ -2586,7 +1399,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  214,
+                        "sheetRow":  210,
                         "sport":  "匹克球",
                         "arena":  "丁克斯匹克球場-PGC 週六高雄",
                         "ok":  true,
@@ -2598,7 +1411,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  215,
+                        "sheetRow":  211,
                         "sport":  "匹克球",
                         "arena":  "匹克贏球場-匹克球",
                         "ok":  true,
@@ -2610,7 +1423,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  216,
+                        "sheetRow":  212,
                         "sport":  "匹克球",
                         "arena":  "前鎮 鎮昌國小 - 龍哥匹克球俱樂部",
                         "ok":  true,
@@ -2622,7 +1435,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  217,
+                        "sheetRow":  213,
                         "sport":  "羽球",
                         "arena":  "動力羽球館-徵球友",
                         "ok":  true,
@@ -2634,7 +1447,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  218,
+                        "sheetRow":  214,
                         "sport":  "羽球",
                         "arena":  "自強國中5樓羽球場-欣動羽球 6/16(二) ",
                         "ok":  true,
@@ -2646,7 +1459,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  219,
+                        "sheetRow":  215,
                         "sport":  "羽球",
                         "arena":  "會稽國小禮堂",
                         "ok":  true,
@@ -2658,7 +1471,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  220,
+                        "sheetRow":  216,
                         "sport":  "羽球",
                         "arena":  "桃園國民運動中心4樓-週三",
                         "ok":  true,
@@ -2670,7 +1483,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  221,
+                        "sheetRow":  217,
                         "sport":  "羽球",
                         "arena":  "展躍羽球館7號場-週三羽貓球羽球團",
                         "ok":  true,
@@ -2682,7 +1495,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  222,
+                        "sheetRow":  218,
                         "sport":  "羽球",
                         "arena":  "東泰羽球會館-徵零打",
                         "ok":  true,
@@ -2694,7 +1507,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  223,
+                        "sheetRow":  219,
                         "sport":  "羽球",
                         "arena":  "鶯歌國民運動中心2樓-新傳羽球隊",
                         "ok":  true,
@@ -2706,7 +1519,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  224,
+                        "sheetRow":  220,
                         "sport":  "羽球",
                         "arena":  "八德動力羽球館-羽球暢打",
                         "ok":  true,
@@ -2718,7 +1531,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  225,
+                        "sheetRow":  221,
                         "sport":  "羽球",
                         "arena":  "蘆竹羽球館3F二號場地-姊妹歡樂流汗球隊",
                         "ok":  true,
@@ -2730,7 +1543,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  226,
+                        "sheetRow":  222,
                         "sport":  "羽球",
                         "arena":  "蘆竹羽球館3F",
                         "ok":  true,
@@ -2742,7 +1555,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  227,
+                        "sheetRow":  223,
                         "sport":  "羽球",
                         "arena":  "翼升羽球館",
                         "ok":  true,
@@ -2754,7 +1567,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  228,
+                        "sheetRow":  224,
                         "sport":  "羽球",
                         "arena":  "太子羽球館 第2、3場地",
                         "ok":  true,
@@ -2766,7 +1579,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  229,
+                        "sheetRow":  225,
                         "sport":  "羽球",
                         "arena":  "忠孝國中",
                         "ok":  true,
@@ -2778,7 +1591,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  230,
+                        "sheetRow":  226,
                         "sport":  "羽球",
                         "arena":  "振翔羽球館-星期日",
                         "ok":  true,
@@ -2790,7 +1603,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  231,
+                        "sheetRow":  227,
                         "sport":  "羽球",
                         "arena":  "享飛羽球館-羽球隊",
                         "ok":  true,
@@ -2802,7 +1615,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  232,
+                        "sheetRow":  228,
                         "sport":  "羽球",
                         "arena":  "竹北市安興國小羽球場",
                         "ok":  true,
@@ -2814,7 +1627,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  233,
+                        "sheetRow":  229,
                         "sport":  "羽球",
                         "arena":  "寶山晴天羽球館",
                         "ok":  true,
@@ -2826,7 +1639,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  234,
+                        "sheetRow":  230,
                         "sport":  "羽球",
                         "arena":  "POWER羽球館",
                         "ok":  true,
@@ -2838,7 +1651,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  235,
+                        "sheetRow":  231,
                         "sport":  "羽球",
                         "arena":  "金羽羽球館-時段",
                         "ok":  true,
@@ -2850,7 +1663,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  236,
+                        "sheetRow":  232,
                         "sport":  "羽球",
                         "arena":  "金羽羽球館-星期六)",
                         "ok":  true,
@@ -2862,7 +1675,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  237,
+                        "sheetRow":  233,
                         "sport":  "羽球",
                         "arena":  "動智AI羽球館2-3場固定場",
                         "ok":  true,
@@ -2874,7 +1687,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  238,
+                        "sheetRow":  234,
                         "sport":  "羽球",
                         "arena":  "竹北維特羽球館",
                         "ok":  true,
@@ -2886,7 +1699,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  239,
+                        "sheetRow":  235,
                         "sport":  "羽球",
                         "arena":  "振翔羽球館",
                         "ok":  true,
@@ -2898,7 +1711,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  240,
+                        "sheetRow":  236,
                         "sport":  "羽球",
                         "arena":  "金羽羽球館",
                         "ok":  true,
@@ -2910,7 +1723,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  241,
+                        "sheetRow":  237,
                         "sport":  "羽球",
                         "arena":  "沛傑羽球館",
                         "ok":  true,
@@ -2922,7 +1735,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  242,
+                        "sheetRow":  238,
                         "sport":  "羽球",
                         "arena":  "竹東鎮立羽球館-星期日",
                         "ok":  true,
@@ -2934,7 +1747,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  243,
+                        "sheetRow":  239,
                         "sport":  "羽球",
                         "arena":  "金拍羽球館",
                         "ok":  true,
@@ -2946,7 +1759,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  244,
+                        "sheetRow":  240,
                         "sport":  "羽球",
                         "arena":  "東峰羽球館",
                         "ok":  true,
@@ -2958,7 +1771,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  245,
+                        "sheetRow":  241,
                         "sport":  "羽球",
                         "arena":  "鼓山運動中心",
                         "ok":  true,
@@ -2970,7 +1783,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  246,
+                        "sheetRow":  242,
                         "sport":  "羽球",
                         "arena":  "金拍羽球館 - 羽你相聚團",
                         "ok":  true,
@@ -2982,7 +1795,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  247,
+                        "sheetRow":  243,
                         "sport":  "羽球",
                         "arena":  "學進國小",
                         "ok":  true,
@@ -2994,7 +1807,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  248,
+                        "sheetRow":  244,
                         "sport":  "羽球",
                         "arena":  "新福羽球館",
                         "ok":  true,
@@ -3006,7 +1819,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  249,
+                        "sheetRow":  245,
                         "sport":  "羽球",
                         "arena":  "南屯運動中心3樓-羽球隊",
                         "ok":  true,
@@ -3018,7 +1831,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  250,
+                        "sheetRow":  246,
                         "sport":  "羽球",
                         "arena":  "西屯區 朝馬運動中心-週四",
                         "ok":  true,
@@ -3030,7 +1843,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  251,
+                        "sheetRow":  247,
                         "sport":  "羽球",
                         "arena":  "GXS雅潭館-小週末羽球團",
                         "ok":  true,
@@ -3042,7 +1855,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  252,
+                        "sheetRow":  248,
                         "sport":  "羽球",
                         "arena":  "球館有免費停車場、淋浴間-羽球隊",
                         "ok":  true,
@@ -3054,7 +1867,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  253,
+                        "sheetRow":  249,
                         "sport":  "羽球",
                         "arena":  "北區 運動中心 一面場地-睛靈羽球隊",
                         "ok":  true,
@@ -3066,7 +1879,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  254,
+                        "sheetRow":  250,
                         "sport":  "羽球",
                         "arena":  "臺灣體育運動大學羽球場-哲哲Chill隊",
                         "ok":  true,
@@ -3078,7 +1891,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  255,
+                        "sheetRow":  251,
                         "sport":  "羽球",
                         "arena":  "福雅羽球會館",
                         "ok":  true,
@@ -3090,7 +1903,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  256,
+                        "sheetRow":  252,
                         "sport":  "羽球",
                         "arena":  "大翔羽球館",
                         "ok":  true,
@@ -3102,7 +1915,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  257,
+                        "sheetRow":  253,
                         "sport":  "羽球",
                         "arena":  "東原羽球館",
                         "ok":  true,
@@ -3114,7 +1927,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  258,
+                        "sheetRow":  254,
                         "sport":  "羽球",
                         "arena":  "大墩羽球館",
                         "ok":  true,
@@ -3126,7 +1939,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  259,
+                        "sheetRow":  255,
                         "sport":  "羽球",
                         "arena":  "台中市朝馬國民運動中心",
                         "ok":  true,
@@ -3138,7 +1951,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  260,
+                        "sheetRow":  256,
                         "sport":  "羽球",
                         "arena":  "新福羽球館",
                         "ok":  true,
@@ -3150,7 +1963,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  261,
+                        "sheetRow":  257,
                         "sport":  "羽球",
                         "arena":  "帥宏羽球館",
                         "ok":  true,
@@ -3162,7 +1975,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  262,
+                        "sheetRow":  258,
                         "sport":  "羽球",
                         "arena":  "洲際羽球館-難瘦香菇羽球隊",
                         "ok":  true,
@@ -3174,7 +1987,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  263,
+                        "sheetRow":  259,
                         "sport":  "羽球",
                         "arena":  "南屯運動中心3樓-羽球隊",
                         "ok":  true,
@@ -3186,7 +1999,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  264,
+                        "sheetRow":  260,
                         "sport":  "羽球",
                         "arena":  "西屯區 朝馬運動中心-週四",
                         "ok":  true,
@@ -3198,7 +2011,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  265,
+                        "sheetRow":  261,
                         "sport":  "羽球",
                         "arena":  "羽奏羽球館-哇打羽球隊",
                         "ok":  true,
@@ -3210,7 +2023,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  266,
+                        "sheetRow":  262,
                         "sport":  "羽球",
                         "arena":  "朝馬國民運動中心",
                         "ok":  true,
@@ -3222,7 +2035,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  267,
+                        "sheetRow":  263,
                         "sport":  "羽球",
                         "arena":  "大都會福華羽球館",
                         "ok":  true,
@@ -3234,7 +2047,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  268,
+                        "sheetRow":  264,
                         "sport":  "羽球",
                         "arena":  "中信羽球館 【請直接到 8 號場地報到】",
                         "ok":  true,
@@ -3246,7 +2059,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  269,
+                        "sheetRow":  265,
                         "sport":  "匹克球",
                         "arena":  "TYNPCLUB",
                         "ok":  true,
@@ -3258,7 +2071,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  270,
+                        "sheetRow":  266,
                         "sport":  "匹克球",
                         "arena":  "星空網球場",
                         "ok":  true,
@@ -3270,7 +2083,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  271,
+                        "sheetRow":  267,
                         "sport":  "匹克球",
                         "arena":  "TYNP Club DUPR NO.38",
                         "ok":  true,
@@ -3282,7 +2095,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  272,
+                        "sheetRow":  268,
                         "sport":  "羽球",
                         "arena":  "羽動洄瀾運動球館",
                         "ok":  true,
@@ -3294,7 +2107,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  273,
+                        "sheetRow":  269,
                         "sport":  "羽球",
                         "arena":  "地 點:小窩242羽球休閒館",
                         "ok":  true,
@@ -3306,7 +2119,7 @@
                                      ]
                     },
                     {
-                        "sheetRow":  274,
+                        "sheetRow":  270,
                         "sport":  "羽球",
                         "arena":  "羽勁球館",
                         "ok":  true,
@@ -3318,9 +2131,57 @@
                                      ]
                     },
                     {
-                        "sheetRow":  275,
+                        "sheetRow":  271,
                         "sport":  "羽球",
                         "arena":  "羽動洄瀾運動球館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  272,
+                        "sport":  "羽球",
+                        "arena":  "小窩242羽球休閒館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  273,
+                        "sport":  "羽球",
+                        "arena":  "冠羽羽球館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  274,
+                        "sport":  "羽球",
+                        "arena":  "中原國小體育館",
+                        "ok":  true,
+                        "errors":  [
+
+                                   ],
+                        "warnings":  [
+
+                                     ]
+                    },
+                    {
+                        "sheetRow":  275,
+                        "sport":  "羽球",
+                        "arena":  "大業羽球隊",
                         "ok":  true,
                         "errors":  [
 
@@ -3343,8 +2204,8 @@
                     },
                     {
                         "sheetRow":  277,
-                        "sport":  "羽球",
-                        "arena":  "冠羽羽球館",
+                        "sport":  "棒球",
+                        "arena":  "個人分兩隊",
                         "ok":  true,
                         "errors":  [
 
@@ -3356,49 +2217,13 @@
                     {
                         "sheetRow":  278,
                         "sport":  "羽球",
-                        "arena":  "中原國小體育館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  279,
-                        "sport":  "羽球",
-                        "arena":  "大業羽球隊",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  280,
-                        "sport":  "羽球",
-                        "arena":  "小窩242羽球休閒館",
-                        "ok":  true,
-                        "errors":  [
-
-                                   ],
-                        "warnings":  [
-
-                                     ]
-                    },
-                    {
-                        "sheetRow":  281,
-                        "sport":  "匹克球",
-                        "arena":  "樂活匹克球館｜假日兒童匹克球班 招生中！",
+                        "arena":  " 東和歡樂羽球團",
                         "ok":  false,
                         "errors":  [
-                                       "introduce 缺少「程度：」"
+                                       "introduce 缺少「用球：」"
                                    ],
                         "warnings":  [
-
+                                         "introduce 行數過多（建議只留 5 行，其餘放工作表2）"
                                      ]
                     }
                 ],
@@ -3406,223 +2231,131 @@
                             {
                                 "arena":  "帝寶羽球館第1、2、3號場地-嘉裕羽球隊",
                                 "sheetRows":  [
-                                                  190,
-                                                  192
+                                                  186,
+                                                  188
                                               ],
                                 "count":  2
                             },
                             {
-                                "arena":  "鎮昌國小",
-                                "sheetRows":  [
-                                                  55,
-                                                  56,
-                                                  57
-                                              ],
-                                "count":  3
-                            },
-                            {
                                 "arena":  "小窩242羽球休閒館",
                                 "sheetRows":  [
-                                                  276,
-                                                  280
+                                                  272,
+                                                  276
                                               ],
                                 "count":  2
                             },
                             {
                                 "arena":  "嘉鴻羽球館「嘉鴻」",
                                 "sheetRows":  [
-                                                  191,
-                                                  194
+                                                  187,
+                                                  190
                                               ],
                                 "count":  2
-                            },
-                            {
-                                "arena":  "嘉世羽球館左楠館",
-                                "sheetRows":  [
-                                                  104,
-                                                  106
-                                              ],
-                                "count":  2
-                            },
-                            {
-                                "arena":  "嘉世羽球館",
-                                "sheetRows":  [
-                                                  26,
-                                                  27,
-                                                  28,
-                                                  29
-                                              ],
-                                "count":  4
                             },
                             {
                                 "arena":  "More羽球館",
                                 "sheetRows":  [
-                                                  95,
-                                                  107,
-                                                  110,
-                                                  171
+                                                  103,
+                                                  106,
+                                                  167
                                               ],
-                                "count":  4
+                                "count":  3
                             },
                             {
                                 "arena":  "星勝羽球館",
                                 "sheetRows":  [
-                                                  180,
-                                                  181,
-                                                  183
+                                                  176,
+                                                  177,
+                                                  179
                                               ],
                                 "count":  3
-                            },
-                            {
-                                "arena":  "鼓山運動中心-來帕匹克球隊",
-                                "sheetRows":  [
-                                                  210,
-                                                  211
-                                              ],
-                                "count":  2
                             },
                             {
                                 "arena":  "新福羽球館",
                                 "sheetRows":  [
-                                                  248,
-                                                  260
+                                                  244,
+                                                  256
                                               ],
                                 "count":  2
                             },
                             {
-                                "arena":  "文藻外語大學體育館一樓",
+                                "arena":  "鼓山運動中心-來帕匹克球隊",
                                 "sheetRows":  [
-                                                  64,
-                                                  65,
-                                                  66
-                                              ],
-                                "count":  3
-                            },
-                            {
-                                "arena":  "2F綜合球場",
-                                "sheetRows":  [
-                                                  38,
-                                                  46
+                                                  206,
+                                                  207
                                               ],
                                 "count":  2
                             },
                             {
                                 "arena":  "力羽美下午團",
                                 "sheetRows":  [
-                                                  112,
-                                                  121
+                                                  108,
+                                                  117
                                               ],
                                 "count":  2
                             },
                             {
                                 "arena":  "鳳西羽球館",
                                 "sheetRows":  [
-                                                  82,
-                                                  83,
-                                                  90,
-                                                  92,
-                                                  94,
-                                                  108,
-                                                  111,
-                                                  137
+                                                  104,
+                                                  107,
+                                                  133
                                               ],
-                                "count":  8
+                                "count":  3
                             },
                             {
                                 "arena":  "羽動洄瀾運動球館",
                                 "sheetRows":  [
-                                                  272,
-                                                  275
+                                                  268,
+                                                  271
                                               ],
                                 "count":  2
                             },
                             {
-                                "arena":  "鷹揚羽球館",
+                                "arena":  "嘉世羽球館左楠館",
                                 "sheetRows":  [
-                                                  24,
-                                                  30,
-                                                  31,
-                                                  32
+                                                  100,
+                                                  102
                                               ],
-                                "count":  4
+                                "count":  2
                             },
                             {
                                 "arena":  "台北市信義區吳興國小",
                                 "sheetRows":  [
-                                                  199,
-                                                  204
-                                              ],
-                                "count":  2
-                            },
-                            {
-                                "arena":  "力羽美羽球館",
-                                "sheetRows":  [
-                                                  85,
-                                                  86,
-                                                  87,
-                                                  88
-                                              ],
-                                "count":  4
-                            },
-                            {
-                                "arena":  "活力小蛙泰林排球館",
-                                "sheetRows":  [
-                                                  71,
-                                                  72,
-                                                  73,
-                                                  74,
-                                                  75,
-                                                  76,
-                                                  77,
-                                                  78
-                                              ],
-                                "count":  8
-                            },
-                            {
-                                "arena":  "G山羽球隊",
-                                "sheetRows":  [
-                                                  114,
-                                                  142
+                                                  195,
+                                                  200
                                               ],
                                 "count":  2
                             },
                             {
                                 "arena":  "西屯區 朝馬運動中心-週四",
                                 "sheetRows":  [
-                                                  250,
-                                                  264
+                                                  246,
+                                                  260
+                                              ],
+                                "count":  2
+                            },
+                            {
+                                "arena":  "G山羽球隊",
+                                "sheetRows":  [
+                                                  110,
+                                                  138
                                               ],
                                 "count":  2
                             },
                             {
                                 "arena":  "優勢冷氣羽球館",
                                 "sheetRows":  [
-                                                  113,
-                                                  130
+                                                  109,
+                                                  126
                                               ],
                                 "count":  2
                             },
                             {
                                 "arena":  "南屯運動中心3樓-羽球隊",
                                 "sheetRows":  [
-                                                  249,
-                                                  263
-                                              ],
-                                "count":  2
-                            },
-                            {
-                                "arena":  "新手互戳羽球團",
-                                "sheetRows":  [
-                                                  3,
-                                                  126
-                                              ],
-                                "count":  2
-                            },
-                            {
-                                "arena":  "Pickzone台中西屯",
-                                "sheetRows":  [
-                                                  36,
-                                                  43
+                                                  245,
+                                                  259
                                               ],
                                 "count":  2
                             }

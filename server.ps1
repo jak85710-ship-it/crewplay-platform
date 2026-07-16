@@ -1,5 +1,7 @@
-$port = 8080
+﻿$port = 8080
 $syncScript = Join-Path $PSScriptRoot "sync-catalog.ps1"
+$syncBaseScript = Join-Path $PSScriptRoot "sync-bases.ps1"
+$syncPartScript = Join-Path $PSScriptRoot "sync-parts.ps1"
 $lastSyncAt = [DateTime]::MinValue
 
 function Sync-CatalogIfNeeded {
@@ -23,6 +25,8 @@ function Sync-CatalogIfNeeded {
     if ($Force -or $latest -gt $lastSyncAt) {
         try {
             & powershell -ExecutionPolicy Bypass -File $syncScript | Out-Null
+            if (Test-Path $syncBaseScript) { & powershell -ExecutionPolicy Bypass -File $syncBaseScript | Out-Null }
+            if (Test-Path $syncPartScript) { & powershell -ExecutionPolicy Bypass -File $syncPartScript | Out-Null }
             $script:lastSyncAt = $latest
             Write-Host ("[AutoSync] catalog updated at " + (Get-Date).ToString("HH:mm:ss"))
         } catch {
@@ -33,9 +37,17 @@ function Sync-CatalogIfNeeded {
 
 Sync-CatalogIfNeeded -Force
 $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, $port)
-$listener.Start()
+try {
+    $listener.Start()
+} catch {
+    $fallback = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, 0)
+    $fallback.Start()
+    $listener = $fallback
+    $port = ([System.Net.IPEndPoint]$listener.LocalEndpoint).Port
+    Write-Host ("[Server] Port 8080 is busy, switched to http://localhost:" + $port)
+}
 Write-Host "Server successfully started directly on your machine!"
-Write-Host "Please open this URL in your browser: http://localhost:$port"
+Write-Host ("Please open this URL in your browser: http://localhost:" + $port)
 while ($true) {
     Sync-CatalogIfNeeded
     if (!$listener.Pending()) { Start-Sleep -Milliseconds 100; continue }
@@ -94,3 +106,4 @@ while ($true) {
     }
     $client.Close()
 }
+

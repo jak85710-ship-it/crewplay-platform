@@ -217,10 +217,10 @@
                    {
                        "categoryName":  "爪哇系列",
                        "id":  "java_001",
-                       "desc":  "爪哇鹿角蕨 - GSTRING",
+                       "desc":  "爪哇鹿角蕨 - GSTRING 價格",
                        "price":  2800,
                        "category":  "java",
-                       "name":  "GSTRING",
+                       "name":  "GSTRING 價格",
                        "img":  "assets/plants/java/java_001.jpg",
                        "brand":  "爪哇鹿角蕨",
                        "rarity":  4,
@@ -264,5 +264,434 @@
                    }
                ],
     "source":  "C:\\Users\\USER\\OneDrive\\桌面\\喚鹿工作室商品圖片",
-    "updated":  "2026-06-06 16:10:19"
+    "updated":  "2026-06-13 10:20:28",
+    "bases":  [
+                  {
+                      "id":  "board_013",
+                      "name":  "【日本限定款】WASHI",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1500,
+                      "img":  "assets/bases/board_013.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_023",
+                      "name":  "ALLOY亮麗銀",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1400,
+                      "img":  "assets/bases/board_023.webp",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_033",
+                      "name":  "haapa san 木頭板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  280,
+                      "img":  "assets/bases/board_033.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_043",
+                      "name":  "HAPPA SHIELD 盾牌造型板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  3200,
+                      "img":  "assets/bases/board_043.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_053",
+                      "name":  "HAPPA UCHIWA 扇子造型板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1400,
+                      "img":  "assets/bases/board_053.webp",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_063",
+                      "name":  "KIKO再生板材",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  300,
+                      "img":  "assets/bases/board_063.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_073",
+                      "name":  "SAKURA櫻花金",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1350,
+                      "img":  "assets/bases/board_073.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_083",
+                      "name":  "方形盒",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1680,
+                      "img":  "assets/bases/board_083.webp",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_093",
+                      "name":  "正方形板材 HAPPA SAN聯名",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  790,
+                      "img":  "assets/bases/board_093.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_103",
+                      "name":  "掛勾塑膠板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  150,
+                      "img":  "assets/bases/board_103.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_113",
+                      "name":  "掛籃",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  25,
+                      "img":  "assets/bases/board_113.jpg",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_123",
+                      "name":  "斜木紋板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  250,
+                      "img":  "assets/bases/board_123.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_133",
+                      "name":  "傑克森盆",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  80,
+                      "img":  "assets/bases/board_133.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_143",
+                      "name":  "植生板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  60,
+                      "img":  "assets/bases/board_143.jpg",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_153",
+                      "name":  "植物支架",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1550,
+                      "img":  "assets/bases/board_153.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_163",
+                      "name":  "圓形網格板(白)",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  450,
+                      "img":  "assets/bases/board_163.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_173",
+                      "name":  "圓形網格板(黑)",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  450,
+                      "img":  "assets/bases/board_173.webp",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_183",
+                      "name":  "聖誕紅與綠 長方形L",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  880,
+                      "img":  "assets/bases/board_183.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_193",
+                      "name":  "衝浪板造型",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  1200,
+                      "img":  "assets/bases/board_193.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_203",
+                      "name":  "樹皮板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  470,
+                      "img":  "assets/bases/board_203.webp",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_213",
+                      "name":  "機能塑膠板材",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  54,
+                      "img":  "assets/bases/board_213.jpg",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_223",
+                      "name":  "蕨世好盆",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  80,
+                      "img":  "assets/bases/board_223.webp",
+                      "emoji":  "🪵"
+                  },
+                  {
+                      "id":  "board_233",
+                      "name":  "蕨世神球",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  80,
+                      "img":  "assets/bases/board_233.webp",
+                      "emoji":  "⬡"
+                  },
+                  {
+                      "id":  "board_243",
+                      "name":  "鐵網格板",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  300,
+                      "img":  "assets/bases/board_243.webp",
+                      "emoji":  "🧱"
+                  },
+                  {
+                      "id":  "board_253",
+                      "name":  "鐵網格板(黑)",
+                      "brand":  "喚鹿工作室上板材料",
+                      "desc":  "上板材料",
+                      "price":  300,
+                      "img":  "assets/bases/board_253.webp",
+                      "emoji":  "🪵"
+                  }
+              ],
+    "parts":  [
+                  {
+                      "id":  "none",
+                      "name":  "無配件",
+                      "desc":  "保持純粹，讓植物自然呈現",
+                      "price":  0,
+                      "visualClass":  "none-vis",
+                      "emoji":  "○",
+                      "previewEmoji":  null,
+                      "img":  null
+                  },
+                  {
+                      "id":  "sync_part_001",
+                      "name":  "上板圓盤",
+                      "desc":  "上板配件",
+                      "price":  1450,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_001.webp"
+                  },
+                  {
+                      "id":  "sync_part_002",
+                      "name":  "水晶彈力線",
+                      "desc":  "上板配件",
+                      "price":  80,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_002.jpg"
+                  },
+                  {
+                      "id":  "sync_part_003",
+                      "name":  "打蚜劑 除蟲藥",
+                      "desc":  "上板配件",
+                      "price":  650,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_003.jpg"
+                  },
+                  {
+                      "id":  "sync_part_004",
+                      "name":  "有機苦楝油",
+                      "desc":  "上板配件",
+                      "price":  260,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_004.jpg"
+                  },
+                  {
+                      "id":  "sync_part_005",
+                      "name":  "竹炭 價格一公克4塊",
+                      "desc":  "上板配件",
+                      "price":  0,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_005.jpg"
+                  },
+                  {
+                      "id":  "sync_part_006",
+                      "name":  "兩股棉線 ",
+                      "desc":  "上板配件",
+                      "price":  30,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_006.png"
+                  },
+                  {
+                      "id":  "sync_part_007",
+                      "name":  "泥炭土 價格一公升九塊",
+                      "desc":  "上板配件",
+                      "price":  0,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_007.jpg"
+                  },
+                  {
+                      "id":  "sync_part_008",
+                      "name":  "展示架",
+                      "desc":  "上板配件",
+                      "price":  1200,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_008.webp"
+                  },
+                  {
+                      "id":  "sync_part_009",
+                      "name":  "展示架",
+                      "desc":  "上板配件",
+                      "price":  60,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_009.jpg"
+                  },
+                  {
+                      "id":  "sync_part_010",
+                      "name":  "紐西蘭樹皮",
+                      "desc":  "上板配件",
+                      "price":  150,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_010.jpg"
+                  },
+                  {
+                      "id":  "sync_part_011",
+                      "name":  "高級赤玉土",
+                      "desc":  "上板配件",
+                      "price":  269,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_011.jpg"
+                  },
+                  {
+                      "id":  "sync_part_012",
+                      "name":  "旋轉支架",
+                      "desc":  "上板配件",
+                      "price":  2600,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_012.webp"
+                  },
+                  {
+                      "id":  "sync_part_013",
+                      "name":  "釣魚線",
+                      "desc":  "上板配件",
+                      "price":  30,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_013.jpg"
+                  },
+                  {
+                      "id":  "sync_part_014",
+                      "name":  "智利水草 原裝包",
+                      "desc":  "上板配件",
+                      "price":  150,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_014.jpg"
+                  },
+                  {
+                      "id":  "sync_part_015",
+                      "name":  "植物支架",
+                      "desc":  "上板配件",
+                      "price":  1550,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_015.webp"
+                  },
+                  {
+                      "id":  "sync_part_016",
+                      "name":  "植物補光燈",
+                      "desc":  "上板配件",
+                      "price":  650,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_016.webp"
+                  },
+                  {
+                      "id":  "sync_part_017",
+                      "name":  "植栽附生網",
+                      "desc":  "上板配件",
+                      "price":  200,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_017.jpg"
+                  },
+                  {
+                      "id":  "sync_part_018",
+                      "name":  "請勿觸碰",
+                      "desc":  "上板配件",
+                      "price":  300,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_018.webp"
+                  },
+                  {
+                      "id":  "sync_part_019",
+                      "name":  "螺絲 價格一個2元",
+                      "desc":  "上板配件",
+                      "price":  0,
+                      "visualClass":  "none-vis",
+                      "emoji":  "🧩",
+                      "previewEmoji":  "🧩",
+                      "img":  "assets/parts/sync_part_019.jpg"
+                  }
+              ]
 }

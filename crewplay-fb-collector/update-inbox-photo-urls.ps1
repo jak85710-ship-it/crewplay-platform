@@ -1,10 +1,11 @@
 # Update sheet photo column for specific inbox rows (after JPG conversion)
-param([int[]]$Rows = @(18, 20, 24, 282))
+param([int[]]$Rows = @(), [int]$FromRow = 0, [int]$ToRow = 0)
 
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
 
 $Root = $PSScriptRoot
+$JpgDir = Join-Path $Root 'storage/photos-jpg'
 $config = Get-Content (Join-Path $Root 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $body = 'client_id=' + [uri]::EscapeDataString([string]$config.client_id) +
         '&client_secret=' + [uri]::EscapeDataString([string]$config.client_secret) +
@@ -19,7 +20,18 @@ $name = $sheetName
 if ($sheetName -match "[\s'!]") { $name = "'" + ($sheetName -replace "'", "''") + "'" }
 
 $data = @()
-foreach ($r in $Rows) {
+$targetRows = @($Rows)
+if ($FromRow -gt 0 -and $ToRow -ge $FromRow) {
+    $targetRows = @($FromRow..$ToRow)
+}
+if ($targetRows.Count -eq 0) {
+    Get-ChildItem $JpgDir -Filter 'r*.jpg' | ForEach-Object {
+        if ($_.BaseName -match '^r(\d+)$') { $targetRows += [int]$Matches[1] }
+    }
+}
+foreach ($r in ($targetRows | Sort-Object -Unique)) {
+    $jpg = Join-Path $JpgDir ('r' + $r + '.jpg')
+    if (-not (Test-Path $jpg)) { continue }
     $data += @{
         range  = $name + '!D' + $r
         values = @(,@($BaseUrl + '/photo/r' + $r + '.jpg'))
@@ -29,9 +41,21 @@ foreach ($r in $Rows) {
 $payload = @{ valueInputOption = 'USER_ENTERED'; data = $data }
 $json = $payload | ConvertTo-Json -Depth 6 -Compress
 $uri = 'https://sheets.googleapis.com/v4/spreadsheets/' + $config.sheet_id + '/values:batchUpdate'
-Invoke-RestMethod -Uri $uri -Headers @{
+$headers = @{
     Authorization = 'Bearer ' + $token
     'Content-Type' = 'application/json; charset=utf-8'
-} -Method Post -Body ([Text.Encoding]::UTF8.GetBytes($json)) | Out-Null
+}
+$batchSize = 40
+for ($start = 0; $start -lt $data.Count; $start += $batchSize) {
+    $end = [Math]::Min($start + $batchSize - 1, $data.Count - 1)
+    $batchPayload = @{ valueInputOption = 'USER_ENTERED'; data = $data[$start..$end] }
+    $batchJson = $batchPayload | ConvertTo-Json -Depth 6 -Compress
+    Invoke-RestMethod -Uri $uri -Headers $headers -Method Post -Body ([Text.Encoding]::UTF8.GetBytes($batchJson)) | Out-Null
+    if ($end -lt ($data.Count - 1)) { Start-Sleep -Seconds 2 }
+}
 
-Write-Host ('Updated sheet photo URLs for rows: ' + ($Rows -join ', '))
+$updatedRows = @()
+foreach ($r in ($targetRows | Sort-Object -Unique)) {
+    if (Test-Path (Join-Path $JpgDir ('r' + $r + '.jpg'))) { $updatedRows += $r }
+}
+Write-Host ('Updated sheet photo URLs for ' + $updatedRows.Count + ' rows')

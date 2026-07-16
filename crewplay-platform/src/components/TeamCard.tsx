@@ -17,6 +17,11 @@ export function TeamCard({ team, stats }: { team: Team; stats?: TeamBookingStats
         <span className="absolute left-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-brand-700 shadow">
           {team.sport || "運動"}
         </span>
+        {team.is_featured ? (
+          <span className="absolute right-3 top-3 rounded-full bg-violet-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
+            置頂
+          </span>
+        ) : null}
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3 className="line-clamp-2 text-base font-bold text-slate-900">{team.arena_name}</h3>
