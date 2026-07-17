@@ -40,6 +40,12 @@ setx NETLIFY_BUILD_HOOK_URL "https://api.netlify.com/build_hooks/你的hook"
 
 重新開一個 PowerShell 後，照常跑上架指令即可。腳本會在 push 成功後自動呼叫 Build Hook。
 
+如需強制要求 Hook 必須正確（否則直接停止），可加上：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\auto-push.ps1 -Mode all -Message "chore: deploy" -RequireDeployHook
+```
+
 如果你只想靠 Git 自動部署、不打 Hook，可加上：
 
 ```powershell

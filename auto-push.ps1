@@ -6,6 +6,8 @@ param(
   [string]$GitEmail = "crewplay-bot@local",
   [string]$NetlifyBuildHookUrl = "",
   [switch]$SkipDeployHook,
+  [switch]$FailOnDeployHookError,
+  [switch]$RequireDeployHook,
   [switch]$SkipPush,
   [switch]$DryRun,
   [int]$PushRetry = 2
@@ -155,6 +157,24 @@ function Invoke-NetlifyBuildHook {
   Write-Host "Netlify build hook triggered."
 }
 
+function Resolve-DeployHookUrl {
+  if (-not [string]::IsNullOrWhiteSpace($NetlifyBuildHookUrl)) {
+    return $NetlifyBuildHookUrl.Trim()
+  }
+  if (-not [string]::IsNullOrWhiteSpace($env:NETLIFY_BUILD_HOOK_URL)) {
+    return $env:NETLIFY_BUILD_HOOK_URL.Trim()
+  }
+  return ""
+}
+
+function Validate-DeployHookUrl {
+  param([string]$HookUrl)
+  if ([string]::IsNullOrWhiteSpace($HookUrl)) {
+    return $false
+  }
+  return ($HookUrl -match "^https://api\.netlify\.com/build_hooks/[A-Za-z0-9]+$")
+}
+
 try {
   if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     throw "git not found in PATH. Please restart terminal or reinstall Git."
@@ -178,6 +198,24 @@ try {
   Write-Host "Message: $finalMessage"
   if ($repoRoot -like "*OneDrive*") {
     Write-Host "Hint: Repo is in OneDrive path. If push stalls, temporarily pause OneDrive sync."
+  }
+  $hookUrl = Resolve-DeployHookUrl
+  if (-not $SkipDeployHook) {
+    if ([string]::IsNullOrWhiteSpace($hookUrl)) {
+      $msg = "NETLIFY_BUILD_HOOK_URL not set. Push will still work, but hook deploy trigger is skipped."
+      if ($RequireDeployHook) {
+        throw $msg
+      }
+      Write-Warning $msg
+    } elseif (-not (Validate-DeployHookUrl -HookUrl $hookUrl)) {
+      $msg = "NETLIFY_BUILD_HOOK_URL format looks invalid: $hookUrl"
+      if ($RequireDeployHook) {
+        throw $msg
+      }
+      Write-Warning $msg
+    } else {
+      Write-Host "Deploy hook precheck: OK"
+    }
   }
 
   if ($Mode -eq "all") {
@@ -237,15 +275,19 @@ try {
   }
 
   if (-not $SkipDeployHook) {
-    $hookUrl =
-      if ([string]::IsNullOrWhiteSpace($NetlifyBuildHookUrl)) {
-        $env:NETLIFY_BUILD_HOOK_URL
-      } else {
-        $NetlifyBuildHookUrl.Trim()
+    if (-not [string]::IsNullOrWhiteSpace($hookUrl)) {
+      try {
+        Invoke-NetlifyBuildHook -HookUrl $hookUrl
+      } catch {
+        if ($FailOnDeployHookError) {
+          throw
+        }
+        Write-Warning ("Deploy hook failed, but git push is already done: " + $_.Exception.Message)
+        Write-Host "Tip: run with -SkipDeployHook, or fix NETLIFY_BUILD_HOOK_URL."
       }
-    Invoke-NetlifyBuildHook -HookUrl $hookUrl
+    }
   }
 } catch {
-  Write-Error $_
+  Write-Error ("auto-push failed: " + $_.Exception.Message)
   exit 1
 }
