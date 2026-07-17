@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Team } from "@/types";
 
 type Props = {
@@ -9,6 +9,15 @@ type Props = {
   teams: Team[];
   initialGlobalRecipients: string[];
   initialByTeam: Record<string, string[]>;
+};
+
+type LineHostCandidate = {
+  userId: string;
+  sourceType: "user" | "group" | "room" | "unknown";
+  displayName?: string;
+  lastMessage?: string;
+  lastEventType?: string;
+  lastEventAt: string;
 };
 
 function parseRecipients(raw: string): string[] {
@@ -33,6 +42,10 @@ export function AdminLineHostRecipientsPanel({
   const [testText, setTestText] = useState("");
   const [message, setMessage] = useState("");
   const [testDebug, setTestDebug] = useState("");
+  const [candidates, setCandidates] = useState<LineHostCandidate[]>([]);
+  const [candidateLoading, setCandidateLoading] = useState(false);
+  const [assignBusyUserId, setAssignBusyUserId] = useState("");
+  const [assignTeamId, setAssignTeamId] = useState("");
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -44,6 +57,24 @@ export function AdminLineHostRecipientsPanel({
         team.sport.toLowerCase().includes(q)
     );
   }, [teams, query]);
+
+  useEffect(() => {
+    async function loadCandidates() {
+      if (!isAuthorized || !adminKey.trim()) return;
+      setCandidateLoading(true);
+      try {
+        const res = await fetch("/api/admin/line-host-recipients/candidates", {
+          headers: { "x-admin-key": adminKey.trim() },
+        });
+        const data = (await res.json().catch(() => ({}))) as { items?: LineHostCandidate[] };
+        if (!res.ok) return;
+        setCandidates(Array.isArray(data.items) ? data.items : []);
+      } finally {
+        setCandidateLoading(false);
+      }
+    }
+    loadCandidates();
+  }, [adminKey, isAuthorized]);
 
   async function saveAll() {
     if (!adminKey.trim()) {
@@ -150,6 +181,49 @@ export function AdminLineHostRecipientsPanel({
     }
   }
 
+  async function assignCandidateToTeam(userId: string) {
+    if (!adminKey.trim()) {
+      setMessage("請先輸入 ADMIN_API_KEY");
+      return;
+    }
+    if (!isAuthorized) {
+      setMessage("請先按「驗證金鑰」完成編輯者身分確認。");
+      return;
+    }
+    if (!assignTeamId) {
+      setMessage("請先選擇要指派的團隊");
+      return;
+    }
+    setAssignBusyUserId(userId);
+    setMessage("");
+    try {
+      const res = await fetch("/api/admin/line-host-recipients/assign", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-key": adminKey.trim(),
+        },
+        body: JSON.stringify({
+          team_id: assignTeamId,
+          user_id: userId,
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(data.error || "指派失敗");
+      setDraftByTeam((prev) => {
+        const nextSet = new Set(parseRecipients(prev[assignTeamId] || ""));
+        nextSet.add(userId);
+        return { ...prev, [assignTeamId]: [...nextSet].join(", ") };
+      });
+      const teamName = teams.find((t) => t.id === assignTeamId)?.arena_name || assignTeamId;
+      setMessage(`已將 ${userId.slice(0, 8)}... 指派到 ${teamName}`);
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "指派失敗");
+    } finally {
+      setAssignBusyUserId("");
+    }
+  }
+
   return (
     <section className="mt-10">
       <h2 className="font-bold text-slate-800">LINE 團主通知收件者設定</h2>
@@ -244,6 +318,86 @@ export function AdminLineHostRecipientsPanel({
             placeholder="可選：自訂測試訊息內容（留空則使用系統預設）"
             className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-50"
           />
+        </div>
+
+        <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <p className="text-sm font-semibold text-slate-800">最近互動 LINE UID（可一鍵指派）</p>
+          <p className="mt-1 text-xs text-slate-500">
+            團主先私訊官方帳號後會出現在清單中。選擇團隊後可直接綁定到該團通知收件者。
+          </p>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            <select
+              value={assignTeamId}
+              onChange={(e) => setAssignTeamId(e.target.value)}
+              disabled={!isAuthorized}
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm disabled:opacity-50"
+            >
+              <option value="">請先選擇要指派的團隊</option>
+              {teams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.arena_name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="button"
+              onClick={async () => {
+                if (!isAuthorized || !adminKey.trim()) return;
+                setCandidateLoading(true);
+                try {
+                  const res = await fetch("/api/admin/line-host-recipients/candidates", {
+                    headers: { "x-admin-key": adminKey.trim() },
+                  });
+                  const data = (await res.json().catch(() => ({}))) as { items?: LineHostCandidate[] };
+                  if (res.ok) {
+                    setCandidates(Array.isArray(data.items) ? data.items : []);
+                  }
+                } finally {
+                  setCandidateLoading(false);
+                }
+              }}
+              disabled={candidateLoading || !isAuthorized}
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 disabled:opacity-60"
+            >
+              {candidateLoading ? "更新中..." : "更新候選 UID 清單"}
+            </button>
+          </div>
+
+          <div className="mt-3 space-y-2">
+            {candidateLoading ? (
+              <p className="rounded-lg bg-white px-3 py-3 text-sm text-slate-500">讀取候選 UID 中…</p>
+            ) : candidates.length === 0 ? (
+              <p className="rounded-lg bg-white px-3 py-3 text-sm text-slate-500">目前尚無候選 UID（請先讓團主私訊官方帳號）</p>
+            ) : (
+              candidates.slice(0, 30).map((item) => (
+                <div key={item.userId} className="rounded-lg border border-slate-200 bg-white p-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {item.displayName || "(未取得顯示名稱)"}
+                      </p>
+                      <p className="font-mono text-xs text-slate-500">{item.userId}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {item.lastEventType || "event"} · {item.sourceType} ·{" "}
+                        {new Date(item.lastEventAt).toLocaleString("zh-TW")}
+                      </p>
+                      {item.lastMessage ? (
+                        <p className="mt-1 text-xs text-slate-600">最近訊息：{item.lastMessage}</p>
+                      ) : null}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => assignCandidateToTeam(item.userId)}
+                      disabled={assignBusyUserId === item.userId || !assignTeamId || !isAuthorized}
+                      className="rounded-lg border border-brand-300 px-3 py-1.5 text-xs font-semibold text-brand-700 disabled:opacity-50"
+                    >
+                      {assignBusyUserId === item.userId ? "指派中..." : "指派到所選團隊"}
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
