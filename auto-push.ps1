@@ -18,6 +18,54 @@ $ErrorActionPreference = "Stop"
 # We disable that so git warnings (e.g. LF/CRLF) do not abort the script.
 $PSNativeCommandUseErrorActionPreference = $false
 
+function Invoke-GitProcess {
+  param([string[]]$CommandArgs)
+
+  function Convert-ToArgString {
+    param([string[]]$ArgsList)
+    $escaped = foreach ($item in $ArgsList) {
+      if ($null -eq $item) { '""'; continue }
+      if ($item -match '[\s"]') {
+        '"' + ($item -replace '"', '\"') + '"'
+      } else {
+        $item
+      }
+    }
+    return ($escaped -join " ")
+  }
+
+  $psi = New-Object System.Diagnostics.ProcessStartInfo
+  $psi.FileName = "git"
+  $psi.UseShellExecute = $false
+  $psi.RedirectStandardOutput = $true
+  $psi.RedirectStandardError = $true
+  $psi.CreateNoWindow = $true
+
+  $argListProp = $psi.PSObject.Properties["ArgumentList"]
+  if ($null -ne $argListProp -and $null -ne $psi.ArgumentList) {
+    foreach ($arg in $CommandArgs) {
+      [void]$psi.ArgumentList.Add($arg)
+    }
+  } else {
+    # Windows PowerShell / older .NET fallback
+    $psi.Arguments = Convert-ToArgString -ArgsList $CommandArgs
+  }
+
+  $proc = New-Object System.Diagnostics.Process
+  $proc.StartInfo = $psi
+  [void]$proc.Start()
+  $stdoutRaw = $proc.StandardOutput.ReadToEnd()
+  $stderrRaw = $proc.StandardError.ReadToEnd()
+  $proc.WaitForExit()
+  $stdout = if ([string]::IsNullOrEmpty($stdoutRaw)) { @() } else { $stdoutRaw -split "`r?`n" | Where-Object { $_ -ne "" } }
+  $stderr = if ([string]::IsNullOrEmpty($stderrRaw)) { @() } else { $stderrRaw -split "`r?`n" | Where-Object { $_ -ne "" } }
+  return @{
+    ExitCode = $proc.ExitCode
+    StdOut   = $stdout
+    StdErr   = $stderr
+  }
+}
+
 function Run-Git {
   param(
     [string[]]$CommandArgs,
@@ -35,15 +83,15 @@ function Run-Git {
 
   $cmdText = "git " + ($CommandArgs -join " ")
   Write-Host ">> $cmdText"
-  $output = & git @CommandArgs 2>&1
-  $exitCode = $LASTEXITCODE
-  if ($output) {
-    foreach ($line in $output) {
-      Write-Host $line
+  $result = Invoke-GitProcess -CommandArgs $CommandArgs
+  foreach ($line in $result.StdOut) { Write-Host $line }
+  foreach ($line in $result.StdErr) { Write-Host $line }
+  if ($result.ExitCode -ne 0 -and -not $AllowFail) {
+    $details = (($result.StdErr + $result.StdOut) -join " | ")
+    if ([string]::IsNullOrWhiteSpace($details)) {
+      throw "git command failed (exit=$($result.ExitCode)): $cmdText"
     }
-  }
-  if ($exitCode -ne 0 -and -not $AllowFail) {
-    throw "git command failed (exit=$exitCode): $cmdText"
+    throw "git command failed (exit=$($result.ExitCode)): $cmdText :: $details"
   }
 }
 
@@ -58,17 +106,17 @@ function Get-GitOutput {
   }
   $cmdText = "git " + ($CommandArgs -join " ")
   Write-Host ">> $cmdText"
-  $output = & git @CommandArgs 2>&1
-  $exitCode = $LASTEXITCODE
-  if ($exitCode -ne 0) {
-    if ($output) {
-      foreach ($line in $output) {
-        Write-Host $line
-      }
+  $result = Invoke-GitProcess -CommandArgs $CommandArgs
+  foreach ($line in $result.StdErr) { Write-Host $line }
+  if ($result.ExitCode -ne 0) {
+    foreach ($line in $result.StdOut) { Write-Host $line }
+    $details = (($result.StdErr + $result.StdOut) -join " | ")
+    if ([string]::IsNullOrWhiteSpace($details)) {
+      throw "git command failed (exit=$($result.ExitCode)): $cmdText"
     }
-    throw "git command failed (exit=$exitCode): $cmdText"
+    throw "git command failed (exit=$($result.ExitCode)): $cmdText :: $details"
   }
-  return ($output -join [Environment]::NewLine).Trim()
+  return ($result.StdOut -join [Environment]::NewLine).Trim()
 }
 
 function Get-FilesForMode {
