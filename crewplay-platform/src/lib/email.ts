@@ -15,6 +15,7 @@ type MailConfig = {
   user: string;
   pass: string;
   notifyTo: string;
+  confirmTo: string;
   smtpHost?: string;
   smtpPort?: number;
   smtpSecure?: boolean;
@@ -36,17 +37,22 @@ function getMailConfig(): MailConfig | null {
     user,
     pass,
     notifyTo: process.env.GMAIL_NOTIFY_TO || DEFAULT_NOTIFY_TO,
+    confirmTo: process.env.GMAIL_CONFIRM_TO || "",
     smtpHost,
     smtpPort: Number.isFinite(smtpPort) ? smtpPort : undefined,
     smtpSecure,
   };
 }
 
-function notifyRecipients(notifyTo: string): string[] {
-  return notifyTo
+function parseEmailRecipients(raw: string): string[] {
+  return raw
     .split(/[,;]/)
     .map((s) => s.trim())
     .filter((s) => s.includes("@"));
+}
+
+function notifyRecipients(notifyTo: string): string[] {
+  return parseEmailRecipients(notifyTo);
 }
 
 function getTransporter(): Transporter {
@@ -241,10 +247,15 @@ async function sendMail(opts: {
 }) {
   const cfg = getMailConfig();
   if (!cfg) throw new Error("Gmail 尚未設定：請在 .env.local 填入 GMAIL_APP_PASSWORD");
+  const toRecipients = parseEmailRecipients(opts.to);
+  const confirmRecipients = parseEmailRecipients(cfg.confirmTo).filter(
+    (email) => !toRecipients.includes(email)
+  );
 
   await getTransporter().sendMail({
     from: `CrewPlay運動媒合平台 <${cfg.user}>`,
     to: opts.to,
+    bcc: confirmRecipients.length ? confirmRecipients.join(", ") : undefined,
     replyTo: opts.replyTo || cfg.user,
     subject: opts.subject,
     text: opts.text,

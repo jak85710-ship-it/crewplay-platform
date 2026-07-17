@@ -1,19 +1,72 @@
 param(
-  [ValidateSet("email-qr", "checkin-qr", "deploy-only")]
-  [string]$Mode = "email-qr",
+  [ValidateSet("all", "email-qr", "checkin-qr", "deploy-only", "line-uid-mvp")]
+  [string]$Mode = "all",
   [string]$Message = "",
   [string]$GitName = "CrewPlay Bot",
-  [string]$GitEmail = "crewplay-bot@local"
+  [string]$GitEmail = "crewplay-bot@local",
+  [string]$NetlifyBuildHookUrl = "",
+  [switch]$SkipDeployHook,
+  [switch]$SkipPush,
+  [switch]$DryRun,
+  [int]$PushRetry = 2
 )
 
 $ErrorActionPreference = "Stop"
+# In PowerShell 7, native stderr can be promoted to terminating errors.
+# We disable that so git warnings (e.g. LF/CRLF) do not abort the script.
+$PSNativeCommandUseErrorActionPreference = $false
 
 function Run-Git {
-  param([string[]]$Args)
-  & git @Args
-  if ($LASTEXITCODE -ne 0) {
-    throw "git command failed: git $($Args -join ' ')"
+  param(
+    [string[]]$CommandArgs,
+    [switch]$AllowFail
+  )
+
+  if (-not $CommandArgs -or $CommandArgs.Count -eq 0) {
+    throw "Run-Git received empty command args."
   }
+
+  if ($DryRun) {
+    Write-Host ("[DRY-RUN] git " + ($CommandArgs -join " "))
+    return
+  }
+
+  $cmdText = "git " + ($CommandArgs -join " ")
+  Write-Host ">> $cmdText"
+  $output = & git @CommandArgs 2>&1
+  $exitCode = $LASTEXITCODE
+  if ($output) {
+    foreach ($line in $output) {
+      Write-Host $line
+    }
+  }
+  if ($exitCode -ne 0 -and -not $AllowFail) {
+    throw "git command failed (exit=$exitCode): $cmdText"
+  }
+}
+
+function Get-GitOutput {
+  param([string[]]$CommandArgs)
+  if (-not $CommandArgs -or $CommandArgs.Count -eq 0) {
+    throw "Get-GitOutput received empty command args."
+  }
+  if ($DryRun) {
+    Write-Host ("[DRY-RUN] git " + ($CommandArgs -join " "))
+    return "<dry-run>"
+  }
+  $cmdText = "git " + ($CommandArgs -join " ")
+  Write-Host ">> $cmdText"
+  $output = & git @CommandArgs 2>&1
+  $exitCode = $LASTEXITCODE
+  if ($exitCode -ne 0) {
+    if ($output) {
+      foreach ($line in $output) {
+        Write-Host $line
+      }
+    }
+    throw "git command failed (exit=$exitCode): $cmdText"
+  }
+  return ($output -join [Environment]::NewLine).Trim()
 }
 
 function Get-FilesForMode {
@@ -21,7 +74,8 @@ function Get-FilesForMode {
   switch ($SelectedMode) {
     "email-qr" {
       return @(
-        "crewplay-platform/src/lib/email.ts"
+        "crewplay-platform/src/lib/email.ts",
+        "crewplay-platform/.env.production.example"
       )
     }
     "checkin-qr" {
@@ -37,6 +91,15 @@ function Get-FilesForMode {
         "crewplay-platform/src/lib/email.ts"
       )
     }
+    "line-uid-mvp" {
+      return @(
+        "crewplay-platform/src/lib/line-host-candidates.ts",
+        "crewplay-platform/src/app/api/line/webhook/route.ts",
+        "crewplay-platform/src/app/api/admin/line-host-recipients/candidates/route.ts",
+        "crewplay-platform/src/app/api/admin/line-host-recipients/assign/route.ts",
+        "crewplay-platform/src/components/AdminLineHostRecipientsPanel.tsx"
+      )
+    }
     default {
       return @()
     }
@@ -46,44 +109,142 @@ function Get-FilesForMode {
 function Get-DefaultMessage {
   param([string]$SelectedMode)
   switch ($SelectedMode) {
+    "all" { return "chore: sync all pending local changes" }
     "email-qr" { return "feat(email): include host check-in QR in notification mail" }
     "checkin-qr" { return "feat(checkin): switch to host QR guest self-checkin" }
+    "line-uid-mvp" { return "feat(line): add uid candidates webhook and one-click team assignment" }
     "deploy-only" { return "chore: trigger deploy" }
     default { return "chore: update" }
   }
 }
 
-try {
-  $repoRoot = (& git rev-parse --show-toplevel).Trim()
-  if (-not $repoRoot) {
-    throw "Not inside a git repository."
-  }
-  Set-Location $repoRoot
+function Ensure-RepoConfig {
+  # Avoid interactive gc cleanup prompts on OneDrive / Windows lock files.
+  Run-Git -CommandArgs @("config", "--local", "gc.auto", "0")
+  Run-Git -CommandArgs @("config", "--local", "gc.autoPackLimit", "0")
+}
 
-  $finalMessage = if ([string]::IsNullOrWhiteSpace($Message)) { Get-DefaultMessage -SelectedMode $Mode } else { $Message.Trim() }
+function Resolve-RepoRoot {
+  # Use PowerShell path resolution instead of git output to avoid Unicode path mojibake.
+  $current = Get-Location
+  while ($null -ne $current) {
+    if (Test-Path (Join-Path $current.Path ".git")) {
+      return $current.Path
+    }
+    $current = $current.Parent
+  }
+  throw "Not inside a git repository (.git not found in current or parent folders)."
+}
+
+function Invoke-NetlifyBuildHook {
+  param([string]$HookUrl)
+  if ([string]::IsNullOrWhiteSpace($HookUrl)) {
+    return
+  }
+
+  if ($DryRun) {
+    Write-Host "[DRY-RUN] invoke netlify build hook"
+    return
+  }
+
+  Write-Host "Triggering Netlify build hook..."
+  $response = Invoke-WebRequest -Uri $HookUrl -Method POST -UseBasicParsing -TimeoutSec 30
+  if ($response.StatusCode -lt 200 -or $response.StatusCode -ge 300) {
+    throw "Netlify build hook failed with HTTP $($response.StatusCode)"
+  }
+  Write-Host "Netlify build hook triggered."
+}
+
+try {
+  if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    throw "git not found in PATH. Please restart terminal or reinstall Git."
+  }
+
+  $repoRoot = Resolve-RepoRoot
+  Set-Location $repoRoot
+  Ensure-RepoConfig
+
+  $finalMessage =
+    if ([string]::IsNullOrWhiteSpace($Message)) {
+      Get-DefaultMessage -SelectedMode $Mode
+    } else {
+      $Message.Trim()
+    }
+
   $files = Get-FilesForMode -SelectedMode $Mode
 
   Write-Host "Mode: $Mode"
   Write-Host "Repo: $repoRoot"
   Write-Host "Message: $finalMessage"
-
-  if ($Mode -ne "deploy-only") {
-    foreach ($file in $files) {
-      Run-Git @("add", "--", $file)
-    }
-    $staged = (& git diff --cached --name-only).Trim()
-    if (-not $staged) {
-      throw "No staged files. Save your edits first, then run again."
-    }
-    Write-Host "Staged files:"
-    (& git diff --cached --name-only)
-    Run-Git @("-c", "user.name=$GitName", "-c", "user.email=$GitEmail", "commit", "-m", $finalMessage)
-  } else {
-    Run-Git @("-c", "user.name=$GitName", "-c", "user.email=$GitEmail", "commit", "--allow-empty", "-m", $finalMessage)
+  if ($repoRoot -like "*OneDrive*") {
+    Write-Host "Hint: Repo is in OneDrive path. If push stalls, temporarily pause OneDrive sync."
   }
 
-  Run-Git @("push")
-  Write-Host "Push completed."
+  if ($Mode -eq "all") {
+    Run-Git -CommandArgs @("add", "-A")
+  } elseif ($Mode -ne "deploy-only") {
+    foreach ($file in $files) {
+      Run-Git -CommandArgs @("add", "--", $file)
+    }
+  }
+
+  $staged = Get-GitOutput -CommandArgs @("diff", "--cached", "--name-only")
+
+  if ($Mode -eq "deploy-only") {
+    Run-Git -CommandArgs @("-c", "user.name=$GitName", "-c", "user.email=$GitEmail", "commit", "--allow-empty", "-m", $finalMessage)
+  } elseif (-not $staged) {
+    Write-Host "No staged files for mode '$Mode'."
+    Write-Host "Nothing to commit."
+    if (-not $SkipPush) {
+      Write-Host "Skip push because commit did not happen."
+    }
+    exit 0
+  } else {
+    Write-Host "Staged files:"
+    if ($DryRun) {
+      Write-Host $staged
+    } else {
+      Run-Git -CommandArgs @("diff", "--cached", "--name-only")
+    }
+    Run-Git -CommandArgs @("-c", "user.name=$GitName", "-c", "user.email=$GitEmail", "commit", "-m", $finalMessage)
+  }
+
+  if ($SkipPush) {
+    Write-Host "Commit done. Push skipped by -SkipPush."
+    exit 0
+  }
+
+  $attempt = 0
+  while ($true) {
+    $attempt += 1
+    try {
+      Run-Git -CommandArgs @("-c", "gc.auto=0", "-c", "gc.autoPackLimit=0", "push")
+      break
+    } catch {
+      if ($attempt -gt $PushRetry) {
+        throw
+      }
+      Write-Host "Push failed, retrying ($attempt/$PushRetry)..."
+      Start-Sleep -Seconds 2
+    }
+  }
+
+  if (-not $DryRun) {
+    $head = Get-GitOutput -CommandArgs @("rev-parse", "--short", "HEAD")
+    Write-Host "Push completed. HEAD=$head"
+  } else {
+    Write-Host "Dry-run finished."
+  }
+
+  if (-not $SkipDeployHook) {
+    $hookUrl =
+      if ([string]::IsNullOrWhiteSpace($NetlifyBuildHookUrl)) {
+        $env:NETLIFY_BUILD_HOOK_URL
+      } else {
+        $NetlifyBuildHookUrl.Trim()
+      }
+    Invoke-NetlifyBuildHook -HookUrl $hookUrl
+  }
 } catch {
   Write-Error $_
   exit 1
