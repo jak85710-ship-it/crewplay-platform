@@ -40,6 +40,7 @@ export function AdminLineHostRecipientsPanel({
   const [testBusy, setTestBusy] = useState(false);
   const [testTeamId, setTestTeamId] = useState("");
   const [testText, setTestText] = useState("");
+  const [testRecipientsInput, setTestRecipientsInput] = useState("");
   const [message, setMessage] = useState("");
   const [testDebug, setTestDebug] = useState("");
   const [candidates, setCandidates] = useState<LineHostCandidate[]>([]);
@@ -138,6 +139,7 @@ export function AdminLineHostRecipientsPanel({
         body: JSON.stringify({
           team_id: testTeamId || undefined,
           text: testText.trim() || undefined,
+          recipients: parseRecipients(testRecipientsInput),
         }),
       });
       const rawText = await res.text();
@@ -283,7 +285,9 @@ export function AdminLineHostRecipientsPanel({
 
         <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 p-3">
           <p className="text-sm font-semibold text-slate-800">測試推播</p>
-          <p className="mt-1 text-xs text-slate-500">可選擇指定團隊（分團 + 全域）或留空僅測全域收件者。</p>
+          <p className="mt-1 text-xs text-slate-500">
+            可選擇指定團隊（分團 + 全域）或留空僅測全域收件者。若要直接測試對方，請填下方「手動指定 UID」。
+          </p>
 
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             <select
@@ -317,6 +321,14 @@ export function AdminLineHostRecipientsPanel({
             disabled={!isAuthorized}
             placeholder="可選：自訂測試訊息內容（留空則使用系統預設）"
             className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-50"
+          />
+          <textarea
+            rows={2}
+            value={testRecipientsInput}
+            onChange={(e) => setTestRecipientsInput(e.target.value)}
+            disabled={!isAuthorized}
+            placeholder="可選：手動指定測試 UID（U/C/R 開頭，可多組，逗號或換行）"
+            className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 font-mono text-xs disabled:opacity-50"
           />
         </div>
 

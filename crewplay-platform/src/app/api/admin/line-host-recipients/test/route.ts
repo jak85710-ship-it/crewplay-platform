@@ -9,12 +9,16 @@ export async function POST(req: Request) {
     }
 
     const body = (await req.json().catch(() => null)) as
-      | { team_id?: string; text?: string }
+      | { team_id?: string; text?: string; recipients?: string[] }
       | null;
     const teamId = String(body?.team_id || "").trim();
     const customText = String(body?.text || "").trim();
+    const manualRecipients = Array.isArray(body?.recipients)
+      ? [...new Set(body!.recipients.map((v) => String(v || "").trim()).filter(Boolean))]
+      : [];
 
-    const uniqueRecipients = await resolveHostRecipientsByTeam(teamId);
+    const uniqueRecipients =
+      manualRecipients.length > 0 ? manualRecipients : await resolveHostRecipientsByTeam(teamId);
     if (!uniqueRecipients.length) {
       return NextResponse.json({ error: "沒有可測試的收件者，請先設定全域或分團 LINE UID" }, { status: 400 });
     }
@@ -23,7 +27,8 @@ export async function POST(req: Request) {
       customText ||
       [
         "【CrewPlay】LINE 推播測試",
-        teamId ? `團隊 ID：${teamId}` : "團隊 ID：未指定（僅全域）",
+        teamId ? `團隊 ID：${teamId}` : "團隊 ID：未指定（僅全域或手動）",
+        manualRecipients.length ? "模式：手動指定 UID 測試" : "模式：系統收件者測試",
         `時間：${new Date().toLocaleString("zh-TW", { hour12: false })}`,
         "此訊息由管理後台測試送出",
       ].join("\n");
