@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 import { upsertLineHostCandidate } from "@/lib/line-host-candidates";
+import { resolveLineMessagingToken } from "@/lib/line-notify";
 
 type LineWebhookEvent = {
   type?: string;
@@ -28,7 +29,7 @@ function verifyLineSignature(body: string, signature: string): boolean {
 }
 
 async function resolveDisplayName(userId: string): Promise<string | undefined> {
-  const token = process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN?.trim();
+  const token = resolveLineMessagingToken().token;
   if (!token || !userId) return undefined;
   try {
     const res = await fetch(`https://api.line.me/v2/bot/profile/${encodeURIComponent(userId)}`, {

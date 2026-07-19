@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     const hint =
       result.failedReasons.find((r) => r.includes("line_token_missing")) != null
-        ? "缺少 LINE_MESSAGING_CHANNEL_ACCESS_TOKEN，請先在環境變數設定。"
+        ? "缺少 LINE Token，請設定 LINE_MESSAGING_CHANNEL_ACCESS_TOKEN（或 LINE_CHANNEL_ACCESS_TOKEN / LINE_CHANNEL_ACCESS_TOKEN_LONG_LIVED）。"
         : result.failedReasons.some((r) => r.includes("line_push_failed:401"))
           ? "LINE token 無效或已過期，請更新 LINE Channel Access Token。"
           : result.failedReasons.some((r) => r.includes("line_push_failed:400"))

@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
 
 import { bookingReference } from "@/lib/booking-ref";
-import { hostCheckInPortalUrl } from "@/lib/check-in-url";
+import { hostCheckInPortalUrl, hostGuestCheckInScanUrl } from "@/lib/check-in-url";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { submissionImagePublicUrl } from "@/lib/submission-images";
 import { feeSummary, parseIntroField } from "@/lib/utils";
@@ -289,8 +289,9 @@ function hostCheckInEmailHtml(input: {
   timeText?: string;
   placeText?: string;
   portalUrl: string;
+  guestScanUrl: string;
 }): string {
-  const qrUrl = qrCodeImageUrl(input.portalUrl);
+  const qrUrl = qrCodeImageUrl(input.guestScanUrl);
   const rows = [
     `揪團：${escapeHtml(input.arenaName)}`,
     `報名編號：${escapeHtml(input.reference)}`,
@@ -311,7 +312,8 @@ function hostCheckInEmailHtml(input: {
     qrUrl
       ? `<p style="margin:0 0 8px"><img src="${escapeHtml(qrUrl)}" alt="團主報到 QR Code" width="220" height="220" style="display:block;border:1px solid #e2e8f0;padding:6px;border-radius:8px;background:#fff"/></p>`
       : "",
-    `<p style="margin:0 0 8px">備援連結：<a href="${escapeHtml(input.portalUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(input.portalUrl)}</a></p>`,
+    `<p style="margin:0 0 8px">備援連結（給球友掃碼用）：<a href="${escapeHtml(input.guestScanUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(input.guestScanUrl)}</a></p>`,
+    `<p style="margin:0 0 8px">團主入口（你自己開啟）：<a href="${escapeHtml(input.portalUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(input.portalUrl)}</a></p>`,
     `<p style="margin:0;color:#475569">球友掃描後會直接在手機看到「報到成功」與編號，您只需現場確認畫面。</p>`,
     `</div>`,
   ].join("");
@@ -507,6 +509,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
   const ref = bookingReference(ctx.booking);
   const hostPortalToken = ctx.team.id ? issueHostPortalToken(ctx.team.id) : "";
   const hostPortalLink = hostPortalToken ? hostCheckInPortalUrl(hostPortalToken) : "";
+  const guestScanLink = hostPortalToken ? hostGuestCheckInScanUrl(hostPortalToken) : "";
   const timeText = parseIntroField(ctx.team.introduce ?? "", "時間");
   const placeText =
     parseIntroField(ctx.team.introduce ?? "", "地點") || ctx.team.location || "—";
@@ -611,6 +614,7 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
             timeText: timeText || "",
             placeText: placeText || "",
             portalUrl: hostPortalLink,
+            guestScanUrl: guestScanLink,
           }),
           replyTo: cfg.user,
         });

@@ -68,8 +68,24 @@ function lineNotifyEnabled(): boolean {
   return String(process.env.LINE_NOTIFY_ENABLED || "").trim().toLowerCase() === "true";
 }
 
+const LINE_TOKEN_ENV_KEYS = [
+  "LINE_MESSAGING_CHANNEL_ACCESS_TOKEN",
+  "LINE_CHANNEL_ACCESS_TOKEN",
+  "LINE_CHANNEL_ACCESS_TOKEN_LONG_LIVED",
+] as const;
+
+export function resolveLineMessagingToken(): { token: string; sourceKey: string | null } {
+  for (const key of LINE_TOKEN_ENV_KEYS) {
+    const raw = String(process.env[key] || "").trim();
+    if (!raw) continue;
+    const token = raw.replace(/^Bearer\s+/i, "").trim();
+    if (token) return { token, sourceKey: key };
+  }
+  return { token: "", sourceKey: null };
+}
+
 function lineMessagingToken(): string {
-  return String(process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN || "").trim();
+  return resolveLineMessagingToken().token;
 }
 
 function isLinePushConfigured(): boolean {
@@ -117,8 +133,13 @@ export async function resolveHostRecipientsByTeam(teamId: string): Promise<strin
 }
 
 async function pushLineMessage(to: string, messages: LineMessage[]): Promise<LinePushResult> {
-  const token = lineMessagingToken();
-  if (!token) return { sent: false, reason: "line_token_missing" };
+  const { token } = resolveLineMessagingToken();
+  if (!token) {
+    return {
+      sent: false,
+      reason: `line_token_missing:${LINE_TOKEN_ENV_KEYS.join("|")}`,
+    };
+  }
 
   try {
     const res = await fetch("https://api.line.me/v2/bot/message/push", {
