@@ -58,6 +58,9 @@ export default async function MyBookingsPage() {
             <Link href="/my/host" className="rounded-xl border border-brand-300 px-4 py-2.5 text-sm text-brand-700">
               我的開團管理
             </Link>
+            <Link href="/checkin/guide" className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm text-slate-700">
+              報到說明
+            </Link>
             <form method="POST" action="/api/auth/logout">
               <button type="submit" className="rounded-xl border border-slate-300 px-4 py-2.5 text-sm">
                 登出

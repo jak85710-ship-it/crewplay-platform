@@ -29,9 +29,6 @@ export async function SiteHeader() {
             <Link href="/match" className={navLink}>
               1V1
             </Link>
-            <Link href="/checkin/guide" className={navLink}>
-              報到說明
-            </Link>
             <Link href="/my/bookings" className={`${navLink} hidden sm:inline-flex`}>
               我的預約
             </Link>
@@ -76,9 +73,6 @@ export function SiteFooter() {
             </Link>
             <Link href="/refund" className="hover:text-white">
               退款規則
-            </Link>
-            <Link href="/checkin/guide" className="hover:text-white">
-              報到說明
             </Link>
           </div>
         </div>

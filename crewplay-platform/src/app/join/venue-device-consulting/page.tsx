@@ -10,7 +10,6 @@ import {
 
 const SPORTS_OPTIONS = ["桌球", "羽球", "網球", "其他"] as const;
 const DEVICE_OPTIONS = [
-  "發球機",
   "智慧計分看板",
   "門禁系統",
   "燈光控制系統",
@@ -165,8 +164,8 @@ export default function VenueDeviceConsultingPage() {
       />
       <div className="mx-auto max-w-3xl px-4 py-8">
         <p className="rounded-2xl border border-brand-200 bg-brand-50 px-4 py-4 text-sm leading-7 text-slate-700">
-          您是有場地、有設備的優質場地主嗎？是否希望您的發球機、智慧設備能更自動化地為球友服務，為您帶來更多流量和收入？
-          我們提供專業的場地設備建置與串接服務。只要您提供場地，我們就能幫助您將現場硬體（發球機、智慧看板等）與我們的「揪團系統」精準串接。
+          您是有場地、有設備的優質場地主嗎？是否希望您的智慧設備能更自動化地為球友服務，為您帶來更多流量和收入？
+          我們提供專業的場地設備建置與串接服務。只要您提供場地，我們就能幫助您將現場硬體（智慧看板、門禁與控制系統等）與我們的「揪團系統」精準串接。
           讓球友在線上下單後，到場即享自動連線、一鍵開啟，無人管理也能賺取源源不絕的收入。
         </p>
       </div>
