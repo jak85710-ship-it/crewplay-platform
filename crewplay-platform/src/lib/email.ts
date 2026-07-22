@@ -6,6 +6,7 @@ import { hostCheckInPortalUrl, hostGuestCheckInScanUrl } from "@/lib/check-in-ur
 import { issueHostPortalToken } from "@/lib/host-portal-token";
 import { submissionImagePublicUrl } from "@/lib/submission-images";
 import { feeSummary, parseIntroField } from "@/lib/utils";
+import type { VenueDeviceConsultingSubmission } from "@/lib/venue-device-consulting";
 import { extractVolleyballPositionFromNote } from "@/lib/volleyball-position";
 
 const DEFAULT_GMAIL = "crew.matchplay@gmail.com";
@@ -115,6 +116,56 @@ export type VenueSubmission = {
   trust_image_id?: string;
   result_url?: string;
 };
+
+function venueDeviceConsultingInternalBody(data: VenueDeviceConsultingSubmission): string {
+  return [
+    "【設備連接與進階設定】場地主專屬串接諮詢單",
+    `申請編號：${data.id}`,
+    `提交時間：${data.submitted_at}`,
+    "",
+    lines([
+      ["場地/會館名稱", data.venue_name],
+      ["場地位址", data.venue_address],
+      ["聯絡人姓名與職稱", data.contact_name_title],
+      ["聯絡電話", data.contact_phone],
+      ["聯絡 Email", data.contact_email],
+      ["主要運動項目", data.sports.join("、")],
+      ["希望串接硬體設備", data.devices.join("、")],
+      ["網路覆蓋狀態", data.network_ready],
+      ["希望實現核心功能", data.goals.join("、")],
+      ["目前最大痛點", data.pain_points.join("、")],
+      ["希望諮詢方式", data.consult_methods.join("、")],
+      ["方便諮詢時段", data.preferred_slots.join("、")],
+    ]),
+  ].join("\n");
+}
+
+function venueDeviceConsultingCustomerBody(data: VenueDeviceConsultingSubmission): string {
+  return [
+    `${data.contact_name_title || "您好"}，`,
+    "",
+    "收到您的諮詢申請！",
+    "我們的專員將在 2 個工作天內，透過您提供的聯絡方式與您取得聯繫，為您提供專屬的智慧場館串接解決方案。謝謝！",
+    "",
+    "您提交的重點資料如下：",
+    lines([
+      ["場地/會館名稱", data.venue_name],
+      ["場地位址", data.venue_address],
+      ["聯絡電話", data.contact_phone],
+      ["聯絡 Email", data.contact_email],
+      ["主要運動項目", data.sports.join("、")],
+      ["希望串接硬體設備", data.devices.join("、")],
+      ["希望實現核心功能", data.goals.join("、")],
+      ["希望諮詢方式", data.consult_methods.join("、")],
+      ["方便諮詢時段", data.preferred_slots.join("、")],
+    ]),
+    "",
+    `申請編號：${data.id}`,
+    "",
+    "CrewPlay運動媒合平台",
+    "crew.matchplay@gmail.com",
+  ].join("\n");
+}
 
 function trustImageLine(data: { trust_image_id?: string }): [string, string] | null {
   if (!data.trust_image_id) return null;
@@ -353,6 +404,27 @@ export async function sendVenueFormEmails(data: VenueSubmission) {
       to: data.email,
       subject: `[CrewPlay] 已收到您的場地刊登申請（${data.id.slice(0, 8)}）`,
       text: venueCustomerBody(data),
+    });
+  }
+}
+
+export async function sendVenueDeviceConsultingEmails(data: VenueDeviceConsultingSubmission) {
+  const cfg = getMailConfig();
+  if (!cfg) throw new Error("Gmail 尚未設定：請在 .env.local 填入 GMAIL_APP_PASSWORD");
+
+  await sendMail({
+    to: cfg.notifyTo,
+    subject: `[設備串接諮詢] ${data.venue_name}（${data.id.slice(0, 8)}）`,
+    text: venueDeviceConsultingInternalBody(data),
+    replyTo: data.contact_email || undefined,
+  });
+
+  if (data.contact_email && data.contact_email.includes("@")) {
+    await sendMail({
+      to: data.contact_email,
+      subject: `[CrewPlay] 已收到您的設備串接諮詢申請（${data.id.slice(0, 8)}）`,
+      text: venueDeviceConsultingCustomerBody(data),
+      replyTo: cfg.user,
     });
   }
 }

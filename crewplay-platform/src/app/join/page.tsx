@@ -13,7 +13,7 @@ export default function JoinEntryPage() {
         請先選擇您的身分，我們會帶您到對應的申請表單。
       </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
         <Link
           href="/join/host"
           className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-300"
@@ -31,6 +31,16 @@ export default function JoinEntryPage() {
           <p className="text-lg font-bold text-slate-900">我是場主，想刊登場地</p>
           <p className="mt-2 text-sm text-slate-600">
             提供場館時段與場租資訊，讓團主與球友預約使用。
+          </p>
+        </Link>
+
+        <Link
+          href="/join/venue-device-consulting"
+          className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-300"
+        >
+          <p className="text-lg font-bold text-slate-900">設備連接與進階設定諮詢</p>
+          <p className="mt-2 text-sm text-slate-600">
+            場地主專屬：串接發球機、智慧看板、門禁與自動化設備，提升場地使用率。
           </p>
         </Link>
       </div>
