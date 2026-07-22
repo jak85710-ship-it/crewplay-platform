@@ -129,23 +129,6 @@ export default function CheckInGuidePage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5">
-        <h2 className="text-xl font-bold text-slate-900">LINE 九宮格連結建議（可直接複製）</h2>
-        <div className="mt-3 space-y-2 text-sm text-slate-700">
-          <p>
-            報到說明（本頁）：<span className="font-mono">https://www.crewplay.tw/checkin/guide</span>
-          </p>
-          <p>
-            找揪團：<span className="font-mono">https://www.crewplay.tw/liff/bootstrap?path=/teams</span>
-          </p>
-          <p>
-            我的預約：<span className="font-mono">https://www.crewplay.tw/liff/bootstrap?path=/my/bookings</span>
-          </p>
-          <p>
-            團主管理：<span className="font-mono">https://www.crewplay.tw/liff/bootstrap?path=/my/host</span>
-          </p>
-        </div>
-      </section>
     </div>
   );
 }
