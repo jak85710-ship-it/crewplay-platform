@@ -101,8 +101,8 @@ function inferCapacityFromIntroduce(team: Team, overrides?: Record<string, numbe
   return { total: fallback, source: "default" };
 }
 
-function normalizeText(value: string): string {
-  return value
+function normalizeText(value: unknown): string {
+  return String(value || "")
     .toLowerCase()
     .replace(/\s+/g, "")
     .replace(/[()（）\[\]【】·．、,，.。\-_/]/g, "");

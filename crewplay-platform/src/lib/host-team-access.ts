@@ -4,8 +4,8 @@ import { normalizePhone } from "@/lib/phone-auth";
 import { listHostSubmissions } from "@/lib/submissions";
 import { getAllTeams } from "@/lib/teams";
 
-function normalizeText(value: string): string {
-  return value
+function normalizeText(value: unknown): string {
+  return String(value || "")
     .toLowerCase()
     .replace(/\s+/g, "")
     .replace(/[()（）\[\]【】·．、,，.。\-_/]/g, "");

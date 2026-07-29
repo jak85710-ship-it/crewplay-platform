@@ -113,33 +113,38 @@ export async function processBookingReviewSla(options?: { teamIds?: string[] }):
   slaCancelled: number;
   fullAutoRejected: number;
 }> {
-  const [teams, bookings] = await Promise.all([getAllTeams(), listBookings()]);
-  const filterIds = options?.teamIds?.length ? new Set(options.teamIds) : null;
-  const teamMap = new Map(teams.map((team) => [team.id, team]));
-  const nowMs = Date.now();
-  let slaCancelled = 0;
-  let fullAutoRejected = 0;
+  try {
+    const [teams, bookings] = await Promise.all([getAllTeams(), listBookings()]);
+    const filterIds = options?.teamIds?.length ? new Set(options.teamIds) : null;
+    const teamMap = new Map(teams.map((team) => [team.id, team]));
+    const nowMs = Date.now();
+    let slaCancelled = 0;
+    let fullAutoRejected = 0;
 
-  for (const booking of bookings) {
-    if (booking.status !== PENDING_REVIEW_STATUS) continue;
-    if (filterIds && !filterIds.has(booking.team_id)) continue;
-    const team = teamMap.get(booking.team_id);
-    if (!team) continue;
-    const reason = resolveSlaReason(booking, team, nowMs);
-    if (!reason) continue;
-    const changed = await autoCancelBooking(booking, team.arena_name, reason);
-    if (changed) slaCancelled += 1;
+    for (const booking of bookings) {
+      if (booking.status !== PENDING_REVIEW_STATUS) continue;
+      if (filterIds && !filterIds.has(booking.team_id)) continue;
+      const team = teamMap.get(booking.team_id);
+      if (!team) continue;
+      const reason = resolveSlaReason(booking, team, nowMs);
+      if (!reason) continue;
+      const changed = await autoCancelBooking(booking, team.arena_name, reason);
+      if (changed) slaCancelled += 1;
+    }
+
+    const candidateTeams = filterIds
+      ? teams.filter((team) => filterIds.has(team.id))
+      : teams;
+    const latestBookings = await listBookings();
+    for (const team of candidateTeams) {
+      fullAutoRejected += await rejectPendingQueueIfFull(team, latestBookings);
+    }
+
+    return { slaCancelled, fullAutoRejected };
+  } catch (err) {
+    console.error("processBookingReviewSla failed:", err);
+    return { slaCancelled: 0, fullAutoRejected: 0 };
   }
-
-  const candidateTeams = filterIds
-    ? teams.filter((team) => filterIds.has(team.id))
-    : teams;
-  const latestBookings = await listBookings();
-  for (const team of candidateTeams) {
-    fullAutoRejected += await rejectPendingQueueIfFull(team, latestBookings);
-  }
-
-  return { slaCancelled, fullAutoRejected };
 }
 
 export async function reviewBookingAsHost(input: {
