@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 import { MyBookingCard } from "@/components/MyBookingCard";
 import { MyBookingsSessionGuard } from "@/components/MyBookingsSessionGuard";
+import { processBookingReviewSla } from "@/lib/booking-review-sla";
 import { formatCreditRecoveryHint } from "@/lib/credit-recovery";
 import { listBookings } from "@/lib/bookings";
 import {
@@ -17,6 +18,7 @@ import { getMemberSession } from "@/lib/member-session";
 export const dynamic = "force-dynamic";
 
 export default async function MyBookingsPage() {
+  await processBookingReviewSla();
   const cookieStore = await cookies();
   const member = getMemberSession(cookieStore);
 

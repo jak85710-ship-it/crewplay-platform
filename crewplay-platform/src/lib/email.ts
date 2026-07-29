@@ -90,6 +90,7 @@ export type HostSubmission = {
   location: string;
   weekday: string;
   time_slots: string[];
+  vacancies?: string;
   fee: string;
   skill_level: string;
   team_name: string;
@@ -178,6 +179,7 @@ function hostInternalBody(data: HostSubmission): string {
       ["想揪團運動的地點", data.location],
       ["每周固定約運動的時間", data.weekday],
       ["想運動的時段", data.time_slots.join("、")],
+      ["缺額人數", data.vacancies || "未填寫"],
       ["想收取多少團費", data.fee],
       ["想找的程度為", data.skill_level],
       ["團隊名稱", data.team_name],
@@ -209,6 +211,7 @@ function hostCustomerBody(data: HostSubmission): string {
       ["想揪團運動的地點", data.location],
       ["每周固定約運動的時間", data.weekday],
       ["想運動的時段", data.time_slots.join("、")],
+      ["缺額人數", data.vacancies || "未填寫"],
       ["想收取多少團費", data.fee],
       ["想找的程度為", data.skill_level],
       ["團隊名稱", data.team_name],
@@ -429,6 +432,45 @@ export async function sendVenueDeviceConsultingEmails(data: VenueDeviceConsultin
   }
 }
 
+export async function sendBookingQueueAutoCancelNotice(input: {
+  guestName: string;
+  guestEmail?: string;
+  teamName: string;
+  bookingId: string;
+  reason: "sla_24h" | "sla_before_start_12h" | "full_auto_reject";
+}) {
+  if (!input.guestEmail || !input.guestEmail.includes("@")) return;
+  const cfg = getMailConfig();
+  if (!cfg) return;
+
+  const reasonText =
+    input.reason === "full_auto_reject"
+      ? "本場次已額滿"
+      : input.reason === "sla_before_start_12h"
+        ? "開打前 12 小時仍未完成審核"
+        : "報名後 24 小時仍未完成審核";
+
+  const text = [
+    `${input.guestName || "您好"}，`,
+    "",
+    "非常抱歉，團主因故未能及時審核，已為您取消排隊，快去看看其他熱門球局吧！",
+    "",
+    `場次：${input.teamName}`,
+    `報名編號：${input.bookingId.slice(0, 8)}`,
+    `取消原因：${reasonText}`,
+    "",
+    "您可回到「找揪團」重新選擇其他球局。",
+    "CrewPlay運動媒合平台",
+  ].join("\n");
+
+  await sendMail({
+    to: input.guestEmail,
+    subject: `[CrewPlay] 排隊已取消通知（${input.teamName}）`,
+    text,
+    replyTo: cfg.user,
+  });
+}
+
 export function isEmailConfigured(): boolean {
   return getMailConfig() !== null;
 }
@@ -621,12 +663,14 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
     if (ctx.booking.guest_email) {
       await sendMail({
         to: ctx.booking.guest_email,
-        subject: `[CrewPlay] 報名成功 — ${ctx.team.arena_name}（${ref}）`,
+        subject: `[CrewPlay] 排隊申請已送出 — ${ctx.team.arena_name}（${ref}）`,
         text: [
           `${ctx.booking.guest_name} 您好，`,
           "",
-          "您已在 CrewPlay 運動媒合平台完成揪團報名，名額已為您保留。",
+          "您已在 CrewPlay 運動媒合平台送出排隊申請，待團主審核。",
           `您的報名編號：${ref}（洽詢客服或查詢預約時請提供此編號）`,
+          "",
+          "若報名後 24 小時仍未審核，或開打前 12 小時仍未審核，系統將自動取消排隊並通知您。",
           "",
           "到場後請用您的手機掃描團主現場出示的專屬報到 QR Code，完成後畫面會顯示報到成功與編號。",
           "",
@@ -634,10 +678,10 @@ export async function sendBookingSubmittedEmails(ctx: BookingMailContext): Promi
           bookingLines(ctx, true),
           "",
           "【下一步】",
-          "1. 已為您保留名額",
-          timeText ? `2. 請準時到場：${timeText}` : "2. 請準時到場（時間請見揪團說明）",
+          "1. 等待團主審核（可在「我的預約」查看狀態）",
+          timeText ? `2. 核准後請準時到場：${timeText}` : "2. 核准後請準時到場（時間請見揪團說明）",
           placeText ? `   地點：${placeText}` : "",
-          feeText ? `3. 到場向團主付費（免預付）：${feeText}` : "3. 到場向團主付費（免預付）",
+          feeText ? `3. 核准後到場向團主付費（免預付）：${feeText}` : "3. 核准後到場向團主付費（免預付）",
           "",
           "團主將透過您留的手機與 Email 聯絡。如有問題請致電 07-552-2092 或回信本信箱。",
           "",

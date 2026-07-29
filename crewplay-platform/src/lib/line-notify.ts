@@ -198,6 +198,34 @@ export async function pushLineTextToRecipients(input: {
   };
 }
 
+export async function pushLineQueueAutoCancelNotice(input: {
+  lineUid?: string | null;
+  teamName: string;
+  reason: "sla_24h" | "sla_before_start_12h" | "full_auto_reject";
+}): Promise<LinePushResult> {
+  const uid = String(input.lineUid || "").trim();
+  if (!uid) return { sent: false, reason: "guest_line_uid_missing" };
+
+  const reasonText =
+    input.reason === "full_auto_reject"
+      ? "本場次已額滿"
+      : input.reason === "sla_before_start_12h"
+        ? "開打前 12 小時仍未完成審核"
+        : "報名後 24 小時仍未完成審核";
+
+  return pushLineMessage(uid, [
+    {
+      type: "text",
+      text: [
+        "【CrewPlay】排隊已取消通知",
+        "非常抱歉，團主因故未能及時審核，已為您取消排隊，快去看看其他熱門球局吧！",
+        `場次：${input.teamName}`,
+        `原因：${reasonText}`,
+      ].join("\n"),
+    },
+  ]);
+}
+
 function guestMessage(booking: BookingLite, team: TeamLite): LineMessage[] {
   const ref = bookingReference(booking);
   const checkInToken = issueCheckInToken(booking);
@@ -208,13 +236,16 @@ function guestMessage(booking: BookingLite, team: TeamLite): LineMessage[] {
   const positionMeta = extractVolleyballPositionFromNote(booking.note);
 
   const text = [
-    "【CrewPlay】報名成功",
+    "【CrewPlay】排隊申請已送出",
     `報名編號：${ref}`,
     `揪團：${team.arena_name}`,
     `人數：${booking.slots} 人`,
     positionMeta.position ? `擅長位置：${positionMeta.position}` : "",
     timeText ? `時間：${timeText}` : "",
     placeText ? `地點：${placeText}` : "",
+    "",
+    "狀態：待團主審核",
+    "若 24 小時未審核，或開打前 12 小時仍未審核，系統會自動取消排隊並通知您。",
     "",
     `我的預約：${myBookingsUrl}`,
     checkInUrl ? `進場 QR：${checkInUrl}` : "",

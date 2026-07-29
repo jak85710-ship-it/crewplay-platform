@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { verifyAdminKey } from "@/lib/analytics-store";
 import { listBookings } from "@/lib/bookings";
+import { processBookingReviewSla } from "@/lib/booking-review-sla";
 
 export async function GET(req: Request) {
   if (!verifyAdminKey(req)) {
@@ -9,6 +10,7 @@ export async function GET(req: Request) {
   }
 
   try {
+    await processBookingReviewSla();
     const bookings = await listBookings();
     return NextResponse.json({
       ok: true,

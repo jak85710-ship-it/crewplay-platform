@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TeamCoverImage } from "@/components/TeamCoverImage";
 import { BOOKING_PAUSE_MESSAGE, isBookingOpenForTeam } from "@/lib/booking-availability";
+import { processBookingReviewSla } from "@/lib/booking-review-sla";
 import { getTeamBookingStats } from "@/lib/team-booking-stats";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 import { feeSummary, formatIntroduce } from "@/lib/utils";
@@ -12,6 +13,7 @@ interface Props {
 
 export default async function TeamDetailPage({ params }: Props) {
   const { id } = await params;
+  await processBookingReviewSla({ teamIds: [id] });
   const raw = await getTeamById(id);
   if (!raw) notFound();
   const team = enrichTeamFromIntro(raw);

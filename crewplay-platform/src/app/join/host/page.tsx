@@ -24,6 +24,7 @@ export default function HostJoinPage() {
     location: "",
     weekday: "",
     time_slots: [] as string[],
+    vacancies: "",
     fee: "",
     skill_level: "",
     team_name: "",
@@ -41,6 +42,7 @@ export default function HostJoinPage() {
       `地點：${form.location}`,
       `固定日期：${form.weekday}`,
       `時段：${form.time_slots.join("、")}`,
+      `缺額人數：${form.vacancies}`,
       `團隊名稱：${form.team_name}`,
       `聯絡電話：${form.phone}`,
       `Email：${form.email}`,
@@ -139,6 +141,14 @@ export default function HostJoinPage() {
         </FormSection>
 
         <FormSection title="團隊設定">
+          <TextField
+            label="缺額人數（滿團自動關閉依據）"
+            name="vacancies"
+            required
+            value={form.vacancies}
+            onChange={(vacancies) => setForm({ ...form, vacancies })}
+            hint="例如：12（系統會在核准人數達標後自動婉拒排隊者）"
+          />
           <TextAreaField
             label="想收取多少團費?"
             name="fee"

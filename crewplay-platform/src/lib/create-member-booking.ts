@@ -1,5 +1,6 @@
 import { createBooking } from "@/lib/bookings";
 import { memberSessionFromBookingToken } from "@/lib/booking-auth-token";
+import { processBookingReviewSla } from "@/lib/booking-review-sla";
 import { BOOKING_PAUSE_MESSAGE, isBookingOpenForTeam } from "@/lib/booking-availability";
 import type { CookieReader } from "@/lib/cookie-reader";
 import { sendBookingSubmittedEmails } from "@/lib/email";
@@ -109,6 +110,7 @@ export async function processMemberBooking(
   if (!team) {
     return { ok: false, code: "not_found", error: "找不到揪團" };
   }
+  await processBookingReviewSla({ teamIds: [teamId] });
   if (!isBookingOpenForTeam(team)) {
     return {
       ok: false,

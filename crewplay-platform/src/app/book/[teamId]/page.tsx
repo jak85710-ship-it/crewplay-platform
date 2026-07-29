@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { BOOKING_PAUSE_MESSAGE, isBookingOpenForTeam } from "@/lib/booking-availability";
+import { processBookingReviewSla } from "@/lib/booking-review-sla";
 import { checkMemberCanBook } from "@/lib/member-credit";
 import { issueBookingAuthToken } from "@/lib/booking-auth-token";
 import { getMemberKeyFromSession } from "@/lib/member-key";
@@ -32,6 +33,7 @@ export default async function BookPage({ params, searchParams }: Props) {
 
   const teamRaw = await getTeamById(teamId);
   if (!teamRaw) notFound();
+  await processBookingReviewSla({ teamIds: [teamId] });
 
   const team = enrichTeamFromIntro(teamRaw);
   const stats = await getTeamBookingStats(team);

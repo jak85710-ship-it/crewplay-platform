@@ -1,6 +1,7 @@
 import { listBookings } from "@/lib/bookings";
 import { listTeamCapacityOverrides } from "@/lib/team-capacity-overrides";
 import { listTeamManualMembers } from "@/lib/team-manual-members";
+import { listHostSubmissions } from "@/lib/submissions";
 import { extractVolleyballPositionFromNote, VOLLEYBALL_POSITIONS, type VolleyballPosition } from "@/lib/volleyball-position";
 import type { Booking, Team } from "@/types";
 
@@ -20,7 +21,7 @@ const DEFAULT_CAPACITY_BY_SPORT: Record<string, number> = {
   棒球: 18,
 };
 
-const ACTIVE_BOOKING_STATUSES = new Set(["submitted", "pending_payment", "paid"]);
+const ACTIVE_BOOKING_STATUSES = new Set(["paid"]);
 
 function toDigitFromChinese(raw: string): number | null {
   const s = raw.trim();
@@ -61,6 +62,10 @@ function toDigitFromChinese(raw: string): number | null {
 }
 
 function inferCapacityFromIntroduce(team: Team, overrides?: Record<string, number>): CapacityInfo {
+  const fromHostVacancies = Number(overrides?.[`host_vacancy:${team.id}`]);
+  if (Number.isFinite(fromHostVacancies) && fromHostVacancies > 0) {
+    return { total: fromHostVacancies, source: "manual" };
+  }
   const manual = overrides?.[team.id];
   if (Number.isFinite(manual) && (manual as number) > 0) {
     return { total: Number(manual), source: "manual" };
@@ -94,6 +99,41 @@ function inferCapacityFromIntroduce(team: Team, overrides?: Record<string, numbe
 
   const fallback = DEFAULT_CAPACITY_BY_SPORT[team.sport] ?? 10;
   return { total: fallback, source: "default" };
+}
+
+function normalizeText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[()（）\[\]【】·．、,，.。\-_/]/g, "");
+}
+
+function nameLikelyMatch(teamName: string, arenaName: string): boolean {
+  const a = normalizeText(teamName);
+  const b = normalizeText(arenaName);
+  if (!a || !b) return false;
+  return a === b || a.includes(b) || b.includes(a);
+}
+
+function vacancyNumber(raw: string | undefined): number | null {
+  const n = Number(String(raw || "").trim());
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return Math.floor(n);
+}
+
+async function hostVacancyOverrideByTeam(teams: Team[]): Promise<Record<string, number>> {
+  const submissions = await listHostSubmissions();
+  const map: Record<string, number> = {};
+  for (const team of teams) {
+    const matched = submissions.find((submission) => {
+      if (!nameLikelyMatch(submission.team_name, team.arena_name)) return false;
+      const location = normalizeText(submission.location || "");
+      return !location || normalizeText(team.region).includes(location) || normalizeText(team.location).includes(location);
+    });
+    const v = vacancyNumber(matched?.vacancies);
+    if (v) map[team.id] = v;
+  }
+  return map;
 }
 
 function volleyballTargetPositions(total: number): Record<VolleyballPosition, number> {
@@ -161,7 +201,7 @@ function computeTeamBookingStats(
 ): TeamBookingStats {
   const cap = inferCapacityFromIntroduce(team, overrides);
   const active = bookings.filter(
-    (b) => b.team_id === team.id && ACTIVE_BOOKING_STATUSES.has(b.status)
+    (b) => b.team_id === team.id && (ACTIVE_BOOKING_STATUSES.has(b.status) || Boolean(b.checked_in_at))
   );
 
   const bookingSlots = active.reduce((sum, b) => sum + Math.max(1, Number(b.slots || 1)), 0);
@@ -216,24 +256,28 @@ function computeTeamBookingStats(
 }
 
 export async function getTeamBookingStats(team: Team): Promise<TeamBookingStats> {
-  const [bookings, overrides, manualMembersById] = await Promise.all([
+  const [bookings, overrides, manualMembersById, hostVacancies] = await Promise.all([
     listBookings(),
     listTeamCapacityOverrides(),
     listTeamManualMembers(),
+    hostVacancyOverrideByTeam([team]),
   ]);
-  return computeTeamBookingStats(team, bookings, overrides, manualMembersById);
+  const mergedOverrides = { ...overrides, ...Object.fromEntries(Object.entries(hostVacancies).map(([k, v]) => [`host_vacancy:${k}`, v])) };
+  return computeTeamBookingStats(team, bookings, mergedOverrides, manualMembersById);
 }
 
 export async function getTeamBookingStatsMap(teams: Team[]): Promise<Record<string, TeamBookingStats>> {
   if (teams.length === 0) return {};
-  const [bookings, overrides, manualMembersById] = await Promise.all([
+  const [bookings, overrides, manualMembersById, hostVacancies] = await Promise.all([
     listBookings(),
     listTeamCapacityOverrides(),
     listTeamManualMembers(),
+    hostVacancyOverrideByTeam(teams),
   ]);
+  const mergedOverrides = { ...overrides, ...Object.fromEntries(Object.entries(hostVacancies).map(([k, v]) => [`host_vacancy:${k}`, v])) };
   const map: Record<string, TeamBookingStats> = {};
   for (const team of teams) {
-    map[team.id] = computeTeamBookingStats(team, bookings, overrides, manualMembersById);
+    map[team.id] = computeTeamBookingStats(team, bookings, mergedOverrides, manualMembersById);
   }
   return map;
 }

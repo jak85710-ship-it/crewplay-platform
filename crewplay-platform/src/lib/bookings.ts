@@ -164,6 +164,32 @@ export async function markBookingPaid(tradeNo: string): Promise<Booking | null> 
   return list[idx];
 }
 
+export async function approveBookingById(bookingId: string): Promise<Booking | null> {
+  const now = new Date().toISOString();
+  const { getSupabaseAdmin } = await import("./teams");
+  const supabase = getSupabaseAdmin();
+  if (supabase) {
+    const { data } = await supabase
+      .from("bookings")
+      .update({ status: "paid", paid_at: now })
+      .eq("id", bookingId)
+      .select()
+      .maybeSingle();
+    return (data as Booking) ?? null;
+  }
+
+  const list = await loadBookings();
+  const idx = list.findIndex((b) => b.id === bookingId);
+  if (idx < 0) return null;
+  list[idx] = {
+    ...list[idx],
+    status: "paid",
+    paid_at: now,
+  };
+  await saveBookings(list);
+  return list[idx];
+}
+
 export async function markBookingNoShow(bookingId: string): Promise<{
   booking: Booking | null;
   memberKey: string | null;

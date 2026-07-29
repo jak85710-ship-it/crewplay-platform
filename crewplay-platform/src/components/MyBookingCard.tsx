@@ -11,7 +11,7 @@ function bookingStatusLabel(status: string, checkedInAt?: string | null): string
   if (checkedInAt) return "已進場";
   switch (status) {
     case "submitted":
-      return "已送出";
+      return "待團主審核";
     case "pending_payment":
       return "待付款";
     case "paid":
@@ -71,7 +71,9 @@ export async function MyBookingCard({ booking }: { booking: Booking }) {
 
       {!checkedIn && booking.status !== "no_show" && booking.status !== "cancelled" && (
         <p className="mt-3 rounded-xl border border-brand-200 bg-brand-50 px-3 py-2 text-xs text-brand-900">
-          到場後請用您的手機掃描團主現場出示的「專屬報到 QR Code」完成報到。
+          {booking.status === "submitted"
+            ? "目前等待團主審核。若報名後 24 小時未審核，或開打前 12 小時未審核，系統將自動取消排隊並通知您。"
+            : "到場後請用您的手機掃描團主現場出示的「專屬報到 QR Code」完成報到。"}
         </p>
       )}
 

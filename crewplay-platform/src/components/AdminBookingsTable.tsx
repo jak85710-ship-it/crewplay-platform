@@ -9,7 +9,7 @@ import type { Booking } from "@/types";
 function statusLabel(status: string): string {
   switch (status) {
     case "submitted":
-      return "已送出";
+      return "待團主審核";
     case "pending_payment":
       return "待付款";
     case "paid":

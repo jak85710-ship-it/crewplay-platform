@@ -60,7 +60,7 @@ export default function BookResultPage({ searchParams }: Props) {
             !
           </div>
         )}
-        <h1 className="mt-6 text-2xl font-bold text-slate-900">{ok ? "報名成功！" : "報名未完成"}</h1>
+        <h1 className="mt-6 text-2xl font-bold text-slate-900">{ok ? "排隊申請已送出！" : "報名未完成"}</h1>
         {team && <p className="mt-2 text-slate-600">{team.arena_name}</p>}
         {ok && bookingRef && (
           <p className="mt-1 text-xs text-slate-500">報名編號 {bookingRef}</p>
@@ -88,11 +88,9 @@ export default function BookResultPage({ searchParams }: Props) {
           <li className="flex gap-3 rounded-xl border border-green-200 bg-green-50 p-4 text-sm">
             <span className="font-bold text-green-700">1</span>
             <div>
-              <p className="font-semibold text-green-900">已為你保留名額</p>
+              <p className="font-semibold text-green-900">已送交團主審核（排隊中）</p>
               <p className="mt-1 text-green-800">
-                {mailStatus === "sent"
-                  ? "Email 確認信已寄出。"
-                  : "團主可透過您留的手機與 Email 聯絡。"}
+                團主會盡快審核；若 24 小時內未審核，或開打前 12 小時仍未審核，系統將自動取消排隊並通知您。
               </p>
             </div>
           </li>

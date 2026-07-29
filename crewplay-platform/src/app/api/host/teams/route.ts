@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 
 import { listOwnedTeamsForMember } from "@/lib/host-team-access";
 import { getMemberSession } from "@/lib/member-session";
+import { processBookingReviewSla } from "@/lib/booking-review-sla";
 import { getTeamBookingStatsMap } from "@/lib/team-booking-stats";
 import { addTeamManualMembers, listTeamManualMembers, setTeamManualMembers } from "@/lib/team-manual-members";
 import { setTeamCapacityOverride } from "@/lib/team-capacity-overrides";
@@ -15,6 +16,7 @@ export async function GET() {
   }
 
   const teams = await listOwnedTeamsForMember(member);
+  await processBookingReviewSla({ teamIds: teams.map((team) => team.id) });
   const statsMap = await getTeamBookingStatsMap(teams);
   const manualMap = await listTeamManualMembers();
 
@@ -53,6 +55,7 @@ export async function POST(req: Request) {
   }
 
   const ownedTeams = await listOwnedTeamsForMember(member);
+  await processBookingReviewSla({ teamIds: ownedTeams.map((team) => team.id) });
   if (!ownedTeams.some((t) => t.id === teamId)) {
     return NextResponse.json({ error: "您只能編輯自己開的團" }, { status: 403 });
   }
