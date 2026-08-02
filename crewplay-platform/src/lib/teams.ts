@@ -3,7 +3,7 @@ import type { Team, TeamsManifest } from "@/types";
 import { filterListedTeams, isDelistedTeam } from "@/lib/delisted-teams";
 import { getFeaturedEventMap } from "@/lib/host-freemium";
 import { regionsMatch } from "@/lib/region";
-import { parseFee } from "./utils";
+import { parseFee, parseIntroField } from "./utils";
 import fs from "fs";
 import path from "path";
 
@@ -130,11 +130,13 @@ export function enrichTeamFromIntro(team: Team): Team {
 
 export function filterTeams(
   teams: Team[],
-  opts: { sport?: string; region?: string; q?: string }
+  opts: { sport?: string; region?: string; q?: string; time?: string; weekday?: string }
 ): Team[] {
   let list = teams.map(enrichTeamFromIntro);
   if (opts.sport) list = list.filter((t) => t.sport === opts.sport);
   if (opts.region) list = list.filter((t) => regionsMatch(t.region, opts.region!));
+  if (opts.time) list = list.filter((t) => teamMatchesTimeFilter(t, opts.time!));
+  if (opts.weekday) list = list.filter((t) => teamMatchesWeekdayFilter(t, opts.weekday!));
   if (opts.q) {
     const q = opts.q.toLowerCase();
     list = list.filter(
@@ -147,4 +149,64 @@ export function filterTeams(
     );
   }
   return list;
+}
+
+function firstHourFromText(raw: string): number | null {
+  const text = String(raw || "").replace(/[０-９]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 65248));
+  const hourMatch = text.match(/(\d{1,2})\s*[:：]\s*\d{2}/);
+  if (!hourMatch?.[1]) return null;
+  const h = parseInt(hourMatch[1], 10);
+  if (!Number.isFinite(h) || h < 0 || h > 23) return null;
+  return h;
+}
+
+function inferTimeBucket(team: Team): "morning" | "afternoon" | "evening" | "night" | null {
+  const timeField = parseIntroField(team.introduce || "", "時間");
+  const base = `${timeField} ${(team.introduce || "").slice(0, 120)}`;
+  const hour = firstHourFromText(base);
+  if (hour != null) {
+    if (hour >= 5 && hour < 12) return "morning";
+    if (hour >= 12 && hour < 18) return "afternoon";
+    if (hour >= 18 && hour < 22) return "evening";
+    return "night";
+  }
+
+  const text = base.toLowerCase();
+  if (/早上|上午|清晨/.test(text)) return "morning";
+  if (/中午|下午/.test(text)) return "afternoon";
+  if (/晚上|傍晚|夜間/.test(text)) return "evening";
+  if (/深夜|凌晨/.test(text)) return "night";
+  return null;
+}
+
+function teamMatchesTimeFilter(team: Team, filter: string): boolean {
+  const bucket = inferTimeBucket(team);
+  return bucket === filter;
+}
+
+function normalizeWeekText(value: string): string {
+  return String(value || "")
+    .toLowerCase()
+    .replaceAll("週", "星期")
+    .replaceAll("礼拜", "星期")
+    .replaceAll("禮拜", "星期")
+    .replace(/\s+/g, "");
+}
+
+function inferWeekdayKey(team: Team): "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun" | null {
+  const timeField = parseIntroField(team.introduce || "", "時間");
+  const source = normalizeWeekText(`${timeField} ${team.introduce || ""}`);
+  if (!source) return null;
+  if (source.includes("星期一")) return "mon";
+  if (source.includes("星期二")) return "tue";
+  if (source.includes("星期三")) return "wed";
+  if (source.includes("星期四")) return "thu";
+  if (source.includes("星期五")) return "fri";
+  if (source.includes("星期六")) return "sat";
+  if (source.includes("星期日") || source.includes("星期天")) return "sun";
+  return null;
+}
+
+function teamMatchesWeekdayFilter(team: Team, filter: string): boolean {
+  return inferWeekdayKey(team) === filter;
 }
