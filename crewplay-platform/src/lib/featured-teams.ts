@@ -1,6 +1,9 @@
 import type { Team } from "@/types";
 import { isUploadedTeamPhoto } from "@/lib/utils";
 
+const PILOT_TEAM_ID = "27882505-cb9f-4dd2-8001-2f6f2fbc107b"; // 萬拓乒乓
+const NEW_TEAM_ID = "8ff7a6f5-b0e5-4fe3-a6ff-ab94e9f01f70"; // 練球團
+
 /** 有足夠團圖時，輪播只從有圖的團挑選 */
 function withPhotoPriority(teams: Team[], limit: number): Team[] {
   const withPhoto = teams.filter(isUploadedTeamPhoto);
@@ -20,6 +23,19 @@ function sortUploadedFirst(teams: Team[]): Team[] {
   });
 }
 
+function moveTeamNextToAnchor(teams: Team[], teamId: string, anchorId: string): Team[] {
+  const list = [...teams];
+  const teamIndex = list.findIndex((t) => t.id === teamId);
+  const anchorIndex = list.findIndex((t) => t.id === anchorId);
+  if (teamIndex < 0 || anchorIndex < 0) return list;
+
+  const [team] = list.splice(teamIndex, 1);
+  const insertAfter = list.findIndex((t) => t.id === anchorId);
+  if (insertAfter < 0) return list;
+  list.splice(insertAfter + 1, 0, team);
+  return list;
+}
+
 /** 熱門運動揪團：優先顯示已上架圖片的團 */
 export function pickPopularTeams(teams: Team[], limit = 12): Team[] {
   const sorted = sortUploadedFirst(withPhotoPriority(teams, limit));
@@ -36,7 +52,15 @@ export function pickPopularTeams(teams: Team[], limit = 12): Team[] {
     }
   }
 
-  return [...diverse, ...rest].slice(0, limit);
+  const selected = [...diverse, ...rest].slice(0, limit);
+  if (!selected.some((t) => t.id === NEW_TEAM_ID)) {
+    const incoming = sorted.find((t) => t.id === NEW_TEAM_ID);
+    if (incoming) {
+      selected.pop();
+      selected.push(incoming);
+    }
+  }
+  return moveTeamNextToAnchor(selected, NEW_TEAM_ID, PILOT_TEAM_ID);
 }
 
 /** 推薦揪團：依縣市輪播，讓各區都有代表 */
