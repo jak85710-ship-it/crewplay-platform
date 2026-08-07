@@ -11,6 +11,9 @@ function withPhotoPriority(teams: Team[], limit: number): Team[] {
 
 function sortUploadedFirst(teams: Team[]): Team[] {
   return [...teams].sort((a, b) => {
+    const af = a.is_featured ? 1 : 0;
+    const bf = b.is_featured ? 1 : 0;
+    if (bf !== af) return bf - af;
     const au = isUploadedTeamPhoto(a) ? 1 : 0;
     const bu = isUploadedTeamPhoto(b) ? 1 : 0;
     return bu - au;

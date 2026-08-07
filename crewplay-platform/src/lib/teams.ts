@@ -93,7 +93,9 @@ export async function getAllTeams(): Promise<Team[]> {
 function sortByFeatured(teams: Team[], featuredMap: Record<string, boolean>): Team[] {
   const withFlag = teams.map((team) => ({
     ...team,
-    is_featured: featuredMap[team.id] === true,
+    is_featured:
+      featuredMap[team.id] === true ||
+      (featuredMap[team.id] === undefined && team.is_featured === true),
   }));
   return withFlag.sort((a, b) => {
     const af = a.is_featured ? 1 : 0;

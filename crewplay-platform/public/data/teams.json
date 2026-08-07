@@ -3878,9 +3878,24 @@
       "fee_amount": null,
       "fee_label": "",
       "status": "published"
+    },
+    {
+      "id": "8ff7a6f5-b0e5-4fe3-a6ff-ab94e9f01f70",
+      "sheet_row": 281,
+      "sport": "羽球",
+      "arena_name": "練球團",
+      "introduce": "地點：汐止奧森羽球學院\n時間：星期六 15:00-16:00、17:00-18:00\n程度：第五級\n用球：各牌都有\n費用：350/人\n器材：需自備球拍\n缺額人數：3",
+      "photo": "https://www.crewplay.tw/api/submissions/image/host-db2cafdc-0c3d-4f3f-baf2-2ff3c1213ada",
+      "assign_url": "",
+      "region": "新北市",
+      "location": "汐止奧森羽球學院",
+      "fee_amount": 350,
+      "fee_label": "350/人",
+      "is_featured": true,
+      "status": "published"
     }
     
   ],
   "exportedAt": "2026-07-04T07:35:00.000Z",
-  "count": 277
+  "count": 278
 }
