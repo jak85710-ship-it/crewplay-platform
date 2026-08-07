@@ -72,6 +72,8 @@ function inferCapacityFromIntroduce(team: Team, overrides?: Record<string, numbe
   }
   const intro = team.introduce || "";
   const checks: RegExp[] = [
+    /缺額(?:人數)?[：:]\s*([0-9一二兩三四五六七八九十]+)\s*人?/,
+    /尚缺\s*([0-9一二兩三四五六七八九十]+)\s*人/,
     /收\s*([0-9一二兩三四五六七八九十]+)\s*人/,
     /([0-9一二兩三四五六七八九十]+)\s*人滿團/,
     /滿團\s*([0-9一二兩三四五六七八九十]+)\s*人/,
