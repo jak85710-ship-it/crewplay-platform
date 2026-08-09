@@ -582,11 +582,21 @@ function extractContactEmails(text: string | undefined): string[] {
   return uniqueValidEmails(found);
 }
 
+const HOST_NOTIFICATION_EMAILS_BY_TEAM_DEFAULT: Record<string, string[]> = {
+  // 練球團
+  "8ff7a6f5-b0e5-4fe3-a6ff-ab94e9f01f70": ["0000000000tta@gmail.com"],
+};
+
 function hostNotifyEmailsFromEnv(teamId?: string): string[] {
   const fromGlobal = String(process.env.HOST_NOTIFICATION_EMAILS_GLOBAL || "")
     .split(/[,;\n]/)
     .map((s) => s.trim())
     .filter(Boolean);
+
+  const fromCodeDefault =
+    teamId && HOST_NOTIFICATION_EMAILS_BY_TEAM_DEFAULT[teamId]
+      ? HOST_NOTIFICATION_EMAILS_BY_TEAM_DEFAULT[teamId]
+      : [];
 
   const fromByTeam: string[] = [];
   const rawByTeam = String(process.env.HOST_NOTIFICATION_EMAILS_BY_TEAM || "").trim();
@@ -601,7 +611,7 @@ function hostNotifyEmailsFromEnv(teamId?: string): string[] {
     }
   }
 
-  return uniqueValidEmails([...fromByTeam, ...fromGlobal]);
+  return uniqueValidEmails([...fromByTeam, ...fromCodeDefault, ...fromGlobal]);
 }
 
 function resolveHostEmailRecipients(ctx: BookingMailContext, notifyTo: string): string[] {
