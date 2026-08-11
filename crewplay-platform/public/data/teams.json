@@ -3892,7 +3892,7 @@
       "fee_amount": 350,
       "fee_label": "350/人",
       "is_featured": true,
-      "status": "published"
+      "status": "hidden"
     }
     
   ],
