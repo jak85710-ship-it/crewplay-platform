@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 
 import {
+  detectSubmissionImageType,
   saveSubmissionImage,
   validateSubmissionImageFile,
   type SubmissionImageKind,
 } from "@/lib/submission-images";
+import { checkAndRecordImageUploadGuard } from "@/lib/form-abuse-guard";
 
 export async function POST(req: Request) {
   try {
+    const guard = await checkAndRecordImageUploadGuard({ req });
+    if (!guard.ok) {
+      return NextResponse.json({ error: guard.error }, { status: guard.status });
+    }
+
     const form = await req.formData();
     const file = form.get("file");
     const kind = String(form.get("kind") ?? "").trim();
@@ -27,7 +34,15 @@ export async function POST(req: Request) {
     }
 
     const bytes = Buffer.from(await file.arrayBuffer());
-    const saved = await saveSubmissionImage(bytes, contentType, kind as SubmissionImageKind);
+    const detectedType = detectSubmissionImageType(bytes);
+    if (!detectedType) {
+      return NextResponse.json({ error: "圖片檔案格式異常，請重新上傳" }, { status: 400 });
+    }
+    if (contentType && contentType !== "application/octet-stream" && contentType !== detectedType) {
+      return NextResponse.json({ error: "圖片格式與檔案內容不一致" }, { status: 400 });
+    }
+
+    const saved = await saveSubmissionImage(bytes, detectedType, kind as SubmissionImageKind);
 
     return NextResponse.json({ ok: true, id: saved.id, url: saved.url });
   } catch (err) {

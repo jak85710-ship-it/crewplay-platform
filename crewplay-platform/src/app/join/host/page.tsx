@@ -32,6 +32,7 @@ export default function HostJoinPage() {
     balls: "",
     phone: "",
     email: "",
+    company_website: "",
     agreed: false,
   });
 
@@ -107,6 +108,17 @@ export default function HostJoinPage() {
         subtitle="帶領球友固定開團，把「想運動」變成「每週都期待的一場球」！"
       />
       <form onSubmit={onSubmit} className="mx-auto max-w-3xl space-y-5 px-4 py-10">
+        <div className="hidden" aria-hidden>
+          <label>
+            company_website
+            <input
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.company_website}
+              onChange={(e) => setForm({ ...form, company_website: e.target.value })}
+            />
+          </label>
+        </div>
         <FormSection title="運動資訊" description="告訴我們您想開什麼團">
           <TextField
             label="從事的運動項目"
