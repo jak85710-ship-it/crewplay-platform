@@ -57,6 +57,7 @@ export function HostIncidentReportPanel() {
   const [incidents, setIncidents] = useState<IncidentRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [resendingId, setResendingId] = useState("");
   const [message, setMessage] = useState("");
   const [form, setForm] = useState<IncidentFormState>({
     team_id: "",
@@ -117,7 +118,11 @@ export function HostIncidentReportPanel() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "事故通報送出失敗");
-      setMessage("已完成事故通報，請保留現場證據並於必要時聯繫客服。");
+      if (data?.mail?.sent) {
+        setMessage("已完成事故通報，通知信已送出。請保留現場證據並於必要時聯繫客服。");
+      } else {
+        setMessage("已完成事故通報，但通知信暫時失敗，可在下方「最近事故紀錄」按重送。");
+      }
       setForm((prev) => ({
         ...prev,
         booking_id: "",
@@ -129,6 +134,26 @@ export function HostIncidentReportPanel() {
       setMessage(err instanceof Error ? err.message : "事故通報送出失敗");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function resendMail(incidentId: string) {
+    if (!incidentId || resendingId) return;
+    setResendingId(incidentId);
+    setMessage("");
+    try {
+      const res = await fetch("/api/host/incidents/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ incident_id: incidentId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "重送失敗");
+      setMessage("事故通知信已重送成功。");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "重送失敗，請稍後再試");
+    } finally {
+      setResendingId("");
     }
   }
 
@@ -269,6 +294,16 @@ export function HostIncidentReportPanel() {
                   {row.booking_reference ? ` · ${row.booking_reference}` : ""}
                 </p>
                 <p className="mt-1 text-slate-700">{row.summary}</p>
+                <div className="mt-2">
+                  <button
+                    type="button"
+                    onClick={() => void resendMail(row.id)}
+                    disabled={Boolean(resendingId)}
+                    className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 disabled:opacity-60"
+                  >
+                    {resendingId === row.id ? "重送中..." : "重送通知信"}
+                  </button>
+                </div>
               </div>
             ))}
           </div>

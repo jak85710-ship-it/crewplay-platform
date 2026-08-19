@@ -118,3 +118,10 @@ export async function saveHostIncidentReport(
   return record;
 }
 
+export async function getHostIncidentById(incidentId: string): Promise<HostIncidentRecord | null> {
+  const id = String(incidentId || "").trim();
+  if (!id) return null;
+  const manifest = await loadManifest();
+  return manifest.incidents.find((row) => row.id === id) ?? null;
+}
+
