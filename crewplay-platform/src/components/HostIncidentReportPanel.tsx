@@ -63,6 +63,7 @@ export function HostIncidentReportPanel() {
   const [submitting, setSubmitting] = useState(false);
   const [resendingId, setResendingId] = useState("");
   const [statusUpdatingId, setStatusUpdatingId] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "open" | "closed">("all");
   const [message, setMessage] = useState("");
   const [form, setForm] = useState<IncidentFormState>({
     team_id: "",
@@ -78,6 +79,19 @@ export function HostIncidentReportPanel() {
     () => Object.fromEntries(teams.map((t) => [t.id, t.arena_name])),
     [teams]
   );
+  const openCount = useMemo(
+    () => incidents.filter((row) => (row.status || "open") !== "closed").length,
+    [incidents]
+  );
+  const closedCount = useMemo(
+    () => incidents.filter((row) => (row.status || "open") === "closed").length,
+    [incidents]
+  );
+  const visibleIncidents = useMemo(() => {
+    if (statusFilter === "open") return incidents.filter((row) => (row.status || "open") !== "closed");
+    if (statusFilter === "closed") return incidents.filter((row) => (row.status || "open") === "closed");
+    return incidents;
+  }, [incidents, statusFilter]);
 
   async function load() {
     setLoading(true);
@@ -315,14 +329,51 @@ export function HostIncidentReportPanel() {
       </button>
 
       <div className="mt-6">
-        <p className="text-sm font-semibold text-slate-900">最近事故紀錄</p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-sm font-semibold text-slate-900">最近事故紀錄</p>
+          <div className="flex gap-2 text-xs">
+            <button
+              type="button"
+              onClick={() => setStatusFilter("all")}
+              className={`rounded-md border px-2.5 py-1 font-semibold ${
+                statusFilter === "all"
+                  ? "border-slate-900 bg-slate-900 text-white"
+                  : "border-slate-300 bg-white text-slate-700"
+              }`}
+            >
+              全部（{incidents.length}）
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("open")}
+              className={`rounded-md border px-2.5 py-1 font-semibold ${
+                statusFilter === "open"
+                  ? "border-amber-700 bg-amber-700 text-white"
+                  : "border-slate-300 bg-white text-slate-700"
+              }`}
+            >
+              未結案（{openCount}）
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatusFilter("closed")}
+              className={`rounded-md border px-2.5 py-1 font-semibold ${
+                statusFilter === "closed"
+                  ? "border-emerald-700 bg-emerald-700 text-white"
+                  : "border-slate-300 bg-white text-slate-700"
+              }`}
+            >
+              已結案（{closedCount}）
+            </button>
+          </div>
+        </div>
         {loading ? (
           <p className="mt-2 text-sm text-slate-500">載入中...</p>
-        ) : incidents.length === 0 ? (
+        ) : visibleIncidents.length === 0 ? (
           <p className="mt-2 text-sm text-slate-500">尚無事故回報。</p>
         ) : (
           <div className="mt-2 space-y-2">
-            {incidents.slice(0, 20).map((row) => (
+            {visibleIncidents.slice(0, 20).map((row) => (
               <div key={row.id} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
                 <p className="font-semibold text-slate-800">
                   {teamNameMap[row.team_id] || row.team_id} · {labelOf(row.event_type, EVENT_OPTIONS)}
