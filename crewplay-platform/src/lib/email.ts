@@ -471,6 +471,67 @@ export async function sendBookingQueueAutoCancelNotice(input: {
   });
 }
 
+type HostIncidentNotifyInput = {
+  incidentId: string;
+  teamName: string;
+  teamId: string;
+  bookingReference?: string;
+  eventTypeLabel: string;
+  stageLabel: string;
+  actionLabel: string;
+  summary: string;
+  reportedAt: string;
+  reporterEmail?: string;
+  reporterPhone?: string;
+};
+
+export async function sendHostIncidentReportEmails(
+  input: HostIncidentNotifyInput
+): Promise<{ configured: boolean; sent: boolean; error?: string }> {
+  const cfg = getMailConfig();
+  if (!cfg) return { configured: false, sent: false, error: "email_not_configured" };
+
+  const to = String(process.env.HOST_INCIDENT_NOTIFY_TO || cfg.notifyTo).trim() || cfg.notifyTo;
+  const subject = `[事故通報] ${input.teamName}（${input.incidentId.slice(0, 8)}）`;
+  const text = [
+    "【團主事故通報】新回報",
+    `通報編號：${input.incidentId}`,
+    `回報時間：${input.reportedAt}`,
+    "",
+    lines([
+      ["團隊", input.teamName],
+      ["team_id", input.teamId],
+      ["預約編號", input.bookingReference || "未填寫"],
+      ["事件類型", input.eventTypeLabel],
+      ["發生階段", input.stageLabel],
+      ["現場處置", input.actionLabel],
+      ["回報者 Email", input.reporterEmail || "未填寫"],
+      ["回報者手機", input.reporterPhone || "未填寫"],
+    ]),
+    "",
+    "客觀敘述：",
+    input.summary,
+    "",
+    "（此信為系統自動通知）",
+  ].join("\n");
+
+  try {
+    await sendMail({
+      to,
+      subject,
+      text,
+      replyTo: input.reporterEmail || cfg.user,
+    });
+    return { configured: true, sent: true };
+  } catch (err) {
+    return {
+      configured: true,
+      sent: false,
+      error: err instanceof Error ? err.message : "send_failed",
+    };
+  }
+}
+
 export function isEmailConfigured(): boolean {
   return getMailConfig() !== null;
 }

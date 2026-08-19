@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 
 import { bookingReference } from "@/lib/booking-ref";
 import { getBookingById } from "@/lib/bookings";
+import { sendHostIncidentReportEmails } from "@/lib/email";
 import {
   type HostIncidentRecord,
   saveHostIncidentReport,
@@ -22,6 +23,25 @@ const EVENT_TYPES = new Set([
 ]);
 const STAGES = new Set(["warmup", "in_match", "break", "post_match"]);
 const ACTIONS = new Set(["ambulance", "onsite_settlement", "police", "monitoring_only"]);
+const EVENT_LABELS: Record<string, string> = {
+  accidental_injury: "意外受傷",
+  malicious_foul: "惡意犯規",
+  verbal_conflict: "言語衝突",
+  equipment_damage: "設備損壞",
+  other: "其他",
+};
+const STAGE_LABELS: Record<string, string> = {
+  warmup: "熱身時",
+  in_match: "比賽中",
+  break: "休息時",
+  post_match: "賽後",
+};
+const ACTION_LABELS: Record<string, string> = {
+  ambulance: "叫救護車",
+  onsite_settlement: "雙方自行和解",
+  police: "報警",
+  monitoring_only: "僅現場勸導紀錄",
+};
 
 function cleanText(value: unknown, max = 500): string {
   return String(value || "")
@@ -81,6 +101,10 @@ export async function POST(req: Request) {
   if (!ownedTeams.some((t) => t.id === teamId)) {
     return NextResponse.json({ error: "您只能通報自己開團的場次" }, { status: 403 });
   }
+  const team = ownedTeams.find((t) => t.id === teamId);
+  if (!team) {
+    return NextResponse.json({ error: "找不到團隊資料" }, { status: 404 });
+  }
 
   let bookingReferenceText = bookingRefInput;
   if (bookingId) {
@@ -109,6 +133,24 @@ export async function POST(req: Request) {
     reported_by_phone: normalizePhone(String(member.phone || member.contactPhone || "")) || "",
   });
 
-  return NextResponse.json({ ok: true, incident: record });
+  const mailResult = await sendHostIncidentReportEmails({
+    incidentId: record.id,
+    teamName: team.arena_name || teamId,
+    teamId,
+    bookingReference: bookingReferenceText,
+    eventTypeLabel: EVENT_LABELS[eventType] || eventType,
+    stageLabel: STAGE_LABELS[stage] || stage,
+    actionLabel: ACTION_LABELS[actionTaken] || actionTaken,
+    summary,
+    reportedAt: record.created_at,
+    reporterEmail: record.reported_by_email || "",
+    reporterPhone: record.reported_by_phone || "",
+  });
+
+  return NextResponse.json({
+    ok: true,
+    incident: record,
+    mail: mailResult,
+  });
 }
 
