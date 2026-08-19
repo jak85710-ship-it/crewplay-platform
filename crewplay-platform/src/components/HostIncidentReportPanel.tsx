@@ -9,6 +9,7 @@ type TeamLite = {
 
 type IncidentRow = {
   id: string;
+  ticket_no?: string;
   team_id: string;
   booking_reference: string;
   event_type: string;
@@ -289,6 +290,7 @@ export function HostIncidentReportPanel() {
                   {teamNameMap[row.team_id] || row.team_id} · {labelOf(row.event_type, EVENT_OPTIONS)}
                 </p>
                 <p className="text-xs text-slate-500">
+                  {row.ticket_no ? `${row.ticket_no} · ` : ""}
                   {new Date(row.created_at).toLocaleString("zh-TW")} ·
                   {" "}{labelOf(row.stage, STAGE_OPTIONS)} · {labelOf(row.action_taken, ACTION_OPTIONS)}
                   {row.booking_reference ? ` · ${row.booking_reference}` : ""}

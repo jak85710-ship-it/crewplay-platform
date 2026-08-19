@@ -473,6 +473,7 @@ export async function sendBookingQueueAutoCancelNotice(input: {
 
 type HostIncidentNotifyInput = {
   incidentId: string;
+  ticketNo?: string;
   teamName: string;
   teamId: string;
   bookingReference?: string;
@@ -492,10 +493,12 @@ export async function sendHostIncidentReportEmails(
   if (!cfg) return { configured: false, sent: false, error: "email_not_configured" };
 
   const to = String(process.env.HOST_INCIDENT_NOTIFY_TO || cfg.notifyTo).trim() || cfg.notifyTo;
-  const subject = `[事故通報] ${input.teamName}（${input.incidentId.slice(0, 8)}）`;
+  const ticket = String(input.ticketNo || "").trim() || input.incidentId.slice(0, 8).toUpperCase();
+  const subject = `[事故通報] ${input.teamName}（${ticket}）`;
   const text = [
     "【團主事故通報】新回報",
     `通報編號：${input.incidentId}`,
+    `案件編號：${ticket}`,
     `回報時間：${input.reportedAt}`,
     "",
     lines([

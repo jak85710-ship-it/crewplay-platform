@@ -135,6 +135,7 @@ export async function POST(req: Request) {
 
   const mailResult = await sendHostIncidentReportEmails({
     incidentId: record.id,
+    ticketNo: record.ticket_no || "",
     teamName: team.arena_name || teamId,
     teamId,
     bookingReference: bookingReferenceText,

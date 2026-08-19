@@ -19,6 +19,7 @@ export type IncidentAction =
 
 export type HostIncidentRecord = {
   id: string;
+  ticket_no?: string;
   team_id: string;
   booking_id: string;
   booking_reference: string;
@@ -92,25 +93,44 @@ async function saveManifest(manifest: IncidentManifest): Promise<void> {
   await writeBlobManifest(manifest);
 }
 
+function buildIncidentTicket(id: string, createdAt: string): string {
+  const baseDate = Number.isNaN(new Date(createdAt).getTime()) ? new Date() : new Date(createdAt);
+  const y = String(baseDate.getFullYear());
+  const m = String(baseDate.getMonth() + 1).padStart(2, "0");
+  const d = String(baseDate.getDate()).padStart(2, "0");
+  const suffix = String(id || "").replace(/-/g, "").slice(0, 6).toUpperCase() || "UNKNOWN";
+  return `INC-${y}${m}${d}-${suffix}`;
+}
+
 export async function listHostIncidentReports(teamIds?: string[]): Promise<HostIncidentRecord[]> {
   const manifest = await loadManifest();
   const idSet = new Set((teamIds || []).map((id) => String(id || "").trim()).filter(Boolean));
   const list = idSet.size
     ? manifest.incidents.filter((row) => idSet.has(row.team_id))
     : manifest.incidents;
-  return [...list].sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+  return [...list]
+    .map((row) =>
+      row.ticket_no
+        ? row
+        : {
+            ...row,
+            ticket_no: buildIncidentTicket(row.id, row.created_at),
+          }
+    )
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
 export async function saveHostIncidentReport(
   input: Omit<HostIncidentRecord, "id" | "created_at">
 ): Promise<HostIncidentRecord> {
   const manifest = await loadManifest();
+  const createdAt = new Date().toISOString();
+  const id = crypto.randomUUID();
   const record: HostIncidentRecord = {
     ...input,
-    id: crypto.randomUUID(),
-    created_at: new Date().toISOString(),
+    id,
+    created_at: createdAt,
+    ticket_no: buildIncidentTicket(id, createdAt),
   };
   manifest.incidents.push(record);
   manifest.incidents = manifest.incidents.slice(-50000);
@@ -122,6 +142,12 @@ export async function getHostIncidentById(incidentId: string): Promise<HostIncid
   const id = String(incidentId || "").trim();
   if (!id) return null;
   const manifest = await loadManifest();
-  return manifest.incidents.find((row) => row.id === id) ?? null;
+  const row = manifest.incidents.find((item) => item.id === id) ?? null;
+  if (!row) return null;
+  if (row.ticket_no) return row;
+  return {
+    ...row,
+    ticket_no: buildIncidentTicket(row.id, row.created_at),
+  };
 }
 
