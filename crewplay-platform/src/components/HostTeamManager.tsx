@@ -236,6 +236,13 @@ export function HostTeamManager() {
                         <div className="mt-2 flex gap-2">
                           <button
                             type="button"
+                            onClick={() => window.open(`/my/host/covenant/${b.id}`, "_blank", "noopener,noreferrer")}
+                            className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700"
+                          >
+                            出示數位公約
+                          </button>
+                          <button
+                            type="button"
                             disabled={busyId === b.id}
                             onClick={() => reviewPending(b.id, "approve")}
                             className="rounded-lg border border-emerald-300 px-3 py-1.5 text-xs font-semibold text-emerald-700 disabled:opacity-60"

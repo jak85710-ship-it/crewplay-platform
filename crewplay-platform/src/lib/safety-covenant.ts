@@ -117,3 +117,12 @@ export async function getSafetyCovenantMapByBookingIds(
   return out;
 }
 
+export async function getSafetyCovenantByBookingId(
+  bookingId: string
+): Promise<SafetyCovenantRecord | null> {
+  const id = String(bookingId || "").trim();
+  if (!id) return null;
+  const manifest = await loadManifest();
+  return manifest.records.find((row) => row.booking_id === id) ?? null;
+}
+
