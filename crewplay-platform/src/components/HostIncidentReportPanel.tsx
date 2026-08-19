@@ -394,6 +394,12 @@ export function HostIncidentReportPanel() {
                 ) : null}
                 <p className="mt-1 text-slate-700">{row.summary}</p>
                 <div className="mt-2 flex gap-2">
+                  <a
+                    href={`/my/host/incidents/${row.id}`}
+                    className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700"
+                  >
+                    查看詳情
+                  </a>
                   <button
                     type="button"
                     onClick={() => void resendMail(row.id)}

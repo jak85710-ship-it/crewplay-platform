@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { AdminBookingsTable } from "@/components/AdminBookingsTable";
+import { AdminIncidentsPanel } from "@/components/AdminIncidentsPanel";
 import { AdminLineHostRecipientsPanel } from "@/components/AdminLineHostRecipientsPanel";
 import { AdminOneVsOneSection } from "@/components/AdminOneVsOneSection";
 import { AdminTeamCapacityPanel } from "@/components/AdminTeamCapacityPanel";
@@ -111,6 +112,7 @@ export function AdminDashboard() {
             <h2 className="font-bold text-slate-800">最近預約 · 爽約管理</h2>
             <AdminBookingsTable adminKey={adminKey} isAuthorized={isAuthorized} />
           </section>
+          <AdminIncidentsPanel adminKey={adminKey} isAuthorized={isAuthorized} />
 
           <AdminOneVsOneSection adminKey={adminKey} isAuthorized={isAuthorized} onAdminKeyChange={onAdminKeyInput} />
           <AdminTeamCapacityPanel

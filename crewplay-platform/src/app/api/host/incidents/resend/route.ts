@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { sendHostIncidentReportEmails } from "@/lib/email";
-import { getHostIncidentById } from "@/lib/host-incidents";
+import { appendHostIncidentTimelineEvent, getHostIncidentById } from "@/lib/host-incidents";
 import { listOwnedTeamsForMember } from "@/lib/host-team-access";
 import { getMemberSession } from "@/lib/member-session";
 
@@ -78,6 +78,13 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
+
+  await appendHostIncidentTimelineEvent({
+    incidentId: incident.id,
+    type: "mail_resent",
+    note: "團主手動重送事故通知信",
+    actor: "host",
+  });
 
   return NextResponse.json({ ok: true, mail });
 }

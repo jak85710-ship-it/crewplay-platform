@@ -535,6 +535,39 @@ export async function sendHostIncidentReportEmails(
   }
 }
 
+export async function sendHostIncidentStatusEmails(input: {
+  ticketNo: string;
+  teamName: string;
+  status: "open" | "closed";
+  closeNote?: string;
+  updatedAt: string;
+}): Promise<{ configured: boolean; sent: boolean; error?: string }> {
+  const cfg = getMailConfig();
+  if (!cfg) return { configured: false, sent: false, error: "email_not_configured" };
+  const to = String(process.env.HOST_INCIDENT_NOTIFY_TO || cfg.notifyTo).trim() || cfg.notifyTo;
+  const subject = `[事故案件更新] ${input.teamName}（${input.ticketNo || "NO-TICKET"}）`;
+  const text = [
+    "【團主事故案件狀態更新】",
+    `案件編號：${input.ticketNo || "未提供"}`,
+    `團隊：${input.teamName}`,
+    `狀態：${input.status === "closed" ? "已結案" : "重新開啟"}`,
+    `更新時間：${input.updatedAt}`,
+    input.closeNote ? `備註：${input.closeNote}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+  try {
+    await sendMail({ to, subject, text, replyTo: cfg.user });
+    return { configured: true, sent: true };
+  } catch (err) {
+    return {
+      configured: true,
+      sent: false,
+      error: err instanceof Error ? err.message : "send_failed",
+    };
+  }
+}
+
 export function isEmailConfigured(): boolean {
   return getMailConfig() !== null;
 }

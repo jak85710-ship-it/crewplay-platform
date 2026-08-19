@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+import { sendHostIncidentStatusEmails } from "@/lib/email";
 import { getHostIncidentById, setHostIncidentStatus } from "@/lib/host-incidents";
 import { listOwnedTeamsForMember } from "@/lib/host-team-access";
 import { getMemberSession } from "@/lib/member-session";
@@ -53,6 +54,14 @@ export async function POST(req: Request) {
   if (!updated) {
     return NextResponse.json({ error: "更新失敗，請稍後再試" }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, incident: updated });
+  const team = ownedTeams.find((item) => item.id === updated.team_id);
+  const statusMail = await sendHostIncidentStatusEmails({
+    ticketNo: updated.ticket_no || updated.id.slice(0, 8).toUpperCase(),
+    teamName: team?.arena_name || updated.team_id,
+    status: updated.status === "closed" ? "closed" : "open",
+    closeNote: updated.close_note || "",
+    updatedAt: updated.status === "closed" ? updated.closed_at || new Date().toISOString() : new Date().toISOString(),
+  });
+  return NextResponse.json({ ok: true, incident: updated, mail: statusMail });
 }
 

@@ -23,6 +23,7 @@ export type HostIncidentRecord = {
   status?: "open" | "closed";
   closed_at?: string;
   close_note?: string;
+  timeline?: IncidentTimelineEvent[];
   team_id: string;
   booking_id: string;
   booking_reference: string;
@@ -34,6 +35,13 @@ export type HostIncidentRecord = {
   reported_by_email: string;
   reported_by_phone: string;
   created_at: string;
+};
+
+export type IncidentTimelineEvent = {
+  at: string;
+  type: "reported" | "mail_resent" | "closed" | "reopened";
+  note?: string;
+  actor?: string;
 };
 
 type IncidentManifest = {
@@ -107,13 +115,39 @@ function buildIncidentTicket(id: string, createdAt: string): string {
 
 function normalizeIncidentRecord(row: HostIncidentRecord): HostIncidentRecord {
   const status = row.status === "closed" ? "closed" : "open";
+  const timeline = normalizeTimeline(row);
   return {
     ...row,
     ticket_no: row.ticket_no || buildIncidentTicket(row.id, row.created_at),
     status,
     closed_at: status === "closed" ? row.closed_at || row.created_at : "",
     close_note: row.close_note || "",
+    timeline,
   };
+}
+
+function normalizeTimeline(row: HostIncidentRecord): IncidentTimelineEvent[] {
+  const list = Array.isArray(row.timeline) ? row.timeline.filter(Boolean) : [];
+  const hasReported = list.some((event) => event.type === "reported");
+  const base: IncidentTimelineEvent[] = hasReported
+    ? list
+    : [{ at: row.created_at, type: "reported", note: "建立事故通報" }];
+  const hasClosed = base.some((event) => event.type === "closed");
+  if (row.status === "closed" && row.closed_at && !hasClosed) {
+    base.push({
+      at: row.closed_at,
+      type: "closed",
+      note: row.close_note || "已結案",
+    });
+  }
+  return base
+    .map((event) => ({
+      at: event.at || row.created_at,
+      type: event.type,
+      note: event.note || "",
+      actor: event.actor || "",
+    }))
+    .sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
 }
 
 export async function listHostIncidentReports(teamIds?: string[]): Promise<HostIncidentRecord[]> {
@@ -141,6 +175,7 @@ export async function saveHostIncidentReport(
     status: "open",
     closed_at: "",
     close_note: "",
+    timeline: [{ at: createdAt, type: "reported", note: "建立事故通報" }],
   };
   manifest.incidents.push(record);
   manifest.incidents = manifest.incidents.slice(-50000);
@@ -171,14 +206,51 @@ export async function setHostIncidentStatus(input: {
   const idx = manifest.incidents.findIndex((row) => row.id === incidentId);
   if (idx < 0) return null;
   const row = normalizeIncidentRecord(manifest.incidents[idx]);
+  const timeline = [...(row.timeline || [])];
+  const nowIso = new Date().toISOString();
+  timeline.push({
+    at: nowIso,
+    type: status === "closed" ? "closed" : "reopened",
+    note: status === "closed" ? note || "已結案" : note || "案件重新開啟",
+  });
+
   const next: HostIncidentRecord = {
     ...row,
     status,
-    closed_at: status === "closed" ? new Date().toISOString() : "",
+    closed_at: status === "closed" ? nowIso : "",
     close_note: status === "closed" ? note : "",
+    timeline,
   };
   manifest.incidents[idx] = next;
   await saveManifest(manifest);
-  return next;
+  return normalizeIncidentRecord(next);
+}
+
+export async function appendHostIncidentTimelineEvent(input: {
+  incidentId: string;
+  type: IncidentTimelineEvent["type"];
+  note?: string;
+  actor?: string;
+}): Promise<HostIncidentRecord | null> {
+  const incidentId = String(input.incidentId || "").trim();
+  if (!incidentId) return null;
+  const manifest = await loadManifest();
+  const idx = manifest.incidents.findIndex((row) => row.id === incidentId);
+  if (idx < 0) return null;
+  const row = normalizeIncidentRecord(manifest.incidents[idx]);
+  const timeline = [...(row.timeline || [])];
+  timeline.push({
+    at: new Date().toISOString(),
+    type: input.type,
+    note: String(input.note || "").trim().slice(0, 300),
+    actor: String(input.actor || "").trim().slice(0, 120),
+  });
+  const next: HostIncidentRecord = {
+    ...row,
+    timeline,
+  };
+  manifest.incidents[idx] = next;
+  await saveManifest(manifest);
+  return normalizeIncidentRecord(next);
 }
 
