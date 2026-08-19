@@ -10,6 +10,9 @@ type TeamLite = {
 type IncidentRow = {
   id: string;
   ticket_no?: string;
+  status?: "open" | "closed";
+  closed_at?: string;
+  close_note?: string;
   team_id: string;
   booking_reference: string;
   event_type: string;
@@ -59,6 +62,7 @@ export function HostIncidentReportPanel() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [resendingId, setResendingId] = useState("");
+  const [statusUpdatingId, setStatusUpdatingId] = useState("");
   const [message, setMessage] = useState("");
   const [form, setForm] = useState<IncidentFormState>({
     team_id: "",
@@ -155,6 +159,40 @@ export function HostIncidentReportPanel() {
       setMessage(err instanceof Error ? err.message : "重送失敗，請稍後再試");
     } finally {
       setResendingId("");
+    }
+  }
+
+  async function updateIncidentStatus(row: IncidentRow, action: "close" | "reopen") {
+    if (!row.id || statusUpdatingId) return;
+    const closeNote =
+      action === "close"
+        ? window.prompt("請輸入結案備註（必填，最多 300 字）：", row.close_note || "") || ""
+        : "";
+    if (action === "close" && !closeNote.trim()) {
+      setMessage("結案已取消：需填寫結案備註。");
+      return;
+    }
+
+    setStatusUpdatingId(row.id);
+    setMessage("");
+    try {
+      const res = await fetch("/api/host/incidents/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          incident_id: row.id,
+          action,
+          close_note: closeNote,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "案件狀態更新失敗");
+      setMessage(action === "close" ? "案件已標記結案。" : "案件已重新開啟。");
+      await load();
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "案件狀態更新失敗");
+    } finally {
+      setStatusUpdatingId("");
     }
   }
 
@@ -295,15 +333,35 @@ export function HostIncidentReportPanel() {
                   {" "}{labelOf(row.stage, STAGE_OPTIONS)} · {labelOf(row.action_taken, ACTION_OPTIONS)}
                   {row.booking_reference ? ` · ${row.booking_reference}` : ""}
                 </p>
+                <p className={`mt-1 text-xs ${row.status === "closed" ? "text-emerald-700" : "text-amber-700"}`}>
+                  {row.status === "closed"
+                    ? `狀態：已結案${row.closed_at ? `（${new Date(row.closed_at).toLocaleString("zh-TW")}）` : ""}`
+                    : "狀態：處理中（未結案）"}
+                </p>
+                {row.status === "closed" && row.close_note ? (
+                  <p className="mt-1 text-xs text-slate-600">結案備註：{row.close_note}</p>
+                ) : null}
                 <p className="mt-1 text-slate-700">{row.summary}</p>
-                <div className="mt-2">
+                <div className="mt-2 flex gap-2">
                   <button
                     type="button"
                     onClick={() => void resendMail(row.id)}
-                    disabled={Boolean(resendingId)}
+                    disabled={Boolean(resendingId) || Boolean(statusUpdatingId)}
                     className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 disabled:opacity-60"
                   >
                     {resendingId === row.id ? "重送中..." : "重送通知信"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void updateIncidentStatus(row, row.status === "closed" ? "reopen" : "close")}
+                    disabled={Boolean(statusUpdatingId) || Boolean(resendingId)}
+                    className="rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 disabled:opacity-60"
+                  >
+                    {statusUpdatingId === row.id
+                      ? "更新中..."
+                      : row.status === "closed"
+                        ? "重新開啟"
+                        : "標記結案"}
                   </button>
                 </div>
               </div>

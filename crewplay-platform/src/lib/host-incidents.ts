@@ -20,6 +20,9 @@ export type IncidentAction =
 export type HostIncidentRecord = {
   id: string;
   ticket_no?: string;
+  status?: "open" | "closed";
+  closed_at?: string;
+  close_note?: string;
   team_id: string;
   booking_id: string;
   booking_reference: string;
@@ -102,6 +105,17 @@ function buildIncidentTicket(id: string, createdAt: string): string {
   return `INC-${y}${m}${d}-${suffix}`;
 }
 
+function normalizeIncidentRecord(row: HostIncidentRecord): HostIncidentRecord {
+  const status = row.status === "closed" ? "closed" : "open";
+  return {
+    ...row,
+    ticket_no: row.ticket_no || buildIncidentTicket(row.id, row.created_at),
+    status,
+    closed_at: status === "closed" ? row.closed_at || row.created_at : "",
+    close_note: row.close_note || "",
+  };
+}
+
 export async function listHostIncidentReports(teamIds?: string[]): Promise<HostIncidentRecord[]> {
   const manifest = await loadManifest();
   const idSet = new Set((teamIds || []).map((id) => String(id || "").trim()).filter(Boolean));
@@ -109,14 +123,7 @@ export async function listHostIncidentReports(teamIds?: string[]): Promise<HostI
     ? manifest.incidents.filter((row) => idSet.has(row.team_id))
     : manifest.incidents;
   return [...list]
-    .map((row) =>
-      row.ticket_no
-        ? row
-        : {
-            ...row,
-            ticket_no: buildIncidentTicket(row.id, row.created_at),
-          }
-    )
+    .map((row) => normalizeIncidentRecord(row))
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 }
 
@@ -131,6 +138,9 @@ export async function saveHostIncidentReport(
     id,
     created_at: createdAt,
     ticket_no: buildIncidentTicket(id, createdAt),
+    status: "open",
+    closed_at: "",
+    close_note: "",
   };
   manifest.incidents.push(record);
   manifest.incidents = manifest.incidents.slice(-50000);
@@ -144,10 +154,31 @@ export async function getHostIncidentById(incidentId: string): Promise<HostIncid
   const manifest = await loadManifest();
   const row = manifest.incidents.find((item) => item.id === id) ?? null;
   if (!row) return null;
-  if (row.ticket_no) return row;
-  return {
+  return normalizeIncidentRecord(row);
+}
+
+export async function setHostIncidentStatus(input: {
+  incidentId: string;
+  status: "open" | "closed";
+  closeNote?: string;
+}): Promise<HostIncidentRecord | null> {
+  const incidentId = String(input.incidentId || "").trim();
+  if (!incidentId) return null;
+  const status = input.status === "closed" ? "closed" : "open";
+  const note = String(input.closeNote || "").replace(/\s+/g, " ").trim().slice(0, 300);
+
+  const manifest = await loadManifest();
+  const idx = manifest.incidents.findIndex((row) => row.id === incidentId);
+  if (idx < 0) return null;
+  const row = normalizeIncidentRecord(manifest.incidents[idx]);
+  const next: HostIncidentRecord = {
     ...row,
-    ticket_no: buildIncidentTicket(row.id, row.created_at),
+    status,
+    closed_at: status === "closed" ? new Date().toISOString() : "",
+    close_note: status === "closed" ? note : "",
   };
+  manifest.incidents[idx] = next;
+  await saveManifest(manifest);
+  return next;
 }
 
