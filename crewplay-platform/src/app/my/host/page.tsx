@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { HostFreemiumPanel } from "@/components/HostFreemiumPanel";
+import { HostIncidentReportPanel } from "@/components/HostIncidentReportPanel";
 import { HostTeamManager } from "@/components/HostTeamManager";
 import { getMemberSession } from "@/lib/member-session";
 
@@ -32,6 +33,7 @@ export default async function MyHostTeamsPage() {
       ) : (
         <div className="mt-6 space-y-6">
           <HostTeamManager />
+          <HostIncidentReportPanel />
           <HostFreemiumPanel />
         </div>
       )}
