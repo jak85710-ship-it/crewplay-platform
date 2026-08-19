@@ -9,6 +9,10 @@ import { checkMemberCanBook, MIN_BOOKING_SCORE, touchMemberProfile } from "@/lib
 import { getMemberKeyFromSession } from "@/lib/member-key";
 import { getMemberSessionFromReader, type MemberSession } from "@/lib/member-session";
 import { normalizePhone } from "@/lib/phone-auth";
+import {
+  SAFETY_COVENANT_VERSION,
+  saveSafetyCovenantRecord,
+} from "@/lib/safety-covenant";
 import { getTeamBookingStats } from "@/lib/team-booking-stats";
 import { enrichTeamFromIntro, getTeamById } from "@/lib/teams";
 import { composeBookingNoteWithVolleyballPosition } from "@/lib/volleyball-position";
@@ -24,6 +28,10 @@ export type BookingInput = {
   volleyball_position_detail?: string;
   amount: number;
   booking_auth?: string;
+  safety_policy_version?: string;
+  safety_risk_ack?: boolean;
+  safety_etiquette_ack?: boolean;
+  safety_mediation_ack?: boolean;
 };
 
 function resolveMemberSession(
@@ -71,6 +79,10 @@ export async function processMemberBooking(
   const guestName = String(raw.guest_name ?? member.name ?? member.displayName ?? "").trim();
   const guestEmail = String(raw.guest_email ?? member.email ?? "").trim();
   const guestPhone = normalizePhone(String(raw.guest_phone ?? member.contactPhone ?? member.phone ?? ""));
+  const policyVersion = String(raw.safety_policy_version || "").trim();
+  const riskAck = raw.safety_risk_ack === true;
+  const etiquetteAck = raw.safety_etiquette_ack === true;
+  const mediationAck = raw.safety_mediation_ack === true;
 
   if (!guestName) {
     return { ok: false, code: "validation", error: "請填寫姓名" };
@@ -87,6 +99,20 @@ export async function processMemberBooking(
       ok: false,
       code: "validation",
       error: "請填寫有效的手機號碼（09 開頭，10 碼），方便團主聯絡",
+    };
+  }
+  if (policyVersion !== SAFETY_COVENANT_VERSION) {
+    return {
+      ok: false,
+      code: "validation",
+      error: "安全公約版本已更新，請重新確認後送出",
+    };
+  }
+  if (!riskAck || !etiquetteAck || !mediationAck) {
+    return {
+      ok: false,
+      code: "validation",
+      error: "請完整勾選《運動風險與禮儀數位公約》後再送出",
     };
   }
 
@@ -139,7 +165,23 @@ export async function processMemberBooking(
       positionDetail: raw.volleyball_position_detail,
     });
 
+    const bookingId = crypto.randomUUID();
+    await saveSafetyCovenantRecord({
+      booking_id: bookingId,
+      team_id: team.id,
+      member_key: memberKey,
+      guest_name: guestName,
+      guest_email: guestEmail,
+      guest_phone: guestPhone,
+      policy_version: policyVersion,
+      accepted_at: new Date().toISOString(),
+      risk_ack: riskAck,
+      etiquette_ack: etiquetteAck,
+      mediation_ack: mediationAck,
+    });
+
     const booking = await createBooking({
+      id: bookingId,
       team_id: team.id,
       guest_name: guestName,
       guest_phone: guestPhone,

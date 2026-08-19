@@ -5,6 +5,10 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 
+import {
+  SAFETY_COVENANT_ITEMS,
+  SAFETY_COVENANT_VERSION,
+} from "@/lib/safety-covenant";
 import { VOLLEYBALL_POSITIONS } from "@/lib/volleyball-position";
 
 type Props = {
@@ -67,6 +71,10 @@ export function BookFormClient({
     isVolleyball ? [VOLLEYBALL_POSITIONS[0]] : []
   );
   const [positionDetail, setPositionDetail] = useState("");
+  const [riskAck, setRiskAck] = useState(false);
+  const [etiquetteAck, setEtiquetteAck] = useState(false);
+  const [mediationAck, setMediationAck] = useState(false);
+  const allCovenantChecked = riskAck && etiquetteAck && mediationAck;
 
   useEffect(() => {
     if (!isVolleyball) return;
@@ -135,6 +143,7 @@ export function BookFormClient({
           <input type="hidden" name="volleyball_position_detail" value={volleyballPositionDetail} />
         )}
         {bookingAuth ? <input type="hidden" name="booking_auth" value={bookingAuth} /> : null}
+        <input type="hidden" name="safety_policy_version" value={SAFETY_COVENANT_VERSION} />
 
         <label className="block text-sm">
           <span className="font-medium text-slate-700">姓名</span>
@@ -263,13 +272,61 @@ export function BookFormClient({
           </p>
         </div>
 
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950">
+          <p className="font-semibold">《運動風險與禮儀數位公約》</p>
+          <p className="mt-1 text-xs text-emerald-800">
+            請逐項勾選同意，完成後系統會標示「綠色護盾（已簽署安全公約）」。
+          </p>
+          <div className="mt-3 space-y-2">
+            <label className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                name={SAFETY_COVENANT_ITEMS[0].key}
+                value="1"
+                checked={riskAck}
+                onChange={(e) => setRiskAck(e.target.checked)}
+                required
+                className="mt-0.5 h-4 w-4 rounded border-emerald-300"
+              />
+              <span>{SAFETY_COVENANT_ITEMS[0].text}</span>
+            </label>
+            <label className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                name={SAFETY_COVENANT_ITEMS[1].key}
+                value="1"
+                checked={etiquetteAck}
+                onChange={(e) => setEtiquetteAck(e.target.checked)}
+                required
+                className="mt-0.5 h-4 w-4 rounded border-emerald-300"
+              />
+              <span>{SAFETY_COVENANT_ITEMS[1].text}</span>
+            </label>
+            <label className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                name={SAFETY_COVENANT_ITEMS[2].key}
+                value="1"
+                checked={mediationAck}
+                onChange={(e) => setMediationAck(e.target.checked)}
+                required
+                className="mt-0.5 h-4 w-4 rounded border-emerald-300"
+              />
+              <span>{SAFETY_COVENANT_ITEMS[2].text}</span>
+            </label>
+          </div>
+        </div>
+
         {urlError && (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
             <p>{urlError}</p>
           </div>
         )}
 
-        <SubmitButton disabled={!bookingOpen || (credit != null && !credit.can_book)} bookingOpen={bookingOpen} />
+        <SubmitButton
+          disabled={!bookingOpen || (credit != null && !credit.can_book) || !allCovenantChecked}
+          bookingOpen={bookingOpen}
+        />
 
         <p className="text-center text-xs text-slate-500">
           報名即表示同意留名額；未到場可能影響後續預約權益。

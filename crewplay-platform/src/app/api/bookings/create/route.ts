@@ -6,6 +6,11 @@ import { processMemberBooking, siteUrlFromRequest, type BookingInput } from "@/l
 import { issueCheckInToken } from "@/lib/check-in-token";
 import { applyMemberProfileToCookieStore, setMemberSessionKey } from "@/lib/member-session";
 
+function toBool(raw: unknown): boolean {
+  const v = String(raw ?? "").trim().toLowerCase();
+  return v === "1" || v === "true" || v === "on" || v === "yes";
+}
+
 function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingInput {
   return {
     team_id: String(raw.team_id ?? ""),
@@ -18,6 +23,10 @@ function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingIn
     volleyball_position_detail: String(raw.volleyball_position_detail ?? ""),
     amount: parseInt(String(raw.amount ?? "0"), 10) || 0,
     booking_auth: String(raw.booking_auth ?? ""),
+    safety_policy_version: String(raw.safety_policy_version ?? ""),
+    safety_risk_ack: toBool(raw.safety_risk_ack),
+    safety_etiquette_ack: toBool(raw.safety_etiquette_ack),
+    safety_mediation_ack: toBool(raw.safety_mediation_ack),
   };
 }
 

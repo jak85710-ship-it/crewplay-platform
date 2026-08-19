@@ -6,6 +6,7 @@ import { listBookings } from "@/lib/bookings";
 import { processBookingReviewSla, reviewBookingAsHost } from "@/lib/booking-review-sla";
 import { listOwnedTeamsForMember } from "@/lib/host-team-access";
 import { getMemberSession } from "@/lib/member-session";
+import { getSafetyCovenantMapByBookingIds } from "@/lib/safety-covenant";
 
 export async function GET() {
   const cookieStore = await cookies();
@@ -17,9 +18,11 @@ export async function GET() {
   await processBookingReviewSla();
   const [ownedTeams, bookings] = await Promise.all([listOwnedTeamsForMember(member), listBookings()]);
   const teamSet = new Set(ownedTeams.map((team) => team.id));
-  const pending = bookings
+  const pendingBookings = bookings
     .filter((booking) => teamSet.has(booking.team_id) && booking.status === "submitted")
-    .sort((a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime())
+    .sort((a, b) => new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime());
+  const safetyMap = await getSafetyCovenantMapByBookingIds(pendingBookings.map((b) => b.id));
+  const pending = pendingBookings
     .map((booking) => ({
       id: booking.id,
       team_id: booking.team_id,
@@ -30,6 +33,9 @@ export async function GET() {
       slots: booking.slots,
       created_at: booking.created_at || "",
       note: booking.note || "",
+      safety_shield: Boolean(safetyMap[booking.id]),
+      safety_accepted_at: safetyMap[booking.id]?.accepted_at || "",
+      safety_policy_version: safetyMap[booking.id]?.policy_version || "",
     }));
 
   return NextResponse.json({ pending });

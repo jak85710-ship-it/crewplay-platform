@@ -95,6 +95,7 @@ export async function getBookingByTradeNo(tradeNo: string): Promise<Booking | nu
 }
 
 export async function createBooking(input: {
+  id?: string;
   team_id: string;
   guest_name: string;
   guest_phone: string;
@@ -107,7 +108,7 @@ export async function createBooking(input: {
   apple_uid?: string | null;
 }): Promise<Booking> {
   const booking: Booking = {
-    id: crypto.randomUUID(),
+    id: input.id || crypto.randomUUID(),
     team_id: input.team_id,
     guest_name: input.guest_name,
     guest_phone: input.guest_phone,

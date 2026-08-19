@@ -27,6 +27,9 @@ type PendingBookingRow = {
   slots: number;
   created_at: string;
   note: string;
+  safety_shield: boolean;
+  safety_accepted_at: string;
+  safety_policy_version: string;
 };
 
 export function HostTeamManager() {
@@ -224,6 +227,11 @@ export function HostTeamManager() {
                         <p className="text-sm font-semibold text-slate-900">{b.guest_name}（{b.slots} 人）</p>
                         <p className="text-xs text-slate-500">{b.reference} · {b.created_at ? new Date(b.created_at).toLocaleString("zh-TW") : "—"}</p>
                         <p className="mt-1 text-xs text-slate-600">{b.guest_phone} · {b.guest_email || "未填 email"}</p>
+                        <p className={`mt-1 text-xs ${b.safety_shield ? "text-emerald-700" : "text-rose-700"}`}>
+                          {b.safety_shield
+                            ? `🛡 綠色護盾（已簽署安全公約）${b.safety_accepted_at ? ` · ${new Date(b.safety_accepted_at).toLocaleString("zh-TW")}` : ""}`
+                            : "⚠ 未簽署安全公約（請謹慎審核）"}
+                        </p>
                         {b.note ? <p className="mt-1 text-xs text-slate-500">備註：{b.note}</p> : null}
                         <div className="mt-2 flex gap-2">
                           <button
