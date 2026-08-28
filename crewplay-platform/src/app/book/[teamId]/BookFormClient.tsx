@@ -8,7 +8,7 @@ import { useFormStatus } from "react-dom";
 import {
   SAFETY_COVENANT_ITEMS,
   SAFETY_COVENANT_VERSION,
-} from "@/lib/safety-covenant";
+} from "@/lib/safety-covenant-meta";
 import { VOLLEYBALL_POSITIONS } from "@/lib/volleyball-position";
 
 type Props = {

@@ -5,6 +5,7 @@ import type { HostSubmission, VenueSubmission } from "@/lib/email";
 
 export type SubmissionKind = "host" | "venue";
 export type SubmissionPaymentStatus = "pending_payment" | "paid";
+export type SubmissionReviewStatus = "pending_review" | "approved" | "rejected";
 export type HostSubmissionRecord = StoredHost;
 export type VenueSubmissionRecord = StoredVenue;
 
@@ -12,6 +13,11 @@ type StoredHost = HostSubmission & {
   merchant_trade_no: string;
   payment_status: SubmissionPaymentStatus;
   platform_fee: number;
+  review_status?: SubmissionReviewStatus;
+  reviewed_at?: string;
+  reviewed_by?: string;
+  review_note?: string;
+  published_team_id?: string;
 };
 
 type StoredVenue = VenueSubmission & {
@@ -95,6 +101,11 @@ export async function saveHostSubmission(
     merchant_trade_no: merchantTradeNo,
     payment_status: platformFee > 0 ? "pending_payment" : "paid",
     platform_fee: platformFee,
+    review_status: "pending_review",
+    reviewed_at: "",
+    reviewed_by: "",
+    review_note: "",
+    published_team_id: "",
   };
   const manifest = await loadManifest();
   manifest.host.push(stored);
@@ -152,4 +163,50 @@ export async function listHostSubmissions(): Promise<StoredHost[]> {
   return [...manifest.host].sort(
     (a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime()
   );
+}
+
+export async function listHostSubmissionsByReviewStatus(
+  status: SubmissionReviewStatus | "all" = "pending_review"
+): Promise<StoredHost[]> {
+  const all = await listHostSubmissions();
+  if (status === "all") {
+    return all.map((row) => ({
+      ...row,
+      review_status: row.review_status || "pending_review",
+    }));
+  }
+  return all
+    .map((row) => ({
+      ...row,
+      review_status: row.review_status || "pending_review",
+    }))
+    .filter((row) => row.review_status === status);
+}
+
+export async function reviewHostSubmission(input: {
+  tradeNo: string;
+  action: "approve" | "reject";
+  reviewedBy: string;
+  note?: string;
+  publishedTeamId?: string;
+}): Promise<StoredHost | null> {
+  const tradeNo = String(input.tradeNo || "").trim();
+  if (!tradeNo) return null;
+  const manifest = await loadManifest();
+  const idx = manifest.host.findIndex((row) => row.merchant_trade_no === tradeNo);
+  if (idx < 0) return null;
+
+  const now = new Date().toISOString();
+  const current = manifest.host[idx];
+  const next: StoredHost = {
+    ...current,
+    review_status: input.action === "approve" ? "approved" : "rejected",
+    reviewed_at: now,
+    reviewed_by: String(input.reviewedBy || "").trim().slice(0, 80),
+    review_note: String(input.note || "").trim().slice(0, 300),
+    published_team_id: input.action === "approve" ? String(input.publishedTeamId || "").trim() : "",
+  };
+  manifest.host[idx] = next;
+  await saveManifest(manifest);
+  return next;
 }

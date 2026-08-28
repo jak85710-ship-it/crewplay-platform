@@ -4,6 +4,7 @@ import type { Transporter } from "nodemailer";
 import { bookingReference } from "@/lib/booking-ref";
 import { hostCheckInPortalUrl, hostGuestCheckInScanUrl } from "@/lib/check-in-url";
 import { issueHostPortalToken } from "@/lib/host-portal-token";
+import { siteUrl } from "@/lib/payment/site-url";
 import { submissionImagePublicUrl } from "@/lib/submission-images";
 import { feeSummary, parseIntroField } from "@/lib/utils";
 import type { VenueDeviceConsultingSubmission } from "@/lib/venue-device-consulting";
@@ -390,6 +391,61 @@ export async function sendHostFormEmails(data: HostSubmission) {
     subject: `[CrewPlay] 已收到您的開團申請（${data.id.slice(0, 8)}）`,
     text: hostCustomerBody(data),
   });
+}
+
+export async function sendHostSubmissionReviewEmail(input: {
+  to: string;
+  teamName: string;
+  action: "approve" | "reject";
+  note?: string;
+  teamId?: string;
+}) {
+  const cfg = getMailConfig();
+  if (!cfg) return { configured: false, sent: false, error: "email_not_configured" };
+  const to = String(input.to || "").trim().toLowerCase();
+  if (!to.includes("@")) return { configured: true, sent: false, error: "invalid_email" };
+
+  const approved = input.action === "approve";
+  const teamLink = input.teamId ? `${siteUrl()}/teams/${encodeURIComponent(input.teamId)}` : "";
+  const text = approved
+    ? [
+        `${input.teamName || "您好"} 團主，`,
+        "",
+        "恭喜！您的「我要開團」申請已審核通過，資料已上架到 CrewPlay 網站。",
+        teamLink ? `團隊頁面：${teamLink}` : "",
+        input.note ? `備註：${input.note}` : "",
+        "",
+        "如需調整資料，請回信或聯絡客服。",
+        "CrewPlay運動媒合平台",
+      ]
+        .filter(Boolean)
+        .join("\n")
+    : [
+        `${input.teamName || "您好"} 團主，`,
+        "",
+        "您的「我要開團」申請目前未通過審核。",
+        input.note ? `原因 / 備註：${input.note}` : "若需協助可直接回信與我們聯繫。",
+        "",
+        "CrewPlay運動媒合平台",
+      ].join("\n");
+
+  try {
+    await sendMail({
+      to,
+      subject: approved
+        ? `[CrewPlay] 開團申請已通過並上架（${input.teamName}）`
+        : `[CrewPlay] 開團申請審核結果通知（${input.teamName}）`,
+      text,
+      replyTo: cfg.user,
+    });
+    return { configured: true, sent: true };
+  } catch (err) {
+    return {
+      configured: true,
+      sent: false,
+      error: err instanceof Error ? err.message : "send_failed",
+    };
+  }
 }
 
 export async function sendVenueFormEmails(data: VenueSubmission) {
