@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { LEGAL_ENTITY, VERIFICATION_CONSENT_TEXT } from "@/lib/legal-entity";
-import { MATCH_NO_SHOW_LOCK_DAYS, MIN_MATCH_SCORE, PILOT_MATCH_VENUE_NAME, CANCEL_BOOKING_PENALTY, CREDIT_RECOVERY_INTERVAL_DAYS, CREDIT_RECOVERY_POINTS } from "@/lib/member-credit-constants";
+import { MATCH_NO_SHOW_LOCK_DAYS, MIN_MATCH_SCORE, CANCEL_BOOKING_PENALTY, CREDIT_RECOVERY_INTERVAL_DAYS, CREDIT_RECOVERY_POINTS } from "@/lib/member-credit-constants";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -111,10 +111,10 @@ export function PrivacyPolicyContent() {
         <p>我們不出售您的個人資料。僅在下列情形分享必要資料：</p>
         <ul className="list-disc space-y-2 pl-5">
           <li>
-            試點合作場館（如 {PILOT_MATCH_VENUE_NAME}）：僅提供到場核銷所需之匹配編號或 QR 核銷結果，<strong>不提供證件影像</strong>。
+            試點合作場館：僅提供到場核銷所需之匹配編號或 QR 核銷結果，<strong>不提供證件影像</strong>。
           </li>
           <li>金流服務商（如藍新金流）：依付款必要範圍。</li>
-          <li>雲端託管與技術服務（如 Netlify、Supabase 等）：依服務必要之技術處理。</li>
+          <li>雲端託管與技術服務：依服務必要之技術處理。</li>
           <li>依法律或主管機關之合法要求。</li>
         </ul>
       </Section>
