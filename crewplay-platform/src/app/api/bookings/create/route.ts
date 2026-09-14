@@ -12,6 +12,11 @@ function toBool(raw: unknown): boolean {
 }
 
 function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingInput {
+  // Backward-compatible parsing: accept both safety_* and legacy covenant keys.
+  const riskAckRaw = raw.safety_risk_ack ?? raw.risk_ack;
+  const etiquetteAckRaw = raw.safety_etiquette_ack ?? raw.etiquette_ack;
+  const mediationAckRaw = raw.safety_mediation_ack ?? raw.mediation_ack;
+
   return {
     team_id: String(raw.team_id ?? ""),
     guest_name: String(raw.guest_name ?? ""),
@@ -24,9 +29,9 @@ function parseBody(raw: Record<string, FormDataEntryValue | unknown>): BookingIn
     amount: parseInt(String(raw.amount ?? "0"), 10) || 0,
     booking_auth: String(raw.booking_auth ?? ""),
     safety_policy_version: String(raw.safety_policy_version ?? ""),
-    safety_risk_ack: toBool(raw.safety_risk_ack),
-    safety_etiquette_ack: toBool(raw.safety_etiquette_ack),
-    safety_mediation_ack: toBool(raw.safety_mediation_ack),
+    safety_risk_ack: toBool(riskAckRaw),
+    safety_etiquette_ack: toBool(etiquetteAckRaw),
+    safety_mediation_ack: toBool(mediationAckRaw),
   };
 }
 
